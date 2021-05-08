@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace KoharuYomiageApp.Views
+namespace KoharuYomiageApp.Infrastructures.Views
 {
     public partial class ViewB : UserControl
     {

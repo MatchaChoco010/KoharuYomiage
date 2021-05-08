@@ -1,12 +1,12 @@
 ﻿using System.Reactive.Disposables;
-using KoharuYomiageApp.Views;
+using KoharuYomiageApp.Infrastructures.Views;
 using Prism.Mvvm;
 using Prism.Navigation;
 using Prism.Regions;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 
-namespace KoharuYomiageApp.ViewModels
+namespace KoharuYomiageApp.Interfaces.ViewModels
 {
     public class MainWindowViewModel : BindableBase, IDestructible
     {

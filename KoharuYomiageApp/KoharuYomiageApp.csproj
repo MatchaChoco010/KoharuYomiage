@@ -31,4 +31,11 @@
     <Resource Include="Resources\*" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Entities" />
+    <Folder Include="Infrastructures" />
+    <Folder Include="Interfaces" />
+    <Folder Include="UseCases" />
+  </ItemGroup>
+
 </Project>
