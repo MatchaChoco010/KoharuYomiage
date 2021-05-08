@@ -7,4 +7,10 @@
     <DebugType Condition="'$(Configuration)' == 'Release'">none</DebugType>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="LibNMeCab.IpaDicBin" Version="0.10.0" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" />
+  </ItemGroup>
+
 </Project>

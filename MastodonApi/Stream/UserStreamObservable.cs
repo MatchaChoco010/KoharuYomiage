@@ -5,8 +5,8 @@ namespace MastodonApi.Stream
 {
     internal class UserStreamObservable : IObservable<UserStreamPayload>
     {
-        readonly string _hostName;
         readonly AccessToken _accessToken;
+        readonly string _hostName;
 
         internal UserStreamObservable(string hostName, AccessToken accessToken)
         {

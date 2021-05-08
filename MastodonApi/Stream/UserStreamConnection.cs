@@ -15,7 +15,14 @@ namespace MastodonApi.Stream
     internal class UserStreamConnection : IDisposable
     {
         readonly CancellationTokenSource _cancellationTokenSource = new();
-        ClientWebSocket? _socket = null;
+        ClientWebSocket? _socket;
+
+        void IDisposable.Dispose()
+        {
+            _cancellationTokenSource.Cancel();
+            _ = _socket?.CloseAsync(WebSocketCloseStatus.NormalClosure, "Ok", CancellationToken.None);
+            _socket?.Dispose();
+        }
 
         public async ValueTask Start(IObserver<UserStreamPayload> observer, string hostName, AccessToken accessToken)
         {
@@ -90,14 +97,8 @@ namespace MastodonApi.Stream
             }
         }
 
-        void IDisposable.Dispose()
-        {
-            _cancellationTokenSource.Cancel();
-            _ = _socket?.CloseAsync(WebSocketCloseStatus.NormalClosure, "Ok", CancellationToken.None);
-            _socket?.Dispose();
-        }
-
         record StreamingPayload([property: JsonPropertyName("event")] string Event,
-            [property: JsonPropertyName("payload")] string Payload);
+            [property: JsonPropertyName("payload")]
+            string Payload);
     }
 }

@@ -6,6 +6,7 @@ root = true
 # Don't use tabs for indentation.
 [*]
 indent_style = space
+end_of_line = lf
 # (Please don't specify an indent_size here; that has too many unintended consequences.)
 
 # Code files
@@ -32,7 +33,6 @@ indent_size = 2
 
 # Shell script files
 [*.sh]
-end_of_line = lf
 indent_size = 2
 
 # Dotnet code style settings:

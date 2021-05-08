@@ -53,15 +53,15 @@ namespace MastodonApi
                 throw new ArgumentException("hostName must be host string");
             }
 
-            var parameters = new List<KeyValuePair<string, string>>()
+            var parameters = new List<KeyValuePair<string, string>>
             {
                 new("force_login", "true"),
                 new("response_type", "code"),
                 new("client_id", clientId.Id),
                 new("redirect_uri", "urn:ietf:wg:oauth:2.0:oob"),
-                new("scope", "read:accounts read:statuses read:notifications"),
+                new("scope", "read:accounts read:statuses read:notifications")
             };
-            var uriBuilder = new UriBuilder()
+            var uriBuilder = new UriBuilder
             {
                 Scheme = "https",
                 Host = hostName,
@@ -79,7 +79,7 @@ namespace MastodonApi
                 throw new ArgumentException("hostName must be host string");
             }
 
-            var parameters = new List<KeyValuePair<string, string>>()
+            var parameters = new List<KeyValuePair<string, string>>
             {
                 new("client_id", clientId.Id),
                 new("client_secret", clientSecret.Secret),
@@ -88,7 +88,7 @@ namespace MastodonApi
                 new("grant_type", "authorization_code")
             };
             var content = new FormUrlEncodedContent(parameters);
-            var uriBuilder = new UriBuilder() {Scheme = "https", Host = hostName, Path = "oauth/token"};
+            var uriBuilder = new UriBuilder {Scheme = "https", Host = hostName, Path = "oauth/token"};
 
             using var client = new HttpClient(s_httpClientHandler, false);
             var response = await client.PostAsync(uriBuilder.Uri, content);
@@ -106,7 +106,10 @@ namespace MastodonApi
 
         public static async ValueTask<Account> GetAccountInformation(string hostName, AccessToken accessToken)
         {
-            var uriBuilder = new UriBuilder() {Scheme = "https", Host = hostName, Path = "api/v1/accounts/verify_credentials"};
+            var uriBuilder = new UriBuilder
+            {
+                Scheme = "https", Host = hostName, Path = "api/v1/accounts/verify_credentials"
+            };
 
             using var client = new HttpClient(s_httpClientHandler, false);
             client.DefaultRequestHeaders.Add("Authorization", $"Bearer {accessToken.Token}");
@@ -126,7 +129,7 @@ namespace MastodonApi
 
         public static async ValueTask<Instance> GetInstanceInformation(string hostName)
         {
-            var uriBuilder = new UriBuilder() {Scheme = "https", Host = hostName, Path = "api/v1/instance"};
+            var uriBuilder = new UriBuilder {Scheme = "https", Host = hostName, Path = "api/v1/instance"};
 
             using var client = new HttpClient(s_httpClientHandler, false);
 
@@ -143,7 +146,8 @@ namespace MastodonApi
             return instance;
         }
 
-        public static IObservable<UserStreamPayload> GetUserStreamingObservable(string hostName, AccessToken accessToken)
+        public static IObservable<UserStreamPayload> GetUserStreamingObservable(string hostName,
+            AccessToken accessToken)
         {
             return new UserStreamObservable(hostName, accessToken);
         }
