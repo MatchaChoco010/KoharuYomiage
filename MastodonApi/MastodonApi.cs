@@ -14,6 +14,11 @@ namespace MastodonApi
 
         public static async ValueTask<(ClientId, ClientSecret)> RegisterApp(string hostName)
         {
+            if (Uri.CheckHostName(hostName) == UriHostNameType.Unknown)
+            {
+                throw new ArgumentException("hostName must be host string");
+            }
+
             var parameters = new List<KeyValuePair<string, string>>
             {
                 new("client_name", "小春六花さんにTLを読み上げていただくアプリ"),
@@ -40,6 +45,11 @@ namespace MastodonApi
 
         public static async ValueTask<Uri> GetAuthorizeUri(string hostName, ClientId clientId)
         {
+            if (Uri.CheckHostName(hostName) == UriHostNameType.Unknown)
+            {
+                throw new ArgumentException("hostName must be host string");
+            }
+
             var parameters = new List<KeyValuePair<string, string>>()
             {
                 new("force_login", "true"),
@@ -60,6 +70,11 @@ namespace MastodonApi
 
         public static async ValueTask<AccessToken> AuthorizeWithCode(string hostName, ClientId clientId, ClientSecret clientSecret, string code)
         {
+            if (Uri.CheckHostName(hostName) == UriHostNameType.Unknown)
+            {
+                throw new ArgumentException("hostName must be host string");
+            }
+            
             var parameters = new List<KeyValuePair<string, string>>()
             {
                 new("client_id", clientId.Id),
