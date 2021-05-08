@@ -1,35 +1,13 @@
 ﻿using System;
+using MastodonApi;
 
-namespace MastodonApi
-{
-    abstract record AOrB
-    {
-        public record A(): AOrB;
-        public record B(): AOrB;
-    }
+var hostName = "social.orito-itsuki.net";
 
-    public class Class1
-    {
-        public static void Main()
-        {
+var (client_id, client_secret) = await Api.RegisterApp(hostName);
 
-            var a = new AOrB.A();
-            var b = new AOrB.B();
+Console.WriteLine(await Api.GetAuthorizeUri(hostName, client_id));
+var code = Console.ReadLine()?.Trim() ?? "";
 
-            void PrintAOrB(AOrB aorb) {
-                switch (aorb)
-                {
-                    case AOrB.A a:
-                        Console.WriteLine($"A: {a}");
-                        break;
-                    case AOrB.B b:
-                        Console.WriteLine($"B: {b}");
-                        break;
-                };
-            }
+var token = await Api.AuthorizeWithCode(hostName, client_id, client_secret, code);
 
-            PrintAOrB(a);
-            PrintAOrB(b);
-        }
-    }
-}
+Console.WriteLine(await Api.GetAccountInformation(hostName, token));

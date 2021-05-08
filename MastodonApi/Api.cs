@@ -9,7 +9,7 @@ using MastodonApi.Payloads.Entities;
 
 namespace MastodonApi
 {
-    public static class MastodonApi
+    public static class Api
     {
         static readonly HttpClientHandler s_httpClientHandler = new();
 
@@ -82,7 +82,7 @@ namespace MastodonApi
                 new("client_id", clientId.Id),
                 new("client_secret", clientSecret.Secret),
                 new("redirect_uri", "urn:ietf:wg:oauth:2.0:oob"),
-                new("scope", "code"),
+                new("code", code),
                 new("grant_type", "authorization_code")
             };
             var content = new FormUrlEncodedContent(parameters);
@@ -100,6 +100,26 @@ namespace MastodonApi
                 await response.Content.ReadAsStreamAsync()))!;
 
             return new AccessToken(json.access_token);
+        }
+
+        public static async ValueTask<Account> GetAccountInformation(string hostName, AccessToken accessToken)
+        {
+            var uriBuilder = new UriBuilder() {Scheme = "https", Host = hostName, Path = "api/v1/accounts/verify_credentials"};
+
+            using var client = new HttpClient(s_httpClientHandler, false);
+            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {accessToken.Token}");
+
+            var response = await client.GetAsync(uriBuilder.Uri);
+
+            if (response.StatusCode != HttpStatusCode.OK)
+            {
+                throw new HttpResponseException(response.StatusCode, $"Unable to connect {uriBuilder.Uri}");
+            }
+
+            var account = (await JsonSerializer.DeserializeAsync<Account>(
+                await response.Content.ReadAsStreamAsync()))!;
+
+            return account;
         }
 
         record RegisterAppJson(string id, string name, string? website, string redirect_uri, string client_id,
