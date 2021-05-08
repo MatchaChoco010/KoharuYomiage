@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 using MastodonApi.Exceptions;
+using MastodonApi.Payloads.Entities;
 
 namespace MastodonApi
 {
@@ -24,7 +25,7 @@ namespace MastodonApi
                 new("client_name", "小春六花さんにTLを読み上げていただくアプリ"),
                 new("website", "https://github.com/MatchaChoco010/KoharuYomiage"),
                 new("redirect_uris", "urn:ietf:wg:oauth:2.0:oob"),
-                new("scopes", "read:statuses read:notifications")
+                new("scopes", "read:accounts read:statuses read:notifications")
             };
             var content = new FormUrlEncodedContent(parameters);
             var uriBuilder = new UriBuilder {Scheme = "https", Host = hostName, Path = "api/v1/apps"};
@@ -56,7 +57,7 @@ namespace MastodonApi
                 new("response_type", "code"),
                 new("client_id", clientId.Id),
                 new("redirect_uri", "urn:ietf:wg:oauth:2.0:oob"),
-                new("scope", "read:statuses read:notifications"),
+                new("scope", "read:accounts read:statuses read:notifications"),
             };
             var uriBuilder = new UriBuilder()
             {
@@ -68,13 +69,14 @@ namespace MastodonApi
             return uriBuilder.Uri;
         }
 
-        public static async ValueTask<AccessToken> AuthorizeWithCode(string hostName, ClientId clientId, ClientSecret clientSecret, string code)
+        public static async ValueTask<AccessToken> AuthorizeWithCode(string hostName, ClientId clientId,
+            ClientSecret clientSecret, string code)
         {
             if (Uri.CheckHostName(hostName) == UriHostNameType.Unknown)
             {
                 throw new ArgumentException("hostName must be host string");
             }
-            
+
             var parameters = new List<KeyValuePair<string, string>>()
             {
                 new("client_id", clientId.Id),
@@ -94,7 +96,7 @@ namespace MastodonApi
                 throw new HttpResponseException(response.StatusCode, $"Unable to connect {uriBuilder.Uri}");
             }
 
-            var json = (await JsonSerializer.DeserializeAsync<AccessTokenJson>(
+            var json = (await JsonSerializer.DeserializeAsync<Token>(
                 await response.Content.ReadAsStreamAsync()))!;
 
             return new AccessToken(json.access_token);
@@ -102,7 +104,5 @@ namespace MastodonApi
 
         record RegisterAppJson(string id, string name, string? website, string redirect_uri, string client_id,
             string client_secret, string vapid_key);
-
-        record AccessTokenJson(string access_token, string token_type, string scope, DateTime created_at);
     }
 }
