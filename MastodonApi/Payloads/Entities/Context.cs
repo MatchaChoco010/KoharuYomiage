@@ -2,5 +2,5 @@
 
 namespace MastodonApi.Payloads.Entities
 {
-    public record Context(List<Status> ancestors, List<Status> descendants);
+    public record Context(IReadOnlyCollection<Status> ancestors, IReadOnlyCollection<Status> descendants);
 }

@@ -7,6 +7,6 @@ namespace MastodonApi.Payloads.Entities
         bool sensitive, string spoiler_text, IReadOnlyList<Attachment> media_attachments, Application application,
         IReadOnlyList<Mention> mentions, IReadOnlyList<Tag> tags, IReadOnlyList<Emoji> emojis, uint rebloogs_count,
         uint favourites_count, uint replies_count, string? url, string? in_reply_to_id, string? in_reply_to_account_id,
-        Status? reblog, Poll? poll, Card? card, string? language, string? text, bool favourited, bool reblogged,
-        bool muted, bool bookmarked, bool pinned);
+        Status? reblog, Poll? poll, Card? card, string? language, string? text, bool? favourited, bool? reblogged,
+        bool? muted, bool? bookmarked, bool? pinned);
 }

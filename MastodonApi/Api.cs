@@ -5,7 +5,9 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 using MastodonApi.Exceptions;
+using MastodonApi.Payloads;
 using MastodonApi.Payloads.Entities;
+using MastodonApi.Stream;
 
 namespace MastodonApi
 {
@@ -120,6 +122,30 @@ namespace MastodonApi
                 await response.Content.ReadAsStreamAsync()))!;
 
             return account;
+        }
+
+        public static async ValueTask<Instance> GetInstanceInformation(string hostName)
+        {
+            var uriBuilder = new UriBuilder() {Scheme = "https", Host = hostName, Path = "api/v1/instance"};
+
+            using var client = new HttpClient(s_httpClientHandler, false);
+
+            var response = await client.GetAsync(uriBuilder.Uri);
+
+            if (response.StatusCode != HttpStatusCode.OK)
+            {
+                throw new HttpResponseException(response.StatusCode, $"Unable to connect {uriBuilder.Uri}");
+            }
+
+            var instance = (await JsonSerializer.DeserializeAsync<Instance>(
+                await response.Content.ReadAsStreamAsync()))!;
+
+            return instance;
+        }
+
+        public static IObservable<UserStreamPayload> GetUserStreamingObservable(string hostName, AccessToken accessToken)
+        {
+            return new UserStreamObservable(hostName, accessToken);
         }
 
         record RegisterAppJson(string id, string name, string? website, string redirect_uri, string client_id,

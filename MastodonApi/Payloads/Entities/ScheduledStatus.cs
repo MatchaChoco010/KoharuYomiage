@@ -4,6 +4,6 @@ using System.Text.Json.Serialization;
 namespace MastodonApi.Payloads.Entities
 {
     public record ScheduledStatus(string id, string scheduled_at,
-        [property: JsonExtensionData] Dictionary<string, object> _params,
+        [property: JsonPropertyName("param")] Dictionary<string, object> _params,
         IReadOnlyList<Attachment> media_attachments);
 }
