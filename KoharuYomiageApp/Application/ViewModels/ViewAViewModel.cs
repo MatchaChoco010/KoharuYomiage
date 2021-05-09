@@ -5,7 +5,7 @@ using Prism.Regions;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 
-namespace KoharuYomiageApp.Interfaces.ViewModels
+namespace KoharuYomiageApp.Application.ViewModels
 {
     public class ViewAViewModel : BindableBase, INavigationAware
     {

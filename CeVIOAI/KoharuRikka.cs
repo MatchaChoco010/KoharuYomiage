@@ -144,7 +144,7 @@ namespace CeVIOAI
         }
 
 
-        void IDisposable.Dispose()
+        public void Dispose()
         {
             var closeHostMethod =
                 _serviceControl2Type.GetMethod("CloseHost", BindingFlags.Static | BindingFlags.Public)!;

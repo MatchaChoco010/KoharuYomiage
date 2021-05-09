@@ -6,7 +6,7 @@ using Prism.Regions;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 
-namespace KoharuYomiageApp.Interfaces.ViewModels
+namespace KoharuYomiageApp.Application.ViewModels
 {
     public class MainWindowViewModel : BindableBase, IDestructible
     {
@@ -16,7 +16,7 @@ namespace KoharuYomiageApp.Interfaces.ViewModels
         public MainWindowViewModel(IRegionManager regionManager)
         {
             _regionManager = regionManager;
-            LoadedCommand.Subscribe(() => _regionManager.RequestNavigate("ContentRegion", nameof(ViewA)))
+            LoadedCommand.Subscribe(() => _regionManager.RequestNavigate("ContentRegion", nameof(Start)))
                 .AddTo(disposable);
         }
 
