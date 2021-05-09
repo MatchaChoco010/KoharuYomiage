@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Reactive.Disposables;
 using System.Windows.Media;
 using KoharuYomiageApp.Application.LoadTalker.Interfaces;
 using Prism.Mvvm;
 using Prism.Regions;
+using Prism.Services.Dialogs;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using SourceChord.FluentWPF;
@@ -16,11 +16,13 @@ namespace KoharuYomiageApp.Application.ViewModels
         readonly LoadTalkerController _controller;
         readonly CompositeDisposable _disposable = new();
         readonly LoadTalkerPresenter _presenter;
+        readonly IDialogService _dialogService;
 
-        public StartViewModel(LoadTalkerController controller, LoadTalkerPresenter presenter)
+        public StartViewModel(LoadTalkerController controller, LoadTalkerPresenter presenter, IDialogService dialogService)
         {
             _controller = controller;
             _presenter = presenter;
+            _dialogService = dialogService;
         }
 
         public ReactiveCommand LoadedCommand { get; } = new();
@@ -35,7 +37,7 @@ namespace KoharuYomiageApp.Application.ViewModels
         {
             StartLoading();
             LoadedCommand.Subscribe(_ => _controller.WindowLoaded()).AddTo(_disposable);
-            NavigateCommand.Subscribe(_ => Close.Value = true).AddTo(_disposable);
+            NavigateCommand.Subscribe(_ => ShowLoadErrorDialogs()).AddTo(_disposable);
             _presenter.OnLoadedTalker.Subscribe(_ => FinishLoading()).AddTo(_disposable);
         }
 
@@ -63,6 +65,13 @@ namespace KoharuYomiageApp.Application.ViewModels
             StartButtonIsEnabled.Value = true;
             StartButtonForeground.Value = Brushes.White;
             StartButtonBackground.Value = AccentColors.ImmersiveSystemAccentBrush;
+        }
+
+        void ShowLoadErrorDialogs()
+        {
+            _dialogService.ShowDialog("LoadTalkerErrorDialogContent");
+            _dialogService.ShowDialog("LoadTalkerLinkDialogContent");
+            Close.Value = true;
         }
     }
 }

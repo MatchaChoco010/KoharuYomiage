@@ -20,6 +20,9 @@ namespace KoharuYomiageApp
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
+            // DialogWindow
+            containerRegistry.RegisterDialogWindow<DialogWindow>();
+
             // Views
             containerRegistry.RegisterForNavigation<ViewA>();
             containerRegistry.RegisterForNavigation<ViewB>();
@@ -29,6 +32,8 @@ namespace KoharuYomiageApp
             containerRegistry.RegisterSingleton<ILoadTalkerInputBoundary, LoadTalkerInteractor>();
             containerRegistry.RegisterManySingleton<LoadTalkerPresenter>(typeof(ILoadTalkerOutputBoundary), typeof(LoadTalkerPresenter));
             containerRegistry.RegisterSingleton<LoadTalkerController>();
+            containerRegistry.RegisterDialog<LoadTalkerErrorDialogContent>();
+            containerRegistry.RegisterDialog<LoadTalkerLinkDialogContent>();
 
             // Infrastructures
             containerRegistry.RegisterSingleton<CeVIOAIService>();
