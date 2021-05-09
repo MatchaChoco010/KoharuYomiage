@@ -3,6 +3,6 @@
     public interface ILoadTalkerInputBoundary
     {
         void HandleLoadedWindow();
-        void HandleLoadedTalker();
+        void HandleLoadedTalker(LoadTalkerStatus status);
     }
 }

@@ -16,9 +16,14 @@ namespace KoharuYomiageApp.Application.LoadTalker.Interfaces
             _inputBoundary.HandleLoadedWindow();
         }
 
-        public void TalkerLoaded()
+        public void TalkerLoadedSuccess()
         {
-            _inputBoundary.HandleLoadedTalker();
+            _inputBoundary.HandleLoadedTalker(new LoadTalkerStatus.Success());
+        }
+
+        public void TalkerLoadedFailure()
+        {
+            _inputBoundary.HandleLoadedTalker(new LoadTalkerStatus.Failure());
         }
     }
 }

@@ -7,7 +7,6 @@ using Prism.Regions;
 using Prism.Services.Dialogs;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
-using SourceChord.FluentWPF;
 
 namespace KoharuYomiageApp.Application.ViewModels
 {
@@ -18,7 +17,8 @@ namespace KoharuYomiageApp.Application.ViewModels
         readonly LoadTalkerPresenter _presenter;
         readonly IDialogService _dialogService;
 
-        public StartViewModel(LoadTalkerController controller, LoadTalkerPresenter presenter, IDialogService dialogService)
+        public StartViewModel(LoadTalkerController controller, LoadTalkerPresenter presenter,
+            IDialogService dialogService)
         {
             _controller = controller;
             _presenter = presenter;
@@ -35,10 +35,16 @@ namespace KoharuYomiageApp.Application.ViewModels
 
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
-            StartLoading();
             LoadedCommand.Subscribe(_ => _controller.WindowLoaded()).AddTo(_disposable);
-            NavigateCommand.Subscribe(_ => ShowLoadErrorDialogs()).AddTo(_disposable);
-            _presenter.OnLoadedTalker.Subscribe(_ => FinishLoading()).AddTo(_disposable);
+            NavigateCommand.Subscribe(_ => navigationContext.NavigationService.RequestNavigate("ViewA"))
+                .AddTo(_disposable);
+
+            _presenter.StatusText.Subscribe(statusText => StatusText.Value = statusText).AddTo(_disposable);
+            _presenter.StartButtonIsEnabled.Subscribe(isEnabled => StartButtonIsEnabled.Value = isEnabled)
+                .AddTo(_disposable);
+            _presenter.StartButtonForeground.Subscribe(brush => StartButtonForeground.Value = brush).AddTo(_disposable);
+            _presenter.StartButtonBackground.Subscribe(brush => StartButtonBackground.Value = brush).AddTo(_disposable);
+            _presenter.OnFailureLoadTalker.Subscribe(_ => ShowLoadErrorDialogs()).AddTo(_disposable);
         }
 
         public bool IsNavigationTarget(NavigationContext navigationContext)
@@ -49,22 +55,6 @@ namespace KoharuYomiageApp.Application.ViewModels
         public void OnNavigatedFrom(NavigationContext navigationContext)
         {
             _disposable.Clear();
-        }
-
-        void StartLoading()
-        {
-            StatusText.Value = "CeVIO AI に接続しています...";
-            StartButtonIsEnabled.Value = false;
-            StartButtonForeground.Value = Brushes.Black;
-            StartButtonBackground.Value = Brushes.Gray;
-        }
-
-        void FinishLoading()
-        {
-            StatusText.Value = "CeVIO AI との接続が完了しました！";
-            StartButtonIsEnabled.Value = true;
-            StartButtonForeground.Value = Brushes.White;
-            StartButtonBackground.Value = AccentColors.ImmersiveSystemAccentBrush;
         }
 
         void ShowLoadErrorDialogs()

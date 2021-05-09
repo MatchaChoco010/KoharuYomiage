@@ -14,9 +14,17 @@
             _outputBoundary.CompleteLoadedWindow();
         }
 
-        public void HandleLoadedTalker()
+        public void HandleLoadedTalker(LoadTalkerStatus status)
         {
-            _outputBoundary.CompleteLoadedTalker();
+            switch (status)
+            {
+                case LoadTalkerStatus.Success:
+                    _outputBoundary.CompleteLoadedTalker();
+                    break;
+                case LoadTalkerStatus.Failure:
+                    _outputBoundary.FailureLoadTalker();
+                    break;
+            }
         }
     }
 }

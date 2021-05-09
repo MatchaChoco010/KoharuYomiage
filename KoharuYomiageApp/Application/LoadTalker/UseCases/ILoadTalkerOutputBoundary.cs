@@ -4,5 +4,6 @@
     {
         void CompleteLoadedWindow();
         void CompleteLoadedTalker();
+        void FailureLoadTalker();
     }
 }

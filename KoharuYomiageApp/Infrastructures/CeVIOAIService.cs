@@ -22,11 +22,11 @@ namespace KoharuYomiageApp.Infrastructures
                     try
                     {
                         await Task.Run(() => _rikka = new KoharuRikka());
-                        loadTalkerController.TalkerLoaded();
+                        loadTalkerController.TalkerLoadedSuccess();
                     }
                     catch (Exception e) when (e is DllNotFound or CastNotFound)
                     {
-                        // TODO
+                        loadTalkerController.TalkerLoadedFailure();
                     }
                 }).AddTo(_disposable);
         }
