@@ -1,11 +1,11 @@
 ﻿using System.Reactive.Disposables;
-using KoharuYomiageApp.Infrastructures.Views;
+using KoharuYomiageApp.Infrastructures.GUI.Views;
 using Prism.Mvvm;
 using Prism.Regions;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 
-namespace KoharuYomiageApp.Application.ViewModels
+namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
 {
     public class ViewAViewModel : BindableBase, INavigationAware
     {

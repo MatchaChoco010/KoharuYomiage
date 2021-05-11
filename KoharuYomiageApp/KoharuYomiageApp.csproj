@@ -33,6 +33,7 @@
 
   <ItemGroup>
     <Folder Include="Entities" />
+    <Folder Include="Infrastructures\GUI" />
   </ItemGroup>
 
 </Project>

@@ -5,7 +5,7 @@ using Prism.Services.Dialogs;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 
-namespace KoharuYomiageApp.Application.ViewModels
+namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
 {
     public class LoadTalkerErrorDialogContentViewModel : BindableBase, IDialogAware
     {

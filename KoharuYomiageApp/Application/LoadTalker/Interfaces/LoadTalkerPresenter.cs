@@ -15,7 +15,7 @@ namespace KoharuYomiageApp.Application.LoadTalker.Interfaces
 
         public IObservable<Unit> OnLoadedWindow => onLoadedWindow;
         public IObservable<Unit> OnFailureLoadTalker => onFailurLoadTalker;
-        public ReactivePropertySlim<string> StatusText { get; } = new( "CeVIO AI に接続しています...");
+        public ReactivePropertySlim<string> StatusText { get; } = new("CeVIO AI に接続しています...");
         public ReactivePropertySlim<bool> StartButtonIsEnabled { get; } = new(false);
         public ReactivePropertySlim<Brush> StartButtonForeground { get; } = new(Brushes.Black);
         public ReactivePropertySlim<Brush> StartButtonBackground { get; } = new(Brushes.Gray);

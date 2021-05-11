@@ -1,13 +1,10 @@
-﻿using System;
-using System.Reflection;
-using System.Windows;
+﻿using System.Windows;
 using KoharuYomiageApp.Application.LoadTalker.Interfaces;
 using KoharuYomiageApp.Application.LoadTalker.UseCases;
 using KoharuYomiageApp.Infrastructures;
-using KoharuYomiageApp.Infrastructures.Views;
+using KoharuYomiageApp.Infrastructures.GUI.Views;
 using Prism.DryIoc;
 using Prism.Ioc;
-using Prism.Mvvm;
 
 namespace KoharuYomiageApp
 {
@@ -30,7 +27,8 @@ namespace KoharuYomiageApp
 
             // LoadTalker UseCase
             containerRegistry.RegisterSingleton<ILoadTalkerInputBoundary, LoadTalkerInteractor>();
-            containerRegistry.RegisterManySingleton<LoadTalkerPresenter>(typeof(ILoadTalkerOutputBoundary), typeof(LoadTalkerPresenter));
+            containerRegistry.RegisterManySingleton<LoadTalkerPresenter>(typeof(ILoadTalkerOutputBoundary),
+                typeof(LoadTalkerPresenter));
             containerRegistry.RegisterSingleton<LoadTalkerController>();
             containerRegistry.RegisterDialog<LoadTalkerErrorDialogContent>();
             containerRegistry.RegisterDialog<LoadTalkerLinkDialogContent>();
@@ -44,19 +42,6 @@ namespace KoharuYomiageApp
         {
             base.OnExit(e);
             Container.GetContainer().Dispose();
-        }
-
-        protected override void ConfigureViewModelLocator()
-        {
-            base.ConfigureViewModelLocator();
-
-            ViewModelLocationProvider.SetDefaultViewTypeToViewModelTypeResolver(viewType =>
-            {
-                var viewName = viewType.Name;
-                var viewAssemblyName = viewType.GetTypeInfo().Assembly.FullName;
-                var viewModelName = $"KoharuYomiageApp.Application.ViewModels.{viewName}ViewModel, {viewAssemblyName}";
-                return Type.GetType(viewModelName);
-            });
         }
     }
 }

@@ -16,7 +16,8 @@ namespace KoharuYomiageApp.Infrastructures.Views.Behaviours
         }
 
         public static readonly DependencyProperty CloseProperty =
-            DependencyProperty.RegisterAttached("Close", typeof(bool), typeof(CloseWindowAttachedBehavior), new PropertyMetadata(false, OnCloseChanged));
+            DependencyProperty.RegisterAttached("Close", typeof(bool), typeof(CloseWindowAttachedBehavior),
+                new PropertyMetadata(false, OnCloseChanged));
 
         static void OnCloseChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {

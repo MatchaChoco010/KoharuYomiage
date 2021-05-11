@@ -2,7 +2,7 @@
 using Prism.Services.Dialogs;
 using SourceChord.FluentWPF;
 
-namespace KoharuYomiageApp.Infrastructures.Views
+namespace KoharuYomiageApp.Infrastructures.GUI.Views
 {
     public partial class DialogWindow : AcrylicWindow, IDialogWindow
     {
@@ -13,7 +13,7 @@ namespace KoharuYomiageApp.Infrastructures.Views
 
         void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            this.DragMove();
+            DragMove();
         }
 
         public IDialogResult? Result { get; set; }

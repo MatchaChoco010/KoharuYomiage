@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace KoharuYomiageApp.Infrastructures.Views
+namespace KoharuYomiageApp.Infrastructures.GUI.Views
 {
     public partial class LoadTalkerLinkDialogContent : UserControl
     {

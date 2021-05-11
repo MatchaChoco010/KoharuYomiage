@@ -1,4 +1,5 @@
 ﻿using System.Reactive.Disposables;
+using KoharuYomiageApp.Infrastructures.GUI.Views;
 using KoharuYomiageApp.Infrastructures.Views;
 using Prism.Mvvm;
 using Prism.Navigation;
@@ -6,7 +7,7 @@ using Prism.Regions;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 
-namespace KoharuYomiageApp.Application.ViewModels
+namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
 {
     public class MainWindowViewModel : BindableBase, IDestructible
     {

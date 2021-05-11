@@ -2,13 +2,14 @@
 using System.Reactive.Disposables;
 using System.Windows.Media;
 using KoharuYomiageApp.Application.LoadTalker.Interfaces;
+using KoharuYomiageApp.Infrastructures.GUI.Views;
 using Prism.Mvvm;
 using Prism.Regions;
 using Prism.Services.Dialogs;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 
-namespace KoharuYomiageApp.Application.ViewModels
+namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
 {
     public class StartViewModel : BindableBase, INavigationAware
     {
@@ -36,7 +37,7 @@ namespace KoharuYomiageApp.Application.ViewModels
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
             LoadedCommand.Subscribe(_ => _controller.WindowLoaded()).AddTo(_disposable);
-            NavigateCommand.Subscribe(_ => navigationContext.NavigationService.RequestNavigate("ViewA"))
+            NavigateCommand.Subscribe(_ => navigationContext.NavigationService.RequestNavigate(nameof(ViewA)))
                 .AddTo(_disposable);
 
             _presenter.StatusText.Subscribe(statusText => StatusText.Value = statusText).AddTo(_disposable);
@@ -59,8 +60,8 @@ namespace KoharuYomiageApp.Application.ViewModels
 
         void ShowLoadErrorDialogs()
         {
-            _dialogService.ShowDialog("LoadTalkerErrorDialogContent");
-            _dialogService.ShowDialog("LoadTalkerLinkDialogContent");
+            _dialogService.ShowDialog(nameof(LoadTalkerErrorDialogContent));
+            _dialogService.ShowDialog(nameof(LoadTalkerLinkDialogContent));
             Close.Value = true;
         }
     }

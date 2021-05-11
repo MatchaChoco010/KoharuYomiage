@@ -1,7 +1,7 @@
 ﻿using Prism.Mvvm;
 using Prism.Regions;
 
-namespace KoharuYomiageApp.Application.ViewModels
+namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
 {
     public class ViewBViewModel : BindableBase, INavigationAware
     {
