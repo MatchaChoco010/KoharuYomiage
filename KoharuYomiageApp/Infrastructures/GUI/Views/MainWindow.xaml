@@ -13,13 +13,13 @@
                   TintColor="{DynamicResource SystemChromeLowColor}"
                   TintOpacity="0.7"
                   NoiseOpacity="0"
-                  Height="450" Width="800">
+                  Height="450"
+                  Width="800"
+                  fw:PointerTracker.Enabled="True">
     <b:Interaction.Triggers>
         <b:EventTrigger EventName="Loaded">
             <b:InvokeCommandAction Command="{Binding LoadedCommand}" />
         </b:EventTrigger>
     </b:Interaction.Triggers>
-    <Grid fw:PointerTracker.Enabled="True">
-        <ContentControl prism:RegionManager.RegionName="ContentRegion" />
-    </Grid>
+    <ContentControl prism:RegionManager.RegionName="ContentRegion" />
 </fw:AcrylicWindow>

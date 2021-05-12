@@ -1,0 +1,57 @@
+﻿<UserControl x:Class="KoharuYomiageApp.Infrastructures.GUI.Views.SelectSNS"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:xf="clr-namespace:XamlFlair;assembly=XamlFlair.WPF"
+             xmlns:prism="http://prismlibrary.com/"
+             xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             xmlns:local="clr-namespace:KoharuYomiageApp.Infrastructures.GUI.Views"
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="400">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="6*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Button Grid.Column="0" Grid.ColumnSpan="2"
+                Style="{StaticResource ButtonRevealStyle}"
+                Background="Transparent"
+                FontFamily="Segoe MDL2 Assets"
+                FontSize="20"
+                Width="64"
+                Height="48"
+                Margin="16,32"
+                VerticalAlignment="Top"
+                HorizontalAlignment="Left"
+                Visibility="{Binding BackButtonVisibility.Value}"
+                Command="{Binding BackCommand}">
+            &#xE72B;
+        </Button>
+        <Grid Grid.Column="1">
+            <StackPanel VerticalAlignment="Center">
+                <Button Style="{StaticResource ButtonRoundAccentRevealStyle}"
+                        FontSize="16"
+                        Padding="32,4"
+                        VerticalAlignment="Center"
+                        xf:Animations.Primary="{xf:Animate BasedOn={StaticResource FadeInAndSlideFromRight}, Duration=1000}"
+                        Command="{Binding SelectMastodonCommand}">
+                    <StackPanel Orientation="Horizontal">
+                        <svgc:SvgViewbox Source="/Resources/mastodon-logo.svg"
+                                         Width="48"
+                                         Height="48"
+                                         HorizontalAlignment="Left"/>
+                        <TextBlock Margin="8"
+                                   VerticalAlignment="Center"
+                                   TextAlignment="Center">
+                            Mastodonでログイン
+                        </TextBlock>
+                    </StackPanel>
+                </Button>
+
+            </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl>

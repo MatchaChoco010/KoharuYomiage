@@ -37,7 +37,7 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
             LoadedCommand.Subscribe(_ => _controller.WindowLoaded()).AddTo(_disposable);
-            NavigateCommand.Subscribe(_ => navigationContext.NavigationService.RequestNavigate(nameof(ViewA)))
+            NavigateCommand.Subscribe(_ => navigationContext.NavigationService.RequestNavigate(nameof(SelectSNS)))
                 .AddTo(_disposable);
 
             _presenter.StatusText.Subscribe(statusText => StatusText.Value = statusText).AddTo(_disposable);
