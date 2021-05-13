@@ -18,15 +18,23 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
 
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
-            SelectMastodonCommand.Subscribe(() => BackButtonVisibility.Value = Visibility.Visible)
+            var isFirstLogin = navigationContext.Parameters["FirstLogin"] as bool? ?? false;
+            if (!isFirstLogin)
+            {
+                BackButtonVisibility.Value = Visibility.Visible;
+            }
+
+            SelectMastodonCommand
+                .Subscribe(() => navigationContext.NavigationService.RequestNavigate(nameof(MastodonLogin),
+                    new NavigationParameters {{"FirstLogin", isFirstLogin}}))
                 .AddTo(_disposable);
-            BackCommand.Subscribe(() => navigationContext.NavigationService.RequestNavigate(nameof(ViewA)))
+            BackCommand.Subscribe(() => { })
                 .AddTo(_disposable);
         }
 
         public bool IsNavigationTarget(NavigationContext navigationContext)
         {
-            return true;
+            return false;
         }
 
         public void OnNavigatedFrom(NavigationContext navigationContext)

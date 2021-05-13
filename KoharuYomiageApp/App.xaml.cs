@@ -27,6 +27,7 @@ namespace KoharuYomiageApp
             containerRegistry.RegisterForNavigation<ViewB>();
             containerRegistry.RegisterForNavigation<Start>();
             containerRegistry.RegisterForNavigation<SelectSNS>();
+            containerRegistry.RegisterForNavigation<MastodonLogin>();
 
             // LoadTalker Feature
             containerRegistry.RegisterSingleton<ILoadTalkerInputBoundary, LoadTalkerInteractor>();

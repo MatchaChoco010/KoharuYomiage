@@ -6,11 +6,11 @@
              xmlns:xf="clr-namespace:XamlFlair;assembly=XamlFlair.WPF"
              xmlns:prism="http://prismlibrary.com/"
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
-             xmlns:behaviours="clr-namespace:KoharuYomiageApp.Infrastructures.Views.Behaviours"
+             xmlns:attachedProperties="clr-namespace:KoharuYomiageApp.Infrastructures.GUI.Views.AttachedProperties"
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
-             behaviours:CloseWindowAttachedBehavior.Close="{Binding Close.Value}">
+             attachedProperties:CloseWindowAttachedBehavior.Close="{Binding Close.Value}">
     <b:Interaction.Triggers>
         <b:EventTrigger EventName="Loaded">
             <b:InvokeCommandAction Command="{Binding LoadedCommand}" />

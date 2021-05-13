@@ -5,9 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:xf="clr-namespace:XamlFlair;assembly=XamlFlair.WPF"
              xmlns:prism="http://prismlibrary.com/"
-             xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
+             xmlns:svg1="clr-namespace:SVGImage.SVG;assembly=DotNetProjects.SVGImage"
              prism:ViewModelLocator.AutoWireViewModel="True"
-             xmlns:local="clr-namespace:KoharuYomiageApp.Infrastructures.GUI.Views"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="400">
     <Grid>
@@ -39,10 +38,10 @@
                         xf:Animations.Primary="{xf:Animate BasedOn={StaticResource FadeInAndSlideFromRight}, Duration=1000}"
                         Command="{Binding SelectMastodonCommand}">
                     <StackPanel Orientation="Horizontal">
-                        <svgc:SvgViewbox Source="/Resources/mastodon-logo.svg"
-                                         Width="48"
-                                         Height="48"
-                                         HorizontalAlignment="Left"/>
+                        <svg1:SVGImage Source="/Resources/mastodon-logo.svg"
+                                       Width="48"
+                                       Height="48"
+                                       HorizontalAlignment="Left" />
                         <TextBlock Margin="8"
                                    VerticalAlignment="Center"
                                    TextAlignment="Center">

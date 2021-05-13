@@ -37,7 +37,9 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
             LoadedCommand.Subscribe(_ => _controller.WindowLoaded()).AddTo(_disposable);
-            NavigateCommand.Subscribe(_ => navigationContext.NavigationService.RequestNavigate(nameof(SelectSNS)))
+            NavigateCommand.Subscribe(_ =>
+                    navigationContext.NavigationService.RequestNavigate(nameof(SelectSNS),
+                        new NavigationParameters {{"FirstLogin", true}}))
                 .AddTo(_disposable);
 
             _presenter.StatusText.Subscribe(statusText => StatusText.Value = statusText).AddTo(_disposable);
@@ -50,7 +52,7 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
 
         public bool IsNavigationTarget(NavigationContext navigationContext)
         {
-            return true;
+            return false;
         }
 
         public void OnNavigatedFrom(NavigationContext navigationContext)

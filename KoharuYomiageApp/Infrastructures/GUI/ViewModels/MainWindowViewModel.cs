@@ -1,6 +1,5 @@
 ﻿using System.Reactive.Disposables;
 using KoharuYomiageApp.Infrastructures.GUI.Views;
-using KoharuYomiageApp.Infrastructures.Views;
 using Prism.Mvvm;
 using Prism.Navigation;
 using Prism.Regions;
