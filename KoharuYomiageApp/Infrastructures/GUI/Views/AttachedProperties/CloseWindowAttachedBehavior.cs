@@ -5,6 +5,10 @@ namespace KoharuYomiageApp.Infrastructures.GUI.Views.AttachedProperties
 {
     public class CloseWindowAttachedBehavior
     {
+        public static readonly DependencyProperty CloseProperty =
+            DependencyProperty.RegisterAttached("Close", typeof(bool), typeof(CloseWindowAttachedBehavior),
+                new PropertyMetadata(false, OnCloseChanged));
+
         public static bool GetClose(DependencyObject obj)
         {
             return (bool)obj.GetValue(CloseProperty);
@@ -14,10 +18,6 @@ namespace KoharuYomiageApp.Infrastructures.GUI.Views.AttachedProperties
         {
             obj.SetValue(CloseProperty, value);
         }
-
-        public static readonly DependencyProperty CloseProperty =
-            DependencyProperty.RegisterAttached("Close", typeof(bool), typeof(CloseWindowAttachedBehavior),
-                new PropertyMetadata(false, OnCloseChanged));
 
         static void OnCloseChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {

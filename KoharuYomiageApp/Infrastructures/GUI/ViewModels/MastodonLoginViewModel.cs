@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Reactive.Disposables;
-using System.Text.RegularExpressions;
+using KoharuYomiageApp.Application.AddMastodonAccount.Interfaces;
 using KoharuYomiageApp.Infrastructures.GUI.Views;
 using Prism.Mvvm;
 using Prism.Regions;
+using Prism.Services.Dialogs;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 
@@ -12,9 +12,23 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
 {
     public class MastodonLoginViewModel : BindableBase, INavigationAware
     {
+        readonly IDialogService _dialogService;
         readonly CompositeDisposable _disposable = new();
+        readonly LoginMastodonAccountController _loginMastodonAccountController;
+        readonly ShowAuthUrlPresenter _showAuthUrlPresenter;
+        readonly ShowRegisterClientErrorPresenter _showRegisterClientErrorPresenter;
 
-        public ReactivePropertySlim<string> AccountText { get; } = new("");
+        public MastodonLoginViewModel(LoginMastodonAccountController loginMastodonAccountController,
+            ShowRegisterClientErrorPresenter showRegisterClientErrorPresenter,
+            ShowAuthUrlPresenter showAuthUrlPresenter, IDialogService dialogService)
+        {
+            _loginMastodonAccountController = loginMastodonAccountController;
+            _showRegisterClientErrorPresenter = showRegisterClientErrorPresenter;
+            _showAuthUrlPresenter = showAuthUrlPresenter;
+            _dialogService = dialogService;
+        }
+
+        public ReactivePropertySlim<string> InstanceName { get; } = new("");
         public ReactivePropertySlim<bool> LoginEnabled { get; } = new();
         public ReactiveCommand LoginCommand { get; } = new();
         public ReactiveCommand BackCommand { get; } = new();
@@ -23,13 +37,30 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
         {
             var isFirstLogin = navigationContext.Parameters["FirstLogin"] as bool? ?? false;
 
-            LoginCommand.Subscribe(() => { })
+            LoginCommand.Subscribe(_ =>
+                {
+                    LoginEnabled.Value = false;
+                    _loginMastodonAccountController.LoginMastodonAccount(InstanceName.Value);
+                })
                 .AddTo(_disposable);
-            BackCommand.Subscribe(() =>
+            BackCommand.Subscribe(_ =>
                     navigationContext.NavigationService.RequestNavigate(nameof(SelectSNS),
                         new NavigationParameters {{"FirstLogin", isFirstLogin}}))
                 .AddTo(_disposable);
-            AccountText.Subscribe(text => LoginEnabled.Value = IsAccountText(text)).AddTo(_disposable);
+            InstanceName.Subscribe(text => LoginEnabled.Value = IsInstanceName(text)).AddTo(_disposable);
+
+            _showRegisterClientErrorPresenter.OnShowRegisterClientError
+                .Subscribe(_ =>
+                {
+                    _dialogService.ShowDialog(nameof(RegisterClientErrorDialogContent));
+                    LoginEnabled.Value = true;
+                })
+                .AddTo(_disposable);
+            _showAuthUrlPresenter.OnShowAuthUrl
+                .Subscribe(authUrl =>
+                    navigationContext.NavigationService.RequestNavigate(nameof(MastodonAuthCode),
+                        new NavigationParameters {{"AuthUrl", authUrl}}))
+                .AddTo(_disposable);
         }
 
         public bool IsNavigationTarget(NavigationContext navigationContext)
@@ -42,9 +73,9 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
             _disposable.Clear();
         }
 
-        bool IsAccountText(string accountText)
+        static bool IsInstanceName(string accountText)
         {
-            return Regex.IsMatch(accountText, @"[^@]+@[\w\-\._]+\.[A-Za-z]+$");
+            return Uri.CheckHostName(accountText) is not UriHostNameType.Unknown;
         }
     }
 }

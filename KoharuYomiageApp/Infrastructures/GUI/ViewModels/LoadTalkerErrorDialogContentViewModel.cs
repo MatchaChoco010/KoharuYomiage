@@ -11,16 +11,16 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
     {
         readonly CompositeDisposable _disposable = new();
 
-        public event Action<IDialogResult>? RequestClose;
-
-        public string Title => "";
-
-        public ReactiveCommand OkCommand { get; } = new();
-
         public LoadTalkerErrorDialogContentViewModel()
         {
             OkCommand.Subscribe(_ => RequestClose?.Invoke(new DialogResult(ButtonResult.OK))).AddTo(_disposable);
         }
+
+        public ReactiveCommand OkCommand { get; } = new();
+
+        public event Action<IDialogResult>? RequestClose;
+
+        public string Title => "";
 
         public bool CanCloseDialog()
         {

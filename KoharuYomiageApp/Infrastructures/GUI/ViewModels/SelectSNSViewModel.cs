@@ -1,4 +1,5 @@
-﻿using System.Reactive.Disposables;
+﻿using System;
+using System.Reactive.Disposables;
 using System.Windows;
 using KoharuYomiageApp.Infrastructures.GUI.Views;
 using Prism.Mvvm;
@@ -25,10 +26,10 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
             }
 
             SelectMastodonCommand
-                .Subscribe(() => navigationContext.NavigationService.RequestNavigate(nameof(MastodonLogin),
+                .Subscribe(_ => navigationContext.NavigationService.RequestNavigate(nameof(MastodonLogin),
                     new NavigationParameters {{"FirstLogin", isFirstLogin}}))
                 .AddTo(_disposable);
-            BackCommand.Subscribe(() => { })
+            BackCommand.Subscribe(_ => { })
                 .AddTo(_disposable);
         }
 

@@ -14,9 +14,9 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
     public class StartViewModel : BindableBase, INavigationAware
     {
         readonly LoadTalkerController _controller;
+        readonly IDialogService _dialogService;
         readonly CompositeDisposable _disposable = new();
         readonly LoadTalkerPresenter _presenter;
-        readonly IDialogService _dialogService;
 
         public StartViewModel(LoadTalkerController controller, LoadTalkerPresenter presenter,
             IDialogService dialogService)

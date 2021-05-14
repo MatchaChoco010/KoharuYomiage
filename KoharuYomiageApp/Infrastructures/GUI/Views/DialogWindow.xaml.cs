@@ -11,11 +11,11 @@ namespace KoharuYomiageApp.Infrastructures.GUI.Views
             InitializeComponent();
         }
 
+        public IDialogResult? Result { get; set; }
+
         void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             DragMove();
         }
-
-        public IDialogResult? Result { get; set; }
     }
 }

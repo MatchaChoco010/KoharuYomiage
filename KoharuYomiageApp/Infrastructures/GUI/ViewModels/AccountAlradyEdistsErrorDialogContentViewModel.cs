@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Reactive.Disposables;
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
@@ -8,18 +7,16 @@ using Reactive.Bindings.Extensions;
 
 namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
 {
-    public class LoadTalkerLinkDialogContentViewModel : BindableBase, IDialogAware
+    public class AccountAlradyEdistsErrorDialogContentViewModel : BindableBase, IDialogAware
     {
         readonly CompositeDisposable _disposable = new();
 
-        public LoadTalkerLinkDialogContentViewModel()
+        public AccountAlradyEdistsErrorDialogContentViewModel()
         {
             OkCommand.Subscribe(_ => RequestClose?.Invoke(new DialogResult(ButtonResult.OK))).AddTo(_disposable);
-            LinkCommand.Subscribe(uri => Process.Start(uri.ToString())).AddTo(_disposable);
         }
 
         public ReactiveCommand OkCommand { get; } = new();
-        public ReactiveCommand<Uri> LinkCommand { get; } = new();
 
         public event Action<IDialogResult>? RequestClose;
 

@@ -33,8 +33,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Application\AddAcount" />
-    <Folder Include="Entities" />
     <Folder Include="Infrastructures\GUI" />
   </ItemGroup>
 
