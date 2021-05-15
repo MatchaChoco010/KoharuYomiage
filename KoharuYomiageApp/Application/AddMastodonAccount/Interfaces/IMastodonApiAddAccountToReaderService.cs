@@ -2,6 +2,6 @@
 {
     public interface IMastodonApiAddAccountToReaderService
     {
-        void AddAccountToReader(string accountIdentifier, string instance, string accessToken);
+        void AddAccountToReader(string accountIdentifier, string username, string instance, string accessToken);
     }
 }

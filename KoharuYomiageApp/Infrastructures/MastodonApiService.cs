@@ -1,21 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using KoharuYomiageApp.Application.AddMastodonAccount.Interfaces;
+using KoharuYomiageApp.Application.AddMastodonTimelineItem.Interfaces;
+using KoharuYomiageApp.Application.AddMastodonTimelineItem.Interfaces.DataObjects;
 using MastodonApi;
-using IMastodonApiAddAccountToReaderService =
-    KoharuYomiageApp.Application.WindowLoaded.Interfaces.IMastodonApiAddAccountToReaderService;
+using MastodonApi.Payloads;
 
 namespace KoharuYomiageApp.Infrastructures
 {
-    public class MastodonApiService : IMastodonApiAddAccountToReaderService, IMastodonApiRegisterClientService,
+    public class MastodonApiService : Application.WindowLoaded.Interfaces.IMastodonApiAddAccountToReaderService,
+        IMastodonApiRegisterClientService,
         IMastodonApiAuthorizeAccountWithCodeService,
         IMastodonApiGetAccountInfoService,
-        Application.AddMastodonAccount.Interfaces.IMastodonApiAddAccountToReaderService
+        IMastodonApiAddAccountToReaderService
     {
+        readonly AddMastodonSensitiveStatusController _addMastodonSensitiveStatusController;
+        readonly AddMastodonStatusController _addMastodonStatusController;
         readonly Dictionary<string, IDisposable> _connections = new();
 
-        public void AddAccountToReader(string accountIdentifier, string instance, string accessToken)
+        public MastodonApiService(AddMastodonStatusController addMastodonStatusController,
+            AddMastodonSensitiveStatusController addMastodonSensitiveStatusController)
+        {
+            _addMastodonStatusController = addMastodonStatusController;
+            _addMastodonSensitiveStatusController = addMastodonSensitiveStatusController;
+        }
+
+        public void AddAccountToReader(string accountIdentifier, string username, string instance, string accessToken)
         {
             if (_connections.ContainsKey(accountIdentifier))
             {
@@ -25,7 +37,33 @@ namespace KoharuYomiageApp.Infrastructures
 
             var disposable =
                 Api.GetUserStreamingObservable(instance, new AccessToken(accessToken))
-                    .Subscribe(_ => { });
+                    .Subscribe(item =>
+                    {
+                        switch (item)
+                        {
+                            case UserStreamPayload.Status(var status):
+                                if (status.sensitive)
+                                {
+                                    _addMastodonSensitiveStatusController.AddMastodonSensitiveStatus(
+                                        new MastodonSensitiveStatusInputData(username, instance,
+                                            status.account.display_name, status.account.username, status.spoiler_text,
+                                            status.content, status.muted ?? false,
+                                            status.media_attachments.Select(media => media.description ?? "")));
+                                }
+                                else
+                                {
+                                    _addMastodonStatusController.AddMastodonStatus(new MastodonStatusInputData(username,
+                                        instance, status.account.display_name, status.account.username, status.content,
+                                        status.muted ?? false,
+                                        status.media_attachments.Select(media => media.description ?? "")));
+                                }
+
+                                break;
+                            case UserStreamPayload.Notification(var notification):
+                                // TODO
+                                break;
+                        }
+                    });
             _connections.Add(accountIdentifier, disposable);
         }
 

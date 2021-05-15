@@ -90,7 +90,7 @@ namespace KoharuYomiageApp.Application.AddMastodonAccount.UseCases
             await _mastodonAccountRepository.SaveMastodonAccount(account);
 
             _addMastodonAccountToReader.AddMastodonAccountToReader(new AddReaderInfo(account.AccountIdentifier.Value,
-                account.Instance.Value, account.AccessToken.Token));
+                account.Username.Value, account.Instance.Value, account.AccessToken.Token));
 
             _finishAuthorizeMastodonAccount.FinishAuthorizeMastodonAccount();
         }

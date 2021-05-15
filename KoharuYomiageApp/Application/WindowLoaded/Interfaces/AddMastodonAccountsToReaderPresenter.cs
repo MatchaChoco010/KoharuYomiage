@@ -14,7 +14,8 @@ namespace KoharuYomiageApp.Application.WindowLoaded.Interfaces
 
         public void AddMastodonAccountToReader(AddReaderInfo info)
         {
-            _addAccountToReaderService.AddAccountToReader(info.AccountIdentifier, info.Instance, info.AccessToken);
+            _addAccountToReaderService.AddAccountToReader(info.AccountIdentifier, info.Username, info.Instance,
+                info.AccessToken);
         }
     }
 }

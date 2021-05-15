@@ -1,6 +1,8 @@
 ﻿using System.Windows;
 using KoharuYomiageApp.Application.AddMastodonAccount.Interfaces;
 using KoharuYomiageApp.Application.AddMastodonAccount.UseCases;
+using KoharuYomiageApp.Application.AddMastodonTimelineItem.Interfaces;
+using KoharuYomiageApp.Application.AddMastodonTimelineItem.UseCases;
 using KoharuYomiageApp.Application.Repositories.Interfaces;
 using KoharuYomiageApp.Application.Repositories.UseCases;
 using KoharuYomiageApp.Application.WindowLoaded.Interfaces;
@@ -85,11 +87,17 @@ namespace KoharuYomiageApp
             containerRegistry.RegisterManySingleton<FinishAuthorizeMastodonAccountPresenter>(
                 typeof(IFinishAuthorizeMastodonAccount),
                 typeof(FinishAuthorizeMastodonAccountPresenter));
+            // AddMastodonTimelineItem
+            containerRegistry.RegisterSingleton<IMastodonStatusReceiver, MastodonStatusReceiver>();
+            containerRegistry.RegisterSingleton<AddMastodonStatusController>();
+            containerRegistry.RegisterSingleton<IMastodonSensitiveStatusReceiver, MastodonSensitiveStatusReceiver>();
+            containerRegistry.RegisterSingleton<AddMastodonSensitiveStatusController>();
             // Repositories
             containerRegistry.RegisterSingleton<MastodonAccountRepository>();
             containerRegistry.RegisterSingleton<IMastodonAccountGateway, MastodonAccountGateway>();
             containerRegistry.RegisterSingleton<MastodonClientRepository>();
             containerRegistry.RegisterSingleton<IMastodonClientGateway, MastodonClientGateway>();
+            containerRegistry.RegisterSingleton<ReadingTextContainerRepository>();
 
             // Infrastructures
             // CeVIOAI

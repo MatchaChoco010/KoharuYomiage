@@ -35,8 +35,8 @@ namespace KoharuYomiageApp.Application.WindowLoaded.UseCases
                 foreach (var account in mastodonAccounts)
                 {
                     _addMastodonAccountToReader.AddMastodonAccountToReader(
-                        new AddReaderInfo(account.AccountIdentifier.Value, account.Instance.Value,
-                            account.AccessToken.Token));
+                        new AddReaderInfo(account.AccountIdentifier.Value, account.Username.Value,
+                            account.Instance.Value, account.AccessToken.Token));
                 }
 
                 _startApp.StartApp();
