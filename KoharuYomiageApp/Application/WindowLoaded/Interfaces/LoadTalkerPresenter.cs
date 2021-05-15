@@ -12,7 +12,7 @@ namespace KoharuYomiageApp.Application.WindowLoaded.Interfaces
             _ceVioAi = ceVioAi;
         }
 
-        public async ValueTask LoadTalker()
+        public async Task LoadTalker()
         {
             await _ceVioAi.LoadTalker();
         }

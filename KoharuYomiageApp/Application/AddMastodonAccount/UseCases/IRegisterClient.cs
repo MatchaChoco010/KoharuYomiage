@@ -5,6 +5,6 @@ namespace KoharuYomiageApp.Application.AddMastodonAccount.UseCases
 {
     public interface IRegisterClient
     {
-        ValueTask<ClientInfo> RegisterClient(LoginInfo loginInfo);
+        Task<ClientInfo> RegisterClient(LoginInfo loginInfo);
     }
 }

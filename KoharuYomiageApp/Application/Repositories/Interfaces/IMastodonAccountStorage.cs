@@ -5,8 +5,8 @@ namespace KoharuYomiageApp.Application.Repositories.Interfaces
 {
     public interface IMastodonAccountStorage
     {
-        ValueTask<MastodonAccountData?> FindMastodonAccountData(string identifier);
-        ValueTask SaveMastodonAccountData(MastodonAccountData accountData);
-        ValueTask<IEnumerable<MastodonAccountData>> GetMastodonAccountData();
+        Task<MastodonAccountData?> FindMastodonAccountData(string identifier);
+        Task SaveMastodonAccountData(MastodonAccountData accountData);
+        Task<IEnumerable<MastodonAccountData>> GetMastodonAccountData();
     }
 }

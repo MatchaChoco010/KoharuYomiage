@@ -4,6 +4,6 @@ namespace KoharuYomiageApp.Application.WindowLoaded.Interfaces
 {
     public interface ICeVIOAILoadTalkerService
     {
-        ValueTask LoadTalker();
+        Task LoadTalker();
     }
 }

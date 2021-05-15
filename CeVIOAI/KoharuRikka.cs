@@ -152,7 +152,7 @@ namespace CeVIOAI
             _tagger.Dispose();
         }
 
-        async ValueTask RawSpeak(string text, CancellationToken cancellationToken = new())
+        async Task RawSpeak(string text, CancellationToken cancellationToken = new())
         {
             try
             {
@@ -168,7 +168,7 @@ namespace CeVIOAI
             }
         }
 
-        public async ValueTask Speak(string text, CancellationToken cancellationToken = new())
+        public async Task Speak(string text, CancellationToken cancellationToken = new())
         {
             foreach (var line in text.Split('\n'))
             {

@@ -10,8 +10,8 @@ namespace KoharuYomiageApp.Application.Repositories.UseCases
         MastodonClient CreateMastodonClient(Instance instance, MastodonClientId clientId,
             MastodonClientSecret clientSecret);
 
-        ValueTask<MastodonClient?> FindMastodonClient(Instance instance);
+        Task<MastodonClient?> FindMastodonClient(Instance instance);
 
-        ValueTask SaveMastodonClient(MastodonClient mastodonClient);
+        Task SaveMastodonClient(MastodonClient mastodonClient);
     }
 }

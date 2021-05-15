@@ -13,7 +13,7 @@ namespace KoharuYomiageApp.Application.AddMastodonAccount.Interfaces
             _getAccountInfoService = getAccountInfoService;
         }
 
-        public async ValueTask<AccountInfo> GetAccountInfo(AccessInfo accessInfo)
+        public async Task<AccountInfo> GetAccountInfo(AccessInfo accessInfo)
         {
             var (username, iconUrl) =
                 await _getAccountInfoService.GetAccountInfo(accessInfo.instance, accessInfo.Token);

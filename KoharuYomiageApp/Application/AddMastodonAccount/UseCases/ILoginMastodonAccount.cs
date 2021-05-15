@@ -5,6 +5,6 @@ namespace KoharuYomiageApp.Application.AddMastodonAccount.UseCases
 {
     public interface ILoginMastodonAccount
     {
-        ValueTask Login(LoginInfo loginInfo);
+        Task Login(LoginInfo loginInfo);
     }
 }

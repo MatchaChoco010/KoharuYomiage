@@ -14,7 +14,7 @@ namespace KoharuYomiageApp.Application.AddMastodonAccount.Interfaces
             _authorizeAccountWithCodeService = authorizeAccountWithCodeService;
         }
 
-        public async ValueTask<AccessInfo> AuthorizeMastodonAccountWithCode(AuthorizationInfo authorizationInfo)
+        public async Task<AccessInfo> AuthorizeMastodonAccountWithCode(AuthorizationInfo authorizationInfo)
         {
             var accessToken =
                 await _authorizeAccountWithCodeService.AuthorizeWithCode(authorizationInfo.Instance,

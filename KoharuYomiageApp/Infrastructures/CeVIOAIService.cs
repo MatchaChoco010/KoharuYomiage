@@ -14,7 +14,7 @@ namespace KoharuYomiageApp.Infrastructures
 
         KoharuRikka? _rikka;
 
-        public async ValueTask LoadTalker()
+        public async Task LoadTalker()
         {
             await Task.Run(() =>
             {

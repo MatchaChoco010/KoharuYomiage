@@ -15,7 +15,7 @@ namespace MastodonApi
     {
         static readonly HttpClientHandler s_httpClientHandler = new();
 
-        public static async ValueTask<(ClientId, ClientSecret)> RegisterApp(string hostName)
+        public static async Task<(ClientId, ClientSecret)> RegisterApp(string hostName)
         {
             if (Uri.CheckHostName(hostName) == UriHostNameType.Unknown)
             {
@@ -46,7 +46,7 @@ namespace MastodonApi
             return (new ClientId(json.client_id), new ClientSecret(json.client_secret));
         }
 
-        public static async ValueTask<Uri> GetAuthorizeUri(string hostName, ClientId clientId)
+        public static async Task<Uri> GetAuthorizeUri(string hostName, ClientId clientId)
         {
             if (Uri.CheckHostName(hostName) == UriHostNameType.Unknown)
             {
@@ -71,7 +71,7 @@ namespace MastodonApi
             return uriBuilder.Uri;
         }
 
-        public static async ValueTask<AccessToken> AuthorizeWithCode(string hostName, ClientId clientId,
+        public static async Task<AccessToken> AuthorizeWithCode(string hostName, ClientId clientId,
             ClientSecret clientSecret, string code)
         {
             if (Uri.CheckHostName(hostName) == UriHostNameType.Unknown)
@@ -104,7 +104,7 @@ namespace MastodonApi
             return new AccessToken(json.access_token);
         }
 
-        public static async ValueTask<Account> GetAccountInformation(string hostName, AccessToken accessToken)
+        public static async Task<Account> GetAccountInformation(string hostName, AccessToken accessToken)
         {
             var uriBuilder = new UriBuilder
             {
@@ -127,7 +127,7 @@ namespace MastodonApi
             return account;
         }
 
-        public static async ValueTask<Instance> GetInstanceInformation(string hostName)
+        public static async Task<Instance> GetInstanceInformation(string hostName)
         {
             var uriBuilder = new UriBuilder {Scheme = "https", Host = hostName, Path = "api/v1/instance"};
 

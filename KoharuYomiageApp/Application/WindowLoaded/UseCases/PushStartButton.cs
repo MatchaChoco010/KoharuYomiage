@@ -20,7 +20,7 @@ namespace KoharuYomiageApp.Application.WindowLoaded.UseCases
             _startApp = startApp;
         }
 
-        public async ValueTask PushStartButton()
+        public async Task PushStartButton()
         {
             var mastodonAccounts = (await _mastodonAccountRepository.GetMastodonAccounts()).ToArray();
 

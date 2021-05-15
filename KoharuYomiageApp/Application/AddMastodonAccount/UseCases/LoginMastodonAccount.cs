@@ -23,7 +23,7 @@ namespace KoharuYomiageApp.Application.AddMastodonAccount.UseCases
             _showRegisterClientError = showRegisterClientError;
         }
 
-        public async ValueTask Login(LoginInfo loginInfo)
+        public async Task Login(LoginInfo loginInfo)
         {
             var instance = new Instance(loginInfo.Instance);
 

@@ -37,7 +37,7 @@ namespace KoharuYomiageApp.Application.AddMastodonAccount.UseCases
             _finishAuthorizeMastodonAccount = finishAuthorizeMastodonAccount;
         }
 
-        public async ValueTask Authorize(InstanceAndAuthenticationCode instanceAndAuthentiacationCode)
+        public async Task Authorize(InstanceAndAuthenticationCode instanceAndAuthentiacationCode)
         {
             var instance = new Instance(instanceAndAuthentiacationCode.Instance);
 

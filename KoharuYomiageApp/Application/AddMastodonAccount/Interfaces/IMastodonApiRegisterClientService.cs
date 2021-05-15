@@ -4,6 +4,6 @@ namespace KoharuYomiageApp.Application.AddMastodonAccount.Interfaces
 {
     public interface IMastodonApiRegisterClientService
     {
-        ValueTask<(string, string)> RegisterClient(string instance);
+        Task<(string, string)> RegisterClient(string instance);
     }
 }

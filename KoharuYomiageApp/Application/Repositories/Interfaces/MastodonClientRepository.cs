@@ -21,7 +21,7 @@ namespace KoharuYomiageApp.Application.Repositories.Interfaces
             return new(instance, clientId, clientSecret);
         }
 
-        public async ValueTask<MastodonClient?> FindMastodonClient(Instance instance)
+        public async Task<MastodonClient?> FindMastodonClient(Instance instance)
         {
             var data = await _storage.FindMastodonClientData(instance.Value);
             if (data is not null)
@@ -33,7 +33,7 @@ namespace KoharuYomiageApp.Application.Repositories.Interfaces
             return null;
         }
 
-        public async ValueTask SaveMastodonClient(MastodonClient mastodonClient)
+        public async Task SaveMastodonClient(MastodonClient mastodonClient)
         {
             await _storage.SaveMastodonClientData(new MastodonClientData(mastodonClient.Instance.Value,
                 mastodonClient.ClientId.Value, mastodonClient.ClientSecret.Value));

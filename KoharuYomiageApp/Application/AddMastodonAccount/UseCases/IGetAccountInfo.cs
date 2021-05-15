@@ -5,6 +5,6 @@ namespace KoharuYomiageApp.Application.AddMastodonAccount.UseCases
 {
     public interface IGetAccountInfo
     {
-        ValueTask<AccountInfo> GetAccountInfo(AccessInfo accessInfo);
+        Task<AccountInfo> GetAccountInfo(AccessInfo accessInfo);
     }
 }

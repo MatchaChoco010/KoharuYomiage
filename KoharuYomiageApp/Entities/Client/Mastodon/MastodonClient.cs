@@ -19,7 +19,7 @@ namespace KoharuYomiageApp.Entities.Client.Mastodon
         public MastodonClientId ClientId { get; init; }
         public MastodonClientSecret ClientSecret { get; init; }
 
-        public async ValueTask<Uri> GetAuthorizeUri()
+        public async Task<Uri> GetAuthorizeUri()
         {
             var parameters = new List<KeyValuePair<string, string>>
             {

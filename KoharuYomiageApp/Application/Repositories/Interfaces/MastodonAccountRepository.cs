@@ -17,7 +17,7 @@ namespace KoharuYomiageApp.Application.Repositories.Interfaces
             _storage = storage;
         }
 
-        public async ValueTask<MastodonAccount?> FindMastodonAccount(AccountIdentifier identigier)
+        public async Task<MastodonAccount?> FindMastodonAccount(AccountIdentifier identigier)
         {
             var accountData = await _storage.FindMastodonAccountData(identigier.Value);
             if (accountData is not null)
@@ -36,14 +36,14 @@ namespace KoharuYomiageApp.Application.Repositories.Interfaces
             return new(username, instance, accessToken, iconUrl);
         }
 
-        public async ValueTask<IEnumerable<MastodonAccount>> GetMastodonAccounts()
+        public async Task<IEnumerable<MastodonAccount>> GetMastodonAccounts()
         {
             var data = await _storage.GetMastodonAccountData();
             return data.Select(d => new MastodonAccount(new Username(d.Username), new Instance(d.Instance),
                 new MastodonAccessToken(d.AccessToken), new MastodonAccountIconUrl(d.IconUrl)));
         }
 
-        public async ValueTask SaveMastodonAccount(MastodonAccount account)
+        public async Task SaveMastodonAccount(MastodonAccount account)
         {
             await _storage.SaveMastodonAccountData(new MastodonAccountData(account.Username.Value,
                 account.Instance.Value,

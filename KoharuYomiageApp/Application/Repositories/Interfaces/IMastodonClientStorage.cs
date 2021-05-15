@@ -4,7 +4,7 @@ namespace KoharuYomiageApp.Application.Repositories.Interfaces
 {
     public interface IMastodonClientStorage
     {
-        ValueTask<MastodonClientData?> FindMastodonClientData(string instance);
-        ValueTask SaveMastodonClientData(MastodonClientData clientData);
+        Task<MastodonClientData?> FindMastodonClientData(string instance);
+        Task SaveMastodonClientData(MastodonClientData clientData);
     }
 }

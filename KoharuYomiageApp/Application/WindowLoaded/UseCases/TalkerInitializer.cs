@@ -15,7 +15,7 @@ namespace KoharuYomiageApp.Application.WindowLoaded.UseCases
             _finishLoadTalker = finishLoadTalker;
         }
 
-        public async ValueTask WindowLoaded()
+        public async Task WindowLoaded()
         {
             try
             {

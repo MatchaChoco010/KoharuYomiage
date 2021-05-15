@@ -13,7 +13,7 @@ namespace KoharuYomiageApp.Application.AddMastodonAccount.Interfaces
             _mastodonApi = mastodonApi;
         }
 
-        public async ValueTask<ClientInfo> RegisterClient(LoginInfo loginInfo)
+        public async Task<ClientInfo> RegisterClient(LoginInfo loginInfo)
         {
             var (id, secret) = await _mastodonApi.RegisterClient(loginInfo.Instance);
             return new ClientInfo(id, secret);

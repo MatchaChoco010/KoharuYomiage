@@ -5,6 +5,6 @@ namespace KoharuYomiageApp.Application.AddMastodonAccount.UseCases
 {
     public interface IAuthorizeMastodonAccount
     {
-        ValueTask Authorize(InstanceAndAuthenticationCode instanceAndAuthenticationCode);
+        Task Authorize(InstanceAndAuthenticationCode instanceAndAuthenticationCode);
     }
 }

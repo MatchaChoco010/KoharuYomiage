@@ -19,13 +19,13 @@ namespace KoharuYomiageApp.Infrastructures.JsonStorage
             }
         }
 
-        public async ValueTask<MastodonAccountData?> FindMastodonAccountData(string identifier)
+        public async Task<MastodonAccountData?> FindMastodonAccountData(string identifier)
         {
             var storage = await GetOrCreateSettings();
             return storage.MastodonAccountData.Find(data => data.Username + "@" + data.Instance == identifier);
         }
 
-        public async ValueTask SaveMastodonAccountData(MastodonAccountData accountData)
+        public async Task SaveMastodonAccountData(MastodonAccountData accountData)
         {
             var storage = await GetOrCreateSettings();
 
@@ -43,19 +43,19 @@ namespace KoharuYomiageApp.Infrastructures.JsonStorage
             await SaveSettings(storage);
         }
 
-        public async ValueTask<IEnumerable<MastodonAccountData>> GetMastodonAccountData()
+        public async Task<IEnumerable<MastodonAccountData>> GetMastodonAccountData()
         {
             var storage = await GetOrCreateSettings();
             return storage.MastodonAccountData;
         }
 
-        public async ValueTask<MastodonClientData?> FindMastodonClientData(string instance)
+        public async Task<MastodonClientData?> FindMastodonClientData(string instance)
         {
             var storage = await GetOrCreateSettings();
             return storage.MastodonClientData.Find(data => data.Instance == instance);
         }
 
-        public async ValueTask SaveMastodonClientData(MastodonClientData clientData)
+        public async Task SaveMastodonClientData(MastodonClientData clientData)
         {
             var storage = await GetOrCreateSettings();
 
@@ -72,7 +72,7 @@ namespace KoharuYomiageApp.Infrastructures.JsonStorage
             await SaveSettings(storage);
         }
 
-        async ValueTask<JsonData> GetOrCreateSettings()
+        async Task<JsonData> GetOrCreateSettings()
         {
             try
             {
@@ -87,7 +87,7 @@ namespace KoharuYomiageApp.Infrastructures.JsonStorage
             }
         }
 
-        async ValueTask SaveSettings(JsonData storage)
+        async Task SaveSettings(JsonData storage)
         {
             using var json = File.OpenWrite(SettingsPath);
             await JsonSerializer.SerializeAsync(json, storage);

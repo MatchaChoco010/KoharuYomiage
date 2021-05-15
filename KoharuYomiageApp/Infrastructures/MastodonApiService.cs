@@ -25,7 +25,7 @@ namespace KoharuYomiageApp.Infrastructures
             _connections.Add(accountIdentifier, disposable);
         }
 
-        public async ValueTask<string> AuthorizeWithCode(string instance, string clientId, string clientSecret,
+        public async Task<string> AuthorizeWithCode(string instance, string clientId, string clientSecret,
             string code)
         {
             var accessToken =
@@ -33,13 +33,13 @@ namespace KoharuYomiageApp.Infrastructures
             return accessToken.Token;
         }
 
-        public async ValueTask<(string, Uri)> GetAccountInfo(string instance, string accessToken)
+        public async Task<(string, Uri)> GetAccountInfo(string instance, string accessToken)
         {
             var account = await Api.GetAccountInformation(instance, new AccessToken(accessToken));
             return (account.username, new Uri(account.avatar_static));
         }
 
-        public async ValueTask<(string, string)> RegisterClient(string instance)
+        public async Task<(string, string)> RegisterClient(string instance)
         {
             var (id, secret) = await Api.RegisterApp(instance);
             return (id.Id, secret.Secret);

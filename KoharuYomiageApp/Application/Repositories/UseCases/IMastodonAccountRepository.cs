@@ -8,13 +8,13 @@ namespace KoharuYomiageApp.Application.Repositories.UseCases
 {
     public interface IMastodonAccountRepository
     {
-        ValueTask<MastodonAccount?> FindMastodonAccount(AccountIdentifier identifier);
+        Task<MastodonAccount?> FindMastodonAccount(AccountIdentifier identifier);
 
         MastodonAccount CreateMastodonAccount(Username username, Instance instance, MastodonAccessToken accessToken,
             MastodonAccountIconUrl iconUrl);
 
-        ValueTask<IEnumerable<MastodonAccount>> GetMastodonAccounts();
+        Task<IEnumerable<MastodonAccount>> GetMastodonAccounts();
 
-        ValueTask SaveMastodonAccount(MastodonAccount account);
+        Task SaveMastodonAccount(MastodonAccount account);
     }
 }
