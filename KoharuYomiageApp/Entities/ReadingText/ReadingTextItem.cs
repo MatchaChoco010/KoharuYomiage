@@ -5,7 +5,7 @@ namespace KoharuYomiageApp.Entities.ReadingText
 {
     public abstract record ReadingTextItem(Guid Id, AccountIdentifier AccountIdentifier, string Text)
     {
-        ReadingTextItem(AccountIdentifier accountIdentifier, string text) : this(new Guid(), accountIdentifier, text)
+        ReadingTextItem(AccountIdentifier accountIdentifier, string text) : this(Guid.NewGuid(), accountIdentifier, text)
         {
         }
 
