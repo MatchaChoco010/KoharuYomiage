@@ -2,9 +2,7 @@
 using System.Reactive.Disposables;
 using System.Threading.Tasks;
 using CeVIOAI;
-using CeVIOAI.Exceptions;
 using KoharuYomiageApp.Application.WindowLoaded.Interfaces;
-using Reactive.Bindings.Extensions;
 
 namespace KoharuYomiageApp.Infrastructures
 {

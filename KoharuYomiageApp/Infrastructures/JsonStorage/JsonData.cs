@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using KoharuYomiageApp.Application.Repositories.Interfaces;
+using KoharuYomiageApp.Application.Repositories.Interfaces.DataObjects;
 
 namespace KoharuYomiageApp.Infrastructures.JsonStorage
 {
@@ -7,11 +7,11 @@ namespace KoharuYomiageApp.Infrastructures.JsonStorage
     {
         public JsonData()
         {
-            MastodonAccountData = new List<MastodonAccountData>();
-            MastodonClientData = new List<MastodonClientData>();
+            MastodonAccountData = new List<MastodonAccountSaveData>();
+            MastodonClientData = new List<MastodonClientSaveData>();
         }
 
-        public List<MastodonAccountData> MastodonAccountData { get; set; }
-        public List<MastodonClientData> MastodonClientData { get; set; }
+        public List<MastodonAccountSaveData> MastodonAccountData { get; set; }
+        public List<MastodonClientSaveData> MastodonClientData { get; set; }
     }
 }

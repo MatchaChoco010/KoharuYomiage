@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Text.Json;
 using System.Threading.Tasks;
 using KoharuYomiageApp.Application.Repositories.Interfaces;
+using KoharuYomiageApp.Application.Repositories.Interfaces.DataObjects;
 
 namespace KoharuYomiageApp.Infrastructures.JsonStorage
 {
@@ -19,54 +20,54 @@ namespace KoharuYomiageApp.Infrastructures.JsonStorage
             }
         }
 
-        public async Task<MastodonAccountData?> FindMastodonAccountData(string identifier)
+        public async Task<MastodonAccountSaveData?> FindMastodonAccountData(string identifier)
         {
             var storage = await GetOrCreateSettings();
             return storage.MastodonAccountData.Find(data => data.Username + "@" + data.Instance == identifier);
         }
 
-        public async Task SaveMastodonAccountData(MastodonAccountData accountData)
+        public async Task SaveMastodonAccountData(MastodonAccountSaveData accountSaveData)
         {
             var storage = await GetOrCreateSettings();
 
             var index = storage.MastodonAccountData.FindIndex(data =>
-                data.Username == accountData.Username && data.Instance == accountData.Instance);
+                data.Username == accountSaveData.Username && data.Instance == accountSaveData.Instance);
             if (index is not -1)
             {
-                storage.MastodonAccountData[index] = accountData;
+                storage.MastodonAccountData[index] = accountSaveData;
             }
             else
             {
-                storage.MastodonAccountData.Add(accountData);
+                storage.MastodonAccountData.Add(accountSaveData);
             }
 
             await SaveSettings(storage);
         }
 
-        public async Task<IEnumerable<MastodonAccountData>> GetMastodonAccountData()
+        public async Task<IEnumerable<MastodonAccountSaveData>> GetMastodonAccountData()
         {
             var storage = await GetOrCreateSettings();
             return storage.MastodonAccountData;
         }
 
-        public async Task<MastodonClientData?> FindMastodonClientData(string instance)
+        public async Task<MastodonClientSaveData?> FindMastodonClientData(string instance)
         {
             var storage = await GetOrCreateSettings();
             return storage.MastodonClientData.Find(data => data.Instance == instance);
         }
 
-        public async Task SaveMastodonClientData(MastodonClientData clientData)
+        public async Task SaveMastodonClientData(MastodonClientSaveData clientSaveData)
         {
             var storage = await GetOrCreateSettings();
 
-            var index = storage.MastodonClientData.FindIndex(data => data.Instance == clientData.Instance);
+            var index = storage.MastodonClientData.FindIndex(data => data.Instance == clientSaveData.Instance);
             if (index is not -1)
             {
-                storage.MastodonClientData[index] = clientData;
+                storage.MastodonClientData[index] = clientSaveData;
             }
             else
             {
-                storage.MastodonClientData.Add(clientData);
+                storage.MastodonClientData.Add(clientSaveData);
             }
 
             await SaveSettings(storage);

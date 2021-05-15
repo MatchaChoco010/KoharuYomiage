@@ -7,12 +7,14 @@ namespace KoharuYomiageApp.Application.WindowLoaded.UseCases
 {
     public class AccountExistenceChecker : IPushStartButton
     {
-        readonly IMastodonAccountRepository _mastodonAccountRepository;
-        readonly IStartRegisteringAccount _startRegisteringAccount;
         readonly IAddMastodonAccountToReader _addMastodonAccountToReader;
+        readonly MastodonAccountRepository _mastodonAccountRepository;
         readonly IStartApp _startApp;
+        readonly IStartRegisteringAccount _startRegisteringAccount;
 
-        public AccountExistenceChecker(IMastodonAccountRepository mastodonAccountRepository, IStartRegisteringAccount startRegisteringAccount, IAddMastodonAccountToReader addMastodonAccountToReader, IStartApp startApp)
+        public AccountExistenceChecker(MastodonAccountRepository mastodonAccountRepository,
+            IStartRegisteringAccount startRegisteringAccount, IAddMastodonAccountToReader addMastodonAccountToReader,
+            IStartApp startApp)
         {
             _mastodonAccountRepository = mastodonAccountRepository;
             _startRegisteringAccount = startRegisteringAccount;
@@ -32,8 +34,11 @@ namespace KoharuYomiageApp.Application.WindowLoaded.UseCases
             {
                 foreach (var account in mastodonAccounts)
                 {
-                    _addMastodonAccountToReader.AddMastodonAccountToReader(new AddReaderInfo(account.AccountIdentifier.Value,  account.Instance.Value, account.AccessToken.Token));
+                    _addMastodonAccountToReader.AddMastodonAccountToReader(
+                        new AddReaderInfo(account.AccountIdentifier.Value, account.Instance.Value,
+                            account.AccessToken.Token));
                 }
+
                 _startApp.StartApp();
             }
         }

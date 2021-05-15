@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using KoharuYomiageApp.Application.AddMastodonAccount.UseCases.DataObjects;
 using KoharuYomiageApp.Application.Repositories.UseCases;
-using KoharuYomiageApp.Entities;
 using KoharuYomiageApp.Entities.Account;
 using KoharuYomiageApp.Entities.Account.Mastodon;
 
@@ -13,13 +12,13 @@ namespace KoharuYomiageApp.Application.AddMastodonAccount.UseCases
         readonly IAuthorizeMastodonAccountWithCode _authorizeMastodonAccountWithCode;
         readonly IFinishAuthorizeMastodonAccount _finishAuthorizeMastodonAccount;
         readonly IGetAccountInfo _getAccountInfo;
-        readonly IMastodonAccountRepository _mastodonAccountRepository;
-        readonly IMastodonClientRepository _mastodonClientRepository;
+        readonly MastodonAccountRepository _mastodonAccountRepository;
+        readonly MastodonClientRepository _mastodonClientRepository;
         readonly IShowGetMastodonAccountInfoError _showGetMastodonAccountInfoError;
         readonly IShowMastodonAuthenticationError _showMastodonAuthenticationError;
 
-        public AuthorizeMastodonAccount(IMastodonClientRepository mastodonClientRepository,
-            IMastodonAccountRepository mastodonAccountRepository,
+        public AuthorizeMastodonAccount(MastodonClientRepository mastodonClientRepository,
+            MastodonAccountRepository mastodonAccountRepository,
             IAuthorizeMastodonAccountWithCode authorizeMastodonAccountWithCode,
             IShowMastodonAuthenticationError showMastodonAuthenticationError,
             IGetAccountInfo getAccountInfo,

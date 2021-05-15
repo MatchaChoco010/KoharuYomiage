@@ -4,11 +4,12 @@ namespace KoharuYomiageApp.Application.WindowLoaded.UseCases
 {
     public class TalkerInitializer : IWindowLoaded
     {
+        readonly IFinishLoadTalker _finishLoadTalker;
         readonly ILoadTalker _loadTalker;
         readonly IShowLoadTalkerError _showLoadTalkerError;
-        readonly IFinishLoadTalker _finishLoadTalker;
 
-        public TalkerInitializer(ILoadTalker loadTalker, IShowLoadTalkerError showLoadTalkerError, IFinishLoadTalker finishLoadTalker)
+        public TalkerInitializer(ILoadTalker loadTalker, IShowLoadTalkerError showLoadTalkerError,
+            IFinishLoadTalker finishLoadTalker)
         {
             _loadTalker = loadTalker;
             _showLoadTalkerError = showLoadTalkerError;

@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using KoharuYomiageApp.Application.AddMastodonAccount.Interfaces;
 using MastodonApi;
+using IMastodonApiAddAccountToReaderService =
+    KoharuYomiageApp.Application.WindowLoaded.Interfaces.IMastodonApiAddAccountToReaderService;
 
 namespace KoharuYomiageApp.Infrastructures
 {
-    public class MastodonApiService : Application.WindowLoaded.Interfaces.IMastodonApiAddAccountToReaderService, IMastodonApiRegisterClientService, IMastodonApiAuthorizeAccountWithCodeService,
-        IMastodonApiGetAccountInfoService, Application.AddMastodonAccount.Interfaces.IMastodonApiAddAccountToReaderService
+    public class MastodonApiService : IMastodonApiAddAccountToReaderService, IMastodonApiRegisterClientService,
+        IMastodonApiAuthorizeAccountWithCodeService,
+        IMastodonApiGetAccountInfoService,
+        Application.AddMastodonAccount.Interfaces.IMastodonApiAddAccountToReaderService
     {
         readonly Dictionary<string, IDisposable> _connections = new();
 

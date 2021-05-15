@@ -8,7 +8,14 @@ namespace KoharuYomiageApp.Entities.ReadingText
 {
     public class ReadingTextContainer
     {
+        readonly List<ReadingTextItem> _list = new();
+
+        readonly object _syncObject = new();
+        List<WeakReference<TaskCompletionSource<bool>>> _listForOverflow = new();
+
+        List<WeakReference<TaskCompletionSource<ReadingTextItem>>> _listForTakeAsync = new();
         uint _maxCount = 10;
+
         public uint MaxCount
         {
             get => _maxCount;
@@ -21,17 +28,12 @@ namespace KoharuYomiageApp.Entities.ReadingText
             }
         }
 
-        readonly object _syncObject = new();
-
-        readonly List<ReadingTextItem> _list = new();
-
-        List<WeakReference<TaskCompletionSource<ReadingTextItem>>> _listForTakeAsync = new();
-        List<WeakReference<TaskCompletionSource<bool>>> _listForOverflow = new();
-
         void ClearWeakList()
         {
-            _listForTakeAsync = _listForTakeAsync.Where(weak => weak.TryGetTarget(out var tcs) && !tcs.Task.IsCompleted).ToList();
-            _listForOverflow = _listForOverflow.Where(weak => weak.TryGetTarget(out var tcs) && !tcs.Task.IsCompleted).ToList();
+            _listForTakeAsync = _listForTakeAsync.Where(weak => weak.TryGetTarget(out var tcs) && !tcs.Task.IsCompleted)
+                .ToList();
+            _listForOverflow = _listForOverflow.Where(weak => weak.TryGetTarget(out var tcs) && !tcs.Task.IsCompleted)
+                .ToList();
         }
 
         public void Add(ReadingTextItem item)
@@ -71,6 +73,7 @@ namespace KoharuYomiageApp.Entities.ReadingText
                             tcs.SetResult(true);
                         }
                     }
+
                     _list.RemoveAt(0);
                     _list.Add(item);
                 }

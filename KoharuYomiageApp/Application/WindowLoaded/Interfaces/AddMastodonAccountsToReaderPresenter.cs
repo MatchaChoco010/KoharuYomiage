@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using KoharuYomiageApp.Application.WindowLoaded.UseCases;
+﻿using KoharuYomiageApp.Application.WindowLoaded.UseCases;
 using KoharuYomiageApp.Application.WindowLoaded.UseCases.DataObjects;
 
 namespace KoharuYomiageApp.Application.WindowLoaded.Interfaces

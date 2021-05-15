@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using KoharuYomiageApp.Application.AddMastodonAccount.UseCases.DataObjects;
 using KoharuYomiageApp.Application.Repositories.UseCases;
-using KoharuYomiageApp.Entities;
 using KoharuYomiageApp.Entities.Account;
 using KoharuYomiageApp.Entities.Client.Mastodon;
 
@@ -9,12 +8,12 @@ namespace KoharuYomiageApp.Application.AddMastodonAccount.UseCases
 {
     public class LoginMastodonAccount : ILoginMastodonAccount
     {
-        readonly IMastodonClientRepository _clientRepository;
+        readonly MastodonClientRepository _clientRepository;
         readonly IRegisterClient _registerClient;
         readonly IShowAuthUrl _showAuthUrl;
         readonly IShowRegisterClientError _showRegisterClientError;
 
-        public LoginMastodonAccount(IMastodonClientRepository clientRepository, IRegisterClient registerClient,
+        public LoginMastodonAccount(MastodonClientRepository clientRepository, IRegisterClient registerClient,
             IShowAuthUrl showAuthUrl, IShowRegisterClientError showRegisterClientError)
         {
             _clientRepository = clientRepository;
