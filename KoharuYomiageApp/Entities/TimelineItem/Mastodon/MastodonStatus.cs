@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using KoharuYomiageApp.Entities.Account;
+using KoharuYomiageApp.Entities.ReadingText;
 
 namespace KoharuYomiageApp.Entities.TimelineItem.Mastodon
 {
@@ -20,7 +21,7 @@ namespace KoharuYomiageApp.Entities.TimelineItem.Mastodon
             MediaDescriptions = mediaDescriptions;
         }
 
-        public override ReadingText ConvertToReadingText()
+        public override ReadingTextItem ConvertToReadingText()
         {
             var text = $"{AuthorDisplayName}さんの投稿\n{Content}";
 
@@ -32,7 +33,7 @@ namespace KoharuYomiageApp.Entities.TimelineItem.Mastodon
                 }
             }
 
-            return new ReadingText.MastodonStatusReadingText(AccountIdentifier, text);
+            return new ReadingTextItem.MastodonStatusReadingTextItem(AccountIdentifier, text);
         }
     }
 }

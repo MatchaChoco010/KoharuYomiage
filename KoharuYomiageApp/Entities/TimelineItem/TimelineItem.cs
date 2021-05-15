@@ -1,4 +1,5 @@
 ﻿using KoharuYomiageApp.Entities.Account;
+using KoharuYomiageApp.Entities.ReadingText;
 
 namespace KoharuYomiageApp.Entities.TimelineItem
 {
@@ -11,6 +12,6 @@ namespace KoharuYomiageApp.Entities.TimelineItem
             AccountIdentifier = accountIdentifier;
         }
 
-        public abstract ReadingText ConvertToReadingText();
+        public abstract ReadingTextItem ConvertToReadingText();
     }
 }
