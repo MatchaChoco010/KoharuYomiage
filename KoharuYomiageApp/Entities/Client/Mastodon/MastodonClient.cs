@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using KoharuYomiageApp.Entities.Account;
 
-namespace KoharuYomiageApp.Entities
+namespace KoharuYomiageApp.Entities.Client.Mastodon
 {
     public class MastodonClient
     {

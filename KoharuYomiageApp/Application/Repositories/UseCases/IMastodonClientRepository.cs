@@ -1,5 +1,7 @@
 ﻿using System.Threading.Tasks;
 using KoharuYomiageApp.Entities;
+using KoharuYomiageApp.Entities.Account;
+using KoharuYomiageApp.Entities.Client.Mastodon;
 
 namespace KoharuYomiageApp.Application.Repositories.UseCases
 {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 
-namespace KoharuYomiageApp.Entities
+namespace KoharuYomiageApp.Entities.Account
 {
     public record Username
     {

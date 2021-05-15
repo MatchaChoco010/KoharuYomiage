@@ -2,6 +2,8 @@
 using KoharuYomiageApp.Application.AddMastodonAccount.UseCases.DataObjects;
 using KoharuYomiageApp.Application.Repositories.UseCases;
 using KoharuYomiageApp.Entities;
+using KoharuYomiageApp.Entities.Account;
+using KoharuYomiageApp.Entities.Account.Mastodon;
 
 namespace KoharuYomiageApp.Application.AddMastodonAccount.UseCases
 {

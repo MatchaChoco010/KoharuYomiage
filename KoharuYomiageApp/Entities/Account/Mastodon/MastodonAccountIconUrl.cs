@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace KoharuYomiageApp.Entities
+namespace KoharuYomiageApp.Entities.Account.Mastodon
 {
     public record MastodonAccountIconUrl
     {

@@ -1,4 +1,4 @@
-﻿namespace KoharuYomiageApp.Entities
+﻿namespace KoharuYomiageApp.Entities.Account.Mastodon
 {
     public record MastodonAccount : Account
     {

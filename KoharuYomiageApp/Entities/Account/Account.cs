@@ -1,4 +1,4 @@
-﻿namespace KoharuYomiageApp.Entities
+﻿namespace KoharuYomiageApp.Entities.Account
 {
     public abstract record Account
     {

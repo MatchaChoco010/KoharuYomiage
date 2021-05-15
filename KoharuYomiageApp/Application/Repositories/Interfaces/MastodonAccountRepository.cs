@@ -3,6 +3,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using KoharuYomiageApp.Application.Repositories.UseCases;
 using KoharuYomiageApp.Entities;
+using KoharuYomiageApp.Entities.Account;
+using KoharuYomiageApp.Entities.Account.Mastodon;
 
 namespace KoharuYomiageApp.Application.Repositories.Interfaces
 {
