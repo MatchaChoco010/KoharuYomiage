@@ -96,6 +96,11 @@ namespace KoharuYomiageApp
             containerRegistry.RegisterSingleton<AddMastodonStatusController>();
             containerRegistry.RegisterSingleton<IMastodonSensitiveStatusReceiver, MastodonSensitiveStatusReceiver>();
             containerRegistry.RegisterSingleton<AddMastodonSensitiveStatusController>();
+            containerRegistry.RegisterSingleton<IMastodonBoostedStatusReceiver, MastodonBoostedStatusReceiver>();
+            containerRegistry.RegisterSingleton<AddMastodonBoostedStatusController>();
+            containerRegistry
+                .RegisterSingleton<IMastodonBoostedSensitiveStatusReceiver, MastodonBoostedSensitiveStatusReceiver>();
+            containerRegistry.RegisterSingleton<AddMastodonBoostedSensitiveStatusController>();
             // ReadText
             containerRegistry.RegisterSingleton<IStartReading, TextReader>();
             containerRegistry.RegisterSingleton<StartReadingController>();

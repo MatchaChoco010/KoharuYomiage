@@ -19,5 +19,11 @@ namespace KoharuYomiageApp.Entities.ReadingText
 
         public record MastodonSensitiveStatusReadingTextItem(AccountIdentifier AccountIdentifier, string Text)
             : ReadingTextItem(AccountIdentifier, Text);
+
+        public record MastodonBoostedStatusReadingTextItem(AccountIdentifier AccountIdentifier, string Text)
+            : ReadingTextItem(AccountIdentifier, Text);
+
+        public record MastodonBoostedSensitiveStatusReadingTextItem(AccountIdentifier AccountIdentifier, string Text)
+            : ReadingTextItem(AccountIdentifier, Text);
     }
 }

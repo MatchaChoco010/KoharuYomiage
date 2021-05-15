@@ -16,15 +16,21 @@ namespace KoharuYomiageApp.Infrastructures
         IMastodonApiGetAccountInfoService,
         IMastodonApiAddAccountToReaderService
     {
+        readonly AddMastodonBoostedSensitiveStatusController _addMastodonBoostedSensitiveStatusController;
+        readonly AddMastodonBoostedStatusController _addMastodonBoostedStatusController;
         readonly AddMastodonSensitiveStatusController _addMastodonSensitiveStatusController;
         readonly AddMastodonStatusController _addMastodonStatusController;
         readonly Dictionary<string, IDisposable> _connections = new();
 
         public MastodonApiService(AddMastodonStatusController addMastodonStatusController,
-            AddMastodonSensitiveStatusController addMastodonSensitiveStatusController)
+            AddMastodonSensitiveStatusController addMastodonSensitiveStatusController,
+            AddMastodonBoostedStatusController addMastodonBoostedStatusController,
+            AddMastodonBoostedSensitiveStatusController addMastodonBoostedSensitiveStatusController)
         {
             _addMastodonStatusController = addMastodonStatusController;
             _addMastodonSensitiveStatusController = addMastodonSensitiveStatusController;
+            _addMastodonBoostedStatusController = addMastodonBoostedStatusController;
+            _addMastodonBoostedSensitiveStatusController = addMastodonBoostedSensitiveStatusController;
         }
 
         public void AddAccountToReader(string accountIdentifier, string username, string instance, string accessToken)
@@ -42,20 +48,40 @@ namespace KoharuYomiageApp.Infrastructures
                         switch (item)
                         {
                             case UserStreamPayload.Status(var status):
-                                if (status.sensitive)
+                                switch (status)
                                 {
-                                    _addMastodonSensitiveStatusController.AddMastodonSensitiveStatus(
-                                        new MastodonSensitiveStatusInputData(username, instance,
-                                            status.account.display_name, status.account.username, status.spoiler_text,
-                                            status.content, status.muted ?? false,
+                                    case {sensitive: true, reblogged: false}:
+                                        _addMastodonSensitiveStatusController.AddMastodonSensitiveStatus(
+                                            new MastodonSensitiveStatusInputData(username, instance,
+                                                status.account.display_name, status.account.username,
+                                                status.spoiler_text,
+                                                status.content, status.muted ?? false,
+                                                status.media_attachments.Select(media => media.description ?? "")));
+                                        break;
+                                    case {sensitive: false, reblogged: false}:
+                                        _addMastodonStatusController.AddMastodonStatus(new MastodonStatusInputData(
+                                            username,
+                                            instance, status.account.display_name, status.account.username,
+                                            status.content,
+                                            status.muted ?? false,
                                             status.media_attachments.Select(media => media.description ?? "")));
-                                }
-                                else
-                                {
-                                    _addMastodonStatusController.AddMastodonStatus(new MastodonStatusInputData(username,
-                                        instance, status.account.display_name, status.account.username, status.content,
-                                        status.muted ?? false,
-                                        status.media_attachments.Select(media => media.description ?? "")));
+                                        break;
+                                    case {sensitive: true, reblogged: true, reblog: { } reblog}:
+                                        _addMastodonBoostedSensitiveStatusController.AddMastodonBoostedSensitiveStatus(
+                                            new MastodonBoostedSensitiveStatusInputData(username, instance,
+                                                status.account.display_name, status.account.username,
+                                                reblog.account.display_name, reblog.account.username,
+                                                status.spoiler_text, status.content, status.muted ?? false,
+                                                status.media_attachments.Select(media => media.description ?? "")));
+                                        break;
+                                    case {sensitive: false, reblogged: true, reblog: { } reblog}:
+                                        _addMastodonBoostedStatusController.AddMastodonBoostedStatus(
+                                            new MastodonBoostedStatusInputData(username, instance,
+                                                status.account.display_name, status.account.username,
+                                                reblog.account.display_name, reblog.account.username, status.content,
+                                                status.muted ?? false,
+                                                status.media_attachments.Select(media => media.description ?? "")));
+                                        break;
                                 }
 
                                 break;
