@@ -6,8 +6,8 @@ using MastodonApi;
 
 namespace KoharuYomiageApp.Infrastructures
 {
-    public class MastodonApiService : IMastodonApiRegisterClientService, IMastodonApiAuthorizeAccountWithCodeService,
-        IMastodonApiGetAccountInfoService, IMastodonApiAddAccountToReaderService
+    public class MastodonApiService : Application.WindowLoaded.Interfaces.IMastodonApiAddAccountToReaderService, IMastodonApiRegisterClientService, IMastodonApiAuthorizeAccountWithCodeService,
+        IMastodonApiGetAccountInfoService, Application.AddMastodonAccount.Interfaces.IMastodonApiAddAccountToReaderService
     {
         readonly Dictionary<string, IDisposable> _connections = new();
 

@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -40,6 +41,12 @@ namespace KoharuYomiageApp.Infrastructures.JsonStorage
             }
 
             await SaveSettings(storage);
+        }
+
+        public async ValueTask<IEnumerable<MastodonAccountData>> GetMastodonAccountData()
+        {
+            var storage = await GetOrCreateSettings();
+            return storage.MastodonAccountData;
         }
 
         public async ValueTask<MastodonClientData?> FindMastodonClientData(string instance)

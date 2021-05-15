@@ -2,6 +2,7 @@
 using System.Reactive.Disposables;
 using System.Windows.Media;
 using KoharuYomiageApp.Application.WindowLoaded.Interfaces;
+using KoharuYomiageApp.Application.WindowLoaded.UseCases;
 using KoharuYomiageApp.Infrastructures.GUI.Views;
 using Prism.Mvvm;
 using Prism.Regions;
@@ -19,12 +20,18 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
         readonly CompositeDisposable _disposable = new();
         readonly FinishLoadTalkerPresenter _finishLoadTalkerPresenter;
         readonly ShowLoadTalkerErrorPresenter _showLoadTalkerErrorPresenter;
+        readonly PushStartButtonController _pushStartButtonController;
+        readonly StartRegisteringAccountPresenter _startRegisteringAccountPresenter;
+        readonly StartAppPresenter _startAppPresenter;
 
-        public StartViewModel(WindowLoadedController windowLoadedController, FinishLoadTalkerPresenter finishLoadTalkerPresenter, ShowLoadTalkerErrorPresenter showLoadTalkerErrorPresenter, IDialogService dialogService)
+        public StartViewModel(WindowLoadedController windowLoadedController, FinishLoadTalkerPresenter finishLoadTalkerPresenter, ShowLoadTalkerErrorPresenter showLoadTalkerErrorPresenter, PushStartButtonController pushStartButtonController, StartRegisteringAccountPresenter startRegisteringAccountPresenter, StartAppPresenter startAppPresenter, IDialogService dialogService)
         {
             _windowLoadedController = windowLoadedController;
             _finishLoadTalkerPresenter = finishLoadTalkerPresenter;
             _showLoadTalkerErrorPresenter = showLoadTalkerErrorPresenter;
+            _pushStartButtonController = pushStartButtonController;
+            _startRegisteringAccountPresenter = startRegisteringAccountPresenter;
+            _startAppPresenter = startAppPresenter;
             _dialogService = dialogService;
         }
 
@@ -39,10 +46,7 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
             LoadedCommand.Subscribe(_ => _windowLoadedController.WindowLoaded()).AddTo(_disposable);
-            NavigateCommand.Subscribe(_ =>
-                    navigationContext.NavigationService.RequestNavigate(nameof(SelectSNS),
-                        new NavigationParameters {{"FirstLogin", true}}))
-                .AddTo(_disposable);
+            NavigateCommand.Subscribe(_ =>_pushStartButtonController.PushStartButton()).AddTo(_disposable);
 
             _finishLoadTalkerPresenter.OnFinishLoadTalker.Subscribe(_ =>
                 {
@@ -53,6 +57,11 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
                 })
                 .AddTo(_disposable);
             _showLoadTalkerErrorPresenter.OnShowLoadTalkerError.Subscribe(_ => ShowLoadErrorDialogs()).AddTo(_disposable);
+            _startRegisteringAccountPresenter.OnStartRegisterAccount.Subscribe(_ =>
+                navigationContext.NavigationService.RequestNavigate(nameof(SelectSNS),
+                    new NavigationParameters {{"FirstLogin", true}})).AddTo(_disposable);
+            _startAppPresenter.OnStartApp
+                .Subscribe(_ => navigationContext.NavigationService.RequestNavigate(nameof(ViewA))).AddTo(_disposable);
         }
 
         public bool IsNavigationTarget(NavigationContext navigationContext)

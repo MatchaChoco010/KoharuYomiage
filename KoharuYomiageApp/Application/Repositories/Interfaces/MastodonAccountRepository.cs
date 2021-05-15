@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using KoharuYomiageApp.Application.Repositories.UseCases;
 using KoharuYomiageApp.Entities;
@@ -35,9 +36,9 @@ namespace KoharuYomiageApp.Application.Repositories.Interfaces
 
         public async ValueTask<IEnumerable<MastodonAccount>> GetMastodonAccounts()
         {
-            // TODO
-            await Task.CompletedTask;
-            return new MastodonAccount[] { };
+            var data = await _storage.GetMastodonAccountData();
+            return data.Select(d => new MastodonAccount(new Username(d.Username), new Instance(d.Instance),
+                new MastodonAccessToken(d.AccessToken), new MastodonAccountIconUrl(d.IconUrl)));
         }
 
         public async ValueTask SaveMastodonAccount(MastodonAccount account)

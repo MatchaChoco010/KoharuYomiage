@@ -2,8 +2,8 @@
 
 namespace KoharuYomiageApp.Application.WindowLoaded.UseCases
 {
-    public interface IWindowLoaded
+    public interface IPushStartButton
     {
-        ValueTask WindowLoaded();
+        ValueTask PushStartButton();
     }
 }

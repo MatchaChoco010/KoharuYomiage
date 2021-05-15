@@ -2,20 +2,20 @@
 
 namespace KoharuYomiageApp.Application.WindowLoaded.UseCases
 {
-    public class WindowLoaded : IWindowLoaded
+    public class TalkerInitializer : IWindowLoaded
     {
         readonly ILoadTalker _loadTalker;
         readonly IShowLoadTalkerError _showLoadTalkerError;
         readonly IFinishLoadTalker _finishLoadTalker;
 
-        public WindowLoaded(ILoadTalker loadTalker, IShowLoadTalkerError showLoadTalkerError, IFinishLoadTalker finishLoadTalker)
+        public TalkerInitializer(ILoadTalker loadTalker, IShowLoadTalkerError showLoadTalkerError, IFinishLoadTalker finishLoadTalker)
         {
             _loadTalker = loadTalker;
             _showLoadTalkerError = showLoadTalkerError;
             _finishLoadTalker = finishLoadTalker;
         }
 
-        public async ValueTask LoadedWindow()
+        public async ValueTask WindowLoaded()
         {
             try
             {

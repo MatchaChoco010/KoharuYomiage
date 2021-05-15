@@ -40,11 +40,16 @@ namespace KoharuYomiageApp
 
             // Application
             // LoadTalker Feature
-            containerRegistry.RegisterSingleton<IWindowLoaded, WindowLoaded>();
+            containerRegistry.RegisterSingleton<IWindowLoaded, TalkerInitializer>();
             containerRegistry.RegisterSingleton<WindowLoadedController>();
             containerRegistry.RegisterManySingleton<LoadTalkerPresenter>(typeof(ILoadTalker), typeof(LoadTalkerPresenter));
             containerRegistry.RegisterManySingleton<ShowLoadTalkerErrorPresenter>(typeof(IShowLoadTalkerError), typeof(ShowLoadTalkerErrorPresenter));
             containerRegistry.RegisterManySingleton<FinishLoadTalkerPresenter>(typeof(IFinishLoadTalker), typeof(FinishLoadTalkerPresenter));
+            containerRegistry.RegisterSingleton<IPushStartButton, AccountExistenceChecker>();
+            containerRegistry.RegisterSingleton<PushStartButtonController>();
+            containerRegistry.RegisterManySingleton<StartRegisteringAccountPresenter>(typeof(IStartRegisteringAccount), typeof(StartRegisteringAccountPresenter));
+            containerRegistry.RegisterManySingleton<Application.WindowLoaded.Interfaces.AddMastodonAccountToReaderPresenter>(typeof(Application.WindowLoaded.UseCases.IAddMastodonAccountToReader), typeof(Application.WindowLoaded.Interfaces.AddMastodonAccountToReaderPresenter));
+            containerRegistry.RegisterManySingleton<StartAppPresenter>(typeof(IStartApp), typeof(StartAppPresenter));
             // AddMastodonAccount Feature
             containerRegistry.RegisterSingleton<ILoginMastodonAccount, LoginMastodonAccount>();
             containerRegistry.RegisterSingleton<LoginMastodonAccountController>();
@@ -66,9 +71,9 @@ namespace KoharuYomiageApp
             containerRegistry.RegisterManySingleton<ShowGetMastodonAccountInfoErrorPresenter>(
                 typeof(IShowGetMastodonAccountInfoError),
                 typeof(ShowGetMastodonAccountInfoErrorPresenter));
-            containerRegistry.RegisterManySingleton<AddMastodonAccountToReaderPresenter>(
-                typeof(IAddMastodonAccountToReader),
-                typeof(AddMastodonAccountToReaderPresenter));
+            containerRegistry.RegisterManySingleton<Application.AddMastodonAccount.Interfaces.AddMastodonAccountToReaderPresenter>(
+                typeof(Application.AddMastodonAccount.UseCases.IAddMastodonAccountToReader),
+                typeof(Application.AddMastodonAccount.Interfaces.AddMastodonAccountToReaderPresenter));
             containerRegistry.RegisterManySingleton<FinishAuthorizeMastodonAccountPresenter>(
                 typeof(IFinishAuthorizeMastodonAccount),
                 typeof(FinishAuthorizeMastodonAccountPresenter));
@@ -84,7 +89,8 @@ namespace KoharuYomiageApp
             Container.Resolve<CeVIOAIService>();
             // MastodonApi
             containerRegistry.RegisterManySingleton<MastodonApiService>(
-                typeof(IMastodonApiAddAccountToReaderService),
+                typeof(Application.WindowLoaded.Interfaces.IMastodonApiAddAccountToReaderService),
+                typeof(Application.AddMastodonAccount.Interfaces.IMastodonApiAddAccountToReaderService),
                 typeof(IMastodonApiAuthorizeAccountWithCodeService),
                 typeof(IMastodonApiGetAccountInfoService),
                 typeof(IMastodonApiRegisterClientService),

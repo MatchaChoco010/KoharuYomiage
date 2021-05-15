@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace KoharuYomiageApp.Application.Repositories.Interfaces
 {
@@ -6,5 +7,6 @@ namespace KoharuYomiageApp.Application.Repositories.Interfaces
     {
         ValueTask<MastodonAccountData?> FindMastodonAccountData(string identifier);
         ValueTask SaveMastodonAccountData(MastodonAccountData accountData);
+        ValueTask<IEnumerable<MastodonAccountData>> GetMastodonAccountData();
     }
 }

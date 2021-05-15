@@ -13,7 +13,7 @@ namespace KoharuYomiageApp.Application.WindowLoaded.Interfaces
 
         public void WindowLoaded()
         {
-            _ = _windowLoaded.LoadedWindow();
+            _ = _windowLoaded.WindowLoaded();
         }
     }
 }
