@@ -83,7 +83,7 @@
             </Grid.RowDefinitions>
             <Image Grid.Row="0"
                    Stretch="Uniform"
-                   Source="/Resources/koharu0.png"
+                   Source="{Binding KoharuImage.Value}"
                    VerticalAlignment="Bottom"
                    RenderOptions.BitmapScalingMode="Fant"
                    Margin="0, 0,16,0"

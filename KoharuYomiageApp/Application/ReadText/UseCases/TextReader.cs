@@ -8,16 +8,18 @@ namespace KoharuYomiageApp.Application.ReadText.UseCases
 {
     public class TextReader : IStartReading
     {
+        readonly IChangeImage _changeImage;
         readonly ReadingTextContainerRepository _containerRepository;
         readonly ISpeakText _speakText;
         readonly IUpdateTextListView _updateTextListView;
 
         public TextReader(ReadingTextContainerRepository containerRepository, ISpeakText speakText,
-            IUpdateTextListView updateTextListView)
+            IUpdateTextListView updateTextListView, IChangeImage changeImage)
         {
             _containerRepository = containerRepository;
             _speakText = speakText;
             _updateTextListView = updateTextListView;
+            _changeImage = changeImage;
         }
 
         public async Task StartReading(CancellationToken cancellationToken)
@@ -33,9 +35,13 @@ namespace KoharuYomiageApp.Application.ReadText.UseCases
             {
                 var item = await container.GetAsync(cancellationToken);
 
+                _changeImage.OpenMouth();
+
                 var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
                 await Task.WhenAny(_speakText.SpeakText(item.Text, cts.Token), container.Overflow(cts.Token));
                 cts.Cancel();
+
+                _changeImage.CloseMouth();
 
                 container.RemoveFirstItem();
             }

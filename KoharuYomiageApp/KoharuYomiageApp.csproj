@@ -16,7 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AsyncCollections" Version="2.0.0" />
     <PackageReference Include="DotNetProjects.SVGImage" Version="4.1.92" />
     <PackageReference Include="FluentWPF" Version="0.9.0" />
     <PackageReference Include="Prism.DryIoc" Version="8.0.0.1909" />
@@ -29,10 +28,6 @@
 
   <ItemGroup>
     <Resource Include="Resources\*" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Infrastructures\GUI" />
   </ItemGroup>
 
 </Project>

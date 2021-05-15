@@ -101,6 +101,8 @@ namespace KoharuYomiageApp
             containerRegistry.RegisterManySingleton<SpeakTextPresenter>(typeof(ISpeakText), typeof(SpeakTextPresenter));
             containerRegistry.RegisterManySingleton<UpdateTextListViewPresenter>(typeof(IUpdateTextListView),
                 typeof(UpdateTextListViewPresenter));
+            containerRegistry.RegisterManySingleton<ChangeImagePresenter>(typeof(IChangeImage),
+                typeof(ChangeImagePresenter));
             // Repositories
             containerRegistry.RegisterSingleton<MastodonAccountRepository>();
             containerRegistry.RegisterSingleton<IMastodonAccountGateway, MastodonAccountGateway>();
