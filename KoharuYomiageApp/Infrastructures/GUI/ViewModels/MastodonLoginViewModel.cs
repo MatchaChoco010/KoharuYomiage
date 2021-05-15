@@ -2,6 +2,7 @@
 using System.Reactive.Disposables;
 using KoharuYomiageApp.Application.AddMastodonAccount.Interfaces;
 using KoharuYomiageApp.Infrastructures.GUI.Views;
+using KoharuYomiageApp.Infrastructures.GUI.Views.Dialogs;
 using Prism.Mvvm;
 using Prism.Regions;
 using Prism.Services.Dialogs;
@@ -52,7 +53,7 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
             _showRegisterClientErrorPresenter.OnShowRegisterClientError
                 .Subscribe(_ =>
                 {
-                    _dialogService.ShowDialog(nameof(RegisterClientErrorDialogContent));
+                    _dialogService.ShowDialog(nameof(RegisterClientError));
                     LoginEnabled.Value = true;
                 })
                 .AddTo(_disposable);

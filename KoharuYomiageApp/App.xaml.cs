@@ -11,6 +11,7 @@ using KoharuYomiageApp.Application.WindowLoaded.Interfaces;
 using KoharuYomiageApp.Application.WindowLoaded.UseCases;
 using KoharuYomiageApp.Infrastructures;
 using KoharuYomiageApp.Infrastructures.GUI.Views;
+using KoharuYomiageApp.Infrastructures.GUI.Views.Dialogs;
 using KoharuYomiageApp.Infrastructures.JsonStorage;
 using Prism.DryIoc;
 using Prism.Ioc;
@@ -29,11 +30,11 @@ namespace KoharuYomiageApp
             // GUI
             // Dialog
             containerRegistry.RegisterDialogWindow<DialogWindow>();
-            containerRegistry.RegisterDialog<LoadTalkerErrorDialogContent>();
-            containerRegistry.RegisterDialog<LoadTalkerLinkDialogContent>();
-            containerRegistry.RegisterDialog<RegisterClientErrorDialogContent>();
-            containerRegistry.RegisterDialog<GetMastodonAccountInfoErrorDialogContent>();
-            containerRegistry.RegisterDialog<MastodonAuthenticationErrorDialogContent>();
+            containerRegistry.RegisterDialog<LoadTalkerError>();
+            containerRegistry.RegisterDialog<LoadTalkerLink>();
+            containerRegistry.RegisterDialog<RegisterClientError>();
+            containerRegistry.RegisterDialog<GetMastodonAccountInfoError>();
+            containerRegistry.RegisterDialog<MastodonAuthenticationError>();
             // Views
             containerRegistry.RegisterForNavigation<ViewA>();
             containerRegistry.RegisterForNavigation<ViewB>();

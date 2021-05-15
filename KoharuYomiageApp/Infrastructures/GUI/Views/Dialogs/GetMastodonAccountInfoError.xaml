@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="KoharuYomiageApp.Infrastructures.GUI.Views.LoadTalkerErrorDialogContent"
+﻿<UserControl x:Class="KoharuYomiageApp.Infrastructures.GUI.Views.Dialogs.GetMastodonAccountInfoError"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -24,8 +24,9 @@
                    Margin="16"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center"
-                   FontSize="26">
-            小春六花さんが居ないよー！
+                   TextAlignment="Center"
+                   FontSize="16">
+            アカウント情報取得時にエラーが発生しました。
         </TextBlock>
         <Button Grid.Row="2"
                 Grid.Column="1"

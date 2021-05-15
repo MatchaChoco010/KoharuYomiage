@@ -5,13 +5,13 @@ using Prism.Services.Dialogs;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 
-namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
+namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels.Dialogs
 {
-    public class AccountAlradyEdistsErrorDialogContentViewModel : BindableBase, IDialogAware
+    public class AccountAlradyEdistsErrorViewModel : BindableBase, IDialogAware
     {
         readonly CompositeDisposable _disposable = new();
 
-        public AccountAlradyEdistsErrorDialogContentViewModel()
+        public AccountAlradyEdistsErrorViewModel()
         {
             OkCommand.Subscribe(_ => RequestClose?.Invoke(new DialogResult(ButtonResult.OK))).AddTo(_disposable);
         }

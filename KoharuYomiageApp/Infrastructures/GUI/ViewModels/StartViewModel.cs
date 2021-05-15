@@ -4,6 +4,7 @@ using System.Windows.Media;
 using KoharuYomiageApp.Application.ReadText.Interfaces;
 using KoharuYomiageApp.Application.WindowLoaded.Interfaces;
 using KoharuYomiageApp.Infrastructures.GUI.Views;
+using KoharuYomiageApp.Infrastructures.GUI.Views.Dialogs;
 using Prism.Mvvm;
 using Prism.Regions;
 using Prism.Services.Dialogs;
@@ -93,8 +94,8 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
 
         void ShowLoadErrorDialogs()
         {
-            _dialogService.ShowDialog(nameof(LoadTalkerErrorDialogContent));
-            _dialogService.ShowDialog(nameof(LoadTalkerLinkDialogContent));
+            _dialogService.ShowDialog(nameof(LoadTalkerError));
+            _dialogService.ShowDialog(nameof(LoadTalkerLink));
             Close.Value = true;
         }
     }

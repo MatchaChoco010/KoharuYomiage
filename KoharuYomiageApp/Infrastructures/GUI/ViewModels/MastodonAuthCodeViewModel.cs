@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Reactive.Disposables;
 using KoharuYomiageApp.Application.AddMastodonAccount.Interfaces;
 using KoharuYomiageApp.Infrastructures.GUI.Views;
+using KoharuYomiageApp.Infrastructures.GUI.Views.Dialogs;
 using Prism.Mvvm;
 using Prism.Regions;
 using Prism.Services.Dialogs;
@@ -60,13 +61,13 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
             _showMastodonAuthenticationErrorPresenter.OnMastodonAuthenticationError
                 .Subscribe(_ =>
                 {
-                    _dialogService.ShowDialog(nameof(MastodonAuthenticationErrorDialogContent));
+                    _dialogService.ShowDialog(nameof(MastodonAuthenticationError));
                     AuthenticateEnabled.Value = true;
                 }).AddTo(_disposable);
             _showGetMastodonAccountInfoErrorPresenter.OnGetMastodonAccountInfoError
                 .Subscribe(_ =>
                 {
-                    _dialogService.ShowDialog(nameof(GetMastodonAccountInfoErrorDialogContent));
+                    _dialogService.ShowDialog(nameof(GetMastodonAccountInfoError));
                     AuthenticateEnabled.Value = true;
                 }).AddTo(_disposable);
             _finishAuthorizeMastodonAccountPresenter.OnFinishAuthorize

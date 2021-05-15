@@ -5,13 +5,13 @@ using Prism.Services.Dialogs;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 
-namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
+namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels.Dialogs
 {
-    public class RegisterClientErrorDialogContentViewModel : BindableBase, IDialogAware
+    public class MastodonAuthenticationErrorViewModel : BindableBase, IDialogAware
     {
         readonly CompositeDisposable _disposable = new();
 
-        public RegisterClientErrorDialogContentViewModel()
+        public MastodonAuthenticationErrorViewModel()
         {
             OkCommand.Subscribe(_ => RequestClose?.Invoke(new DialogResult(ButtonResult.OK))).AddTo(_disposable);
         }
