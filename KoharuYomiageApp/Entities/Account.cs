@@ -1,6 +1,6 @@
 ﻿namespace KoharuYomiageApp.Entities
 {
-    public abstract class Account
+    public abstract record Account
     {
         public Account(Username username, Instance instance)
         {

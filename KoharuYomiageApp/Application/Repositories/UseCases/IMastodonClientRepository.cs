@@ -1,4 +1,5 @@
-﻿using KoharuYomiageApp.Entities;
+﻿using System.Threading.Tasks;
+using KoharuYomiageApp.Entities;
 
 namespace KoharuYomiageApp.Application.Repositories.UseCases
 {
@@ -7,8 +8,8 @@ namespace KoharuYomiageApp.Application.Repositories.UseCases
         MastodonClient CreateMastodonClient(Instance instance, MastodonClientId clientId,
             MastodonClientSecret clientSecret);
 
-        MastodonClient? FindMastodonClient(Instance instance);
+        ValueTask<MastodonClient?> FindMastodonClient(Instance instance);
 
-        void SaveMastodonClient(MastodonClient mastodonClient);
+        ValueTask SaveMastodonClient(MastodonClient mastodonClient);
     }
 }

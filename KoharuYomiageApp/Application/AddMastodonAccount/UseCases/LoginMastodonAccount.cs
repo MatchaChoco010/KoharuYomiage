@@ -25,7 +25,7 @@ namespace KoharuYomiageApp.Application.AddMastodonAccount.UseCases
         {
             var instance = new Instance(loginInfo.Instance);
 
-            var mastodonClient = _clientRepository.FindMastodonClient(instance);
+            var mastodonClient = await _clientRepository.FindMastodonClient(instance);
             if (mastodonClient is null)
             {
                 MastodonClientId clientId;
@@ -44,12 +44,12 @@ namespace KoharuYomiageApp.Application.AddMastodonAccount.UseCases
                 }
 
                 mastodonClient = _clientRepository.CreateMastodonClient(instance, clientId, clientSecret);
-                _clientRepository.SaveMastodonClient(mastodonClient);
+                await _clientRepository.SaveMastodonClient(mastodonClient);
             }
 
             var authorizeUrl = await mastodonClient.GetAuthorizeUri();
 
-            _showAuthUrl.ShowAuthUrl(new AuthUrl(authorizeUrl));
+            _showAuthUrl.ShowAuthUrl(new AuthorizationUrl(authorizeUrl));
         }
     }
 }

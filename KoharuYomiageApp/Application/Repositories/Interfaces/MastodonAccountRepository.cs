@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using KoharuYomiageApp.Application.Repositories.UseCases;
 using KoharuYomiageApp.Entities;
 
@@ -7,24 +7,44 @@ namespace KoharuYomiageApp.Application.Repositories.Interfaces
 {
     public class MastodonAccountRepository : IMastodonAccountRepository
     {
-        public AuthorizedMastodonAccount FindAuthorizedMastodonAccount(Username username, Instance instance)
+        readonly IMastodonAccountStorage _storage;
+
+        public MastodonAccountRepository(IMastodonAccountStorage storage)
         {
-            throw new NotImplementedException();
+            _storage = storage;
         }
 
-        public AuthorizedMastodonAccount FindOrCreateAuthorizedMastodonAccount(Username username, Instance instance)
+        public async ValueTask<MastodonAccount?> FindMastodonAccount(AccountIdentifier identigier)
         {
-            throw new NotImplementedException();
+            var accountData = await _storage.FindMastodonAccountData(identigier.Value);
+            if (accountData is not null)
+            {
+                return new MastodonAccount(new Username(accountData.Username), new Instance(accountData.Instance),
+                    new MastodonAccessToken(accountData.AccessToken),
+                    new MastodonAccountIconUrl(accountData.IconUrl));
+            }
+
+            return null;
         }
 
-        public IEnumerable<AuthorizedMastodonAccount> GetAuthorizedMastodonAccounts()
+        public MastodonAccount CreateMastodonAccount(Username username, Instance instance,
+            MastodonAccessToken accessToken, MastodonAccountIconUrl iconUrl)
         {
-            throw new NotImplementedException();
+            return new(username, instance, accessToken, iconUrl);
         }
 
-        public void SaveAuthorizedMastodonAccount(AuthorizedMastodonAccount account)
+        public async ValueTask<IEnumerable<MastodonAccount>> GetMastodonAccounts()
         {
-            throw new NotImplementedException();
+            // TODO
+            await Task.CompletedTask;
+            return new MastodonAccount[] { };
+        }
+
+        public async ValueTask SaveMastodonAccount(MastodonAccount account)
+        {
+            await _storage.SaveMastodonAccountData(new MastodonAccountData(account.Username.Value,
+                account.Instance.Value,
+                account.AccessToken.Token, account.IconUrl.IconUrl));
         }
     }
 }

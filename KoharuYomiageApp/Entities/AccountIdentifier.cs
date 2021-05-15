@@ -7,6 +7,6 @@
             Value = username.Value + "@" + instance.Value;
         }
 
-        public string Value { get; init; }
+        public string Value { get; }
     }
 }

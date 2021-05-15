@@ -15,6 +15,6 @@ namespace KoharuYomiageApp.Entities
             Value = username;
         }
 
-        public string Value { get; init; }
+        public string Value { get; }
     }
 }

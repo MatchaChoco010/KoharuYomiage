@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="KoharuYomiageApp.Infrastructures.GUI.Views.RegisterClientErrorDialogContent"
+﻿<UserControl x:Class="KoharuYomiageApp.Infrastructures.GUI.Views.MastodonAuthenticationErrorDialogContent"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -26,8 +26,8 @@
                    VerticalAlignment="Center"
                    TextAlignment="Center"
                    FontSize="16">
-            クライアント登録時にエラーが発生しました。<LineBreak />
-            インスタンス名に<LineBreak />
+            アカウント認証時にエラーが発生しました。<LineBreak />
+            認証コードに<LineBreak />
             間違いがないか確認してください。
         </TextBlock>
         <Button Grid.Row="2"

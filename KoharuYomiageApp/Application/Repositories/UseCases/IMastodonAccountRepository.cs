@@ -1,16 +1,18 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using KoharuYomiageApp.Entities;
 
 namespace KoharuYomiageApp.Application.Repositories.UseCases
 {
     public interface IMastodonAccountRepository
     {
-        AuthorizedMastodonAccount FindAuthorizedMastodonAccount(Username username, Instance instance);
+        ValueTask<MastodonAccount?> FindMastodonAccount(AccountIdentifier identifier);
 
-        AuthorizedMastodonAccount FindOrCreateAuthorizedMastodonAccount(Username username, Instance instance);
+        MastodonAccount CreateMastodonAccount(Username username, Instance instance, MastodonAccessToken accessToken,
+            MastodonAccountIconUrl iconUrl);
 
-        IEnumerable<AuthorizedMastodonAccount> GetAuthorizedMastodonAccounts();
+        ValueTask<IEnumerable<MastodonAccount>> GetMastodonAccounts();
 
-        void SaveAuthorizedMastodonAccount(AuthorizedMastodonAccount account);
+        ValueTask SaveMastodonAccount(MastodonAccount account);
     }
 }

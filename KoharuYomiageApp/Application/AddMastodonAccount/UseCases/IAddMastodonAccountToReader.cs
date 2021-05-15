@@ -2,8 +2,8 @@
 
 namespace KoharuYomiageApp.Application.AddMastodonAccount.UseCases
 {
-    public interface IShowAuthUrl
+    public interface IAddMastodonAccountToReader
     {
-        void ShowAuthUrl(AuthorizationUrl authorizationUrl);
+        void AddMastodonAccountToReader(AddReaderInfo addReaderInfo);
     }
 }

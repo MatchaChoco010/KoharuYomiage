@@ -2,5 +2,5 @@
 
 namespace KoharuYomiageApp.Application.AddMastodonAccount.UseCases.DataObjects
 {
-    public record AuthUrl(Uri Url);
+    public record AuthorizationUrl(Uri Url);
 }

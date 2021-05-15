@@ -11,9 +11,9 @@ namespace KoharuYomiageApp.Application.AddMastodonAccount.Interfaces
 
         public IObservable<Uri> OnShowAuthUrl => onShowAuthUrl;
 
-        public void ShowAuthUrl(AuthUrl authUrl)
+        public void ShowAuthUrl(AuthorizationUrl authorizationUrl)
         {
-            onShowAuthUrl.OnNext(authUrl.Url);
+            onShowAuthUrl.OnNext(authorizationUrl.Url);
         }
     }
 }

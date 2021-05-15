@@ -51,12 +51,12 @@
                         Padding="8"
                         Margin="8"
                         VerticalAlignment="Center"
-                        xf:Animations.Primary="{xf:Animate BasedOn={StaticResource FadeInAndSlideFromRight}, Duration=1000, Delay=1000}"
+                        xf:Animations.Primary="{xf:Animate BasedOn={StaticResource FadeInAndSlideFromRight}, Duration=1000}"
                         Command="{Binding OpenBrowserCommand}">
                     認証コードをWebブラウザから取得する
                 </Button>
                 <Grid
-                    xf:Animations.Primary="{xf:Animate BasedOn={StaticResource FadeInAndSlideFromRight}, Duration=1000, Delay=500}">
+                    xf:Animations.Primary="{xf:Animate BasedOn={StaticResource FadeInAndSlideFromRight}, Duration=1000, Delay=300}">
                     <TextBlock MaxWidth="450"
                                Margin="16, 8"
                                Padding="8, 0"
@@ -85,7 +85,7 @@
                         Padding="8"
                         Margin="8"
                         VerticalAlignment="Center"
-                        xf:Animations.Primary="{xf:Animate BasedOn={StaticResource FadeInAndSlideFromRight}, Duration=1000, Delay=1000}"
+                        xf:Animations.Primary="{xf:Animate BasedOn={StaticResource FadeInAndSlideFromRight}, Duration=1000, Delay=600}"
                         Command="{Binding AuthenticateCommand}"
                         IsEnabled="{Binding AuthenticateEnabled.Value}">
                     認証

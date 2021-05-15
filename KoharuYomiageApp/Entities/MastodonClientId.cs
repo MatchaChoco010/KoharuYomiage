@@ -1,4 +1,19 @@
-﻿namespace KoharuYomiageApp.Entities
+﻿using System;
+
+namespace KoharuYomiageApp.Entities
 {
-    public record MastodonClientId(string Value);
+    public record MastodonClientId
+    {
+        public MastodonClientId(string value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                throw new ArgumentException("Mastodon client id must not be empty");
+            }
+
+            Value = value;
+        }
+
+        public string Value { get; }
+    }
 }

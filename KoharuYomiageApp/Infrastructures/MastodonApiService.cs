@@ -1,11 +1,44 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using KoharuYomiageApp.Application.AddMastodonAccount.Interfaces;
 using MastodonApi;
 
 namespace KoharuYomiageApp.Infrastructures
 {
-    public class MastodonApiService : IMastodonApiRegisterClientService
+    public class MastodonApiService : IMastodonApiRegisterClientService, IMastodonApiAuthorizeAccountWithCodeService,
+        IMastodonApiGetAccountInfoService, IMastodonApiAddAccountToReaderService
     {
+        readonly Dictionary<string, IDisposable> _connections = new();
+
+        public void AddAccountToReader(string accountIdentifier, string instance, string accessToken)
+        {
+            if (_connections.ContainsKey(accountIdentifier))
+            {
+                _connections[accountIdentifier].Dispose();
+                _connections.Remove(accountIdentifier);
+            }
+
+            var disposable =
+                Api.GetUserStreamingObservable(instance, new AccessToken(accessToken))
+                    .Subscribe(_ => { });
+            _connections.Add(accountIdentifier, disposable);
+        }
+
+        public async ValueTask<string> AuthorizeWithCode(string instance, string clientId, string clientSecret,
+            string code)
+        {
+            var accessToken =
+                await Api.AuthorizeWithCode(instance, new ClientId(clientId), new ClientSecret(clientSecret), code);
+            return accessToken.Token;
+        }
+
+        public async ValueTask<(string, Uri)> GetAccountInfo(string instance, string accessToken)
+        {
+            var account = await Api.GetAccountInformation(instance, new AccessToken(accessToken));
+            return (account.username, new Uri(account.avatar_static));
+        }
+
         public async ValueTask<(string, string)> RegisterClient(string instance)
         {
             var (id, secret) = await Api.RegisterApp(instance);

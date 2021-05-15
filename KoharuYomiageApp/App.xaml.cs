@@ -7,6 +7,7 @@ using KoharuYomiageApp.Application.Repositories.Interfaces;
 using KoharuYomiageApp.Application.Repositories.UseCases;
 using KoharuYomiageApp.Infrastructures;
 using KoharuYomiageApp.Infrastructures.GUI.Views;
+using KoharuYomiageApp.Infrastructures.JsonStorage;
 using Prism.DryIoc;
 using Prism.Ioc;
 
@@ -27,6 +28,8 @@ namespace KoharuYomiageApp
             containerRegistry.RegisterDialog<LoadTalkerErrorDialogContent>();
             containerRegistry.RegisterDialog<LoadTalkerLinkDialogContent>();
             containerRegistry.RegisterDialog<RegisterClientErrorDialogContent>();
+            containerRegistry.RegisterDialog<GetMastodonAccountInfoErrorDialogContent>();
+            containerRegistry.RegisterDialog<MastodonAuthenticationErrorDialogContent>();
             // Views
             containerRegistry.RegisterForNavigation<ViewA>();
             containerRegistry.RegisterForNavigation<ViewB>();
@@ -38,9 +41,9 @@ namespace KoharuYomiageApp
             // Application
             // LoadTalker Feature
             containerRegistry.RegisterSingleton<ILoadTalkerInputBoundary, LoadTalkerInteractor>();
+            containerRegistry.RegisterSingleton<LoadTalkerController>();
             containerRegistry.RegisterManySingleton<LoadTalkerPresenter>(typeof(ILoadTalkerOutputBoundary),
                 typeof(LoadTalkerPresenter));
-            containerRegistry.RegisterSingleton<LoadTalkerController>();
             // AddMastodonAccount Feature
             containerRegistry.RegisterSingleton<ILoginMastodonAccount, LoginMastodonAccount>();
             containerRegistry.RegisterSingleton<LoginMastodonAccountController>();
@@ -49,17 +52,47 @@ namespace KoharuYomiageApp
                 typeof(ShowRegisterClientErrorPresenter));
             containerRegistry.RegisterManySingleton<ShowAuthUrlPresenter>(typeof(IShowAuthUrl),
                 typeof(ShowAuthUrlPresenter));
+            containerRegistry.RegisterSingleton<IAuthorizeMastodonAccount, AuthorizeMastodonAccount>();
+            containerRegistry.RegisterSingleton<AuthorizeMastodonAccountController>();
+            containerRegistry.RegisterManySingleton<AuthorizeMastodonAccountWithCodePresenter>(
+                typeof(IAuthorizeMastodonAccountWithCode),
+                typeof(AuthorizeMastodonAccountWithCodePresenter));
+            containerRegistry.RegisterManySingleton<ShowMastodonAuthenticationErrorPresenter>(
+                typeof(IShowMastodonAuthenticationError),
+                typeof(ShowMastodonAuthenticationErrorPresenter));
+            containerRegistry.RegisterManySingleton<GetAccountInfoPresenter>(typeof(IGetAccountInfo),
+                typeof(GetAccountInfoPresenter));
+            containerRegistry.RegisterManySingleton<ShowGetMastodonAccountInfoErrorPresenter>(
+                typeof(IShowGetMastodonAccountInfoError),
+                typeof(ShowGetMastodonAccountInfoErrorPresenter));
+            containerRegistry.RegisterManySingleton<AddMastodonAccountToReaderPresenter>(
+                typeof(IAddMastodonAccountToReader),
+                typeof(AddMastodonAccountToReaderPresenter));
+            containerRegistry.RegisterManySingleton<FinishAuthorizeMastodonAccountPresenter>(
+                typeof(IFinishAuthorizeMastodonAccount),
+                typeof(FinishAuthorizeMastodonAccountPresenter));
             // Repositories
             containerRegistry.RegisterSingleton<IMastodonClientRepository, MastodonClientRepository>();
+            containerRegistry.RegisterSingleton<IMastodonAccountRepository, MastodonAccountRepository>();
 
             // Infrastructures
             // CeVIOAI
             containerRegistry.RegisterSingleton<CeVIOAIService>();
             Container.Resolve<CeVIOAIService>();
             // MastodonApi
-            containerRegistry.RegisterManySingleton<MastodonApiService>(typeof(IMastodonApiRegisterClientService),
+            containerRegistry.RegisterManySingleton<MastodonApiService>(
+                typeof(IMastodonApiAddAccountToReaderService),
+                typeof(IMastodonApiAuthorizeAccountWithCodeService),
+                typeof(IMastodonApiGetAccountInfoService),
+                typeof(IMastodonApiRegisterClientService),
                 typeof(MastodonApiService));
             Container.Resolve<MastodonApiService>();
+            // JsonStorage
+            containerRegistry.RegisterMany<JsonStorage>(
+                typeof(IMastodonAccountStorage),
+                typeof(IMastodonClientStorage),
+                typeof(JsonStorage));
+            Container.Resolve<JsonStorage>();
         }
 
         protected override void OnExit(ExitEventArgs e)

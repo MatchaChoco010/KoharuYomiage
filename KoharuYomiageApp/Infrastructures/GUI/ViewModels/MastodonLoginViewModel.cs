@@ -59,7 +59,7 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
             _showAuthUrlPresenter.OnShowAuthUrl
                 .Subscribe(authUrl =>
                     navigationContext.NavigationService.RequestNavigate(nameof(MastodonAuthCode),
-                        new NavigationParameters {{"AuthUrl", authUrl}}))
+                        new NavigationParameters {{"AuthUrl", authUrl}, {"InstanceName", InstanceName.Value}}))
                 .AddTo(_disposable);
         }
 
