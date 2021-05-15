@@ -1,0 +1,159 @@
+﻿<UserControl x:Class="KoharuYomiageApp.Infrastructures.GUI.Views.MainControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:prism="http://prismlibrary.com/"
+             xmlns:fw="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
+             xmlns:xf="clr-namespace:XamlFlair;assembly=XamlFlair.WPF"
+             xmlns:xfc="clr-namespace:XamlFlair.Controls;assembly=XamlFlair.WPF"
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="*" MinWidth="150" />
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="0">
+            <Grid.Resources>
+                <Style x:Key="ItemText"
+                       TargetType="{x:Type TextBlock}"
+                       BasedOn="{StaticResource BodyTextBlockStyle}">
+                    <Setter Property="Foreground" Value="{DynamicResource SystemBaseHighColorBrush}" />
+                    <Setter Property="Margin" Value="8, 8,8,32" />
+                    <Setter Property="FontSize" Value="22" />
+                </Style>
+                <Style x:Key="ContainerStyle"
+                       TargetType="ListViewItem">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type ContentControl}">
+                                <Border Background="{TemplateBinding Background}">
+                                    <ContentPresenter />
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="Transparent" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+                <Style x:Key="SettingsButtonStyle"
+                       TargetType="{x:Type Button}"
+                       BasedOn="{StaticResource ButtonRoundRevealStyle}">
+                    <Setter Property="Margin" Value="8" />
+                    <Setter Property="Width" Value="48" />
+                    <Setter Property="Height" Value="48" />
+                    <Setter Property="Background" Value="Transparent" />
+                    <Setter Property="FontSize" Value="28" />
+                    <Setter Property="HorizontalContentAlignment" Value="Center" />
+                    <Setter Property="VerticalContentAlignment" Value="Center" />
+                    <Setter Property="FontFamily" Value="Segoe MDL2 Assets" />
+                </Style>
+            </Grid.Resources>
+            <xfc:AnimatedListView ItemsSource="{Binding TextList}"
+                                  Background="Transparent"
+                                  BorderBrush="Transparent"
+                                  Padding="72,0,0,0"
+                                  ItemContainerStyle="{StaticResource ContainerStyle}"
+                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                  ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                  VirtualizingPanel.ScrollUnit="Pixel"
+                                  xf:Animations.Items="{xf:Animate BasedOn={StaticResource FadeInAndSlideFromBottom}, Duration=2400}">
+                <xfc:AnimatedListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Text}" Style="{StaticResource ItemText}" />
+                    </DataTemplate>
+                </xfc:AnimatedListView.ItemTemplate>
+            </xfc:AnimatedListView>
+            <Button Style="{StaticResource SettingsButtonStyle}"
+                    Content="&#xE713;"
+                    VerticalAlignment="Bottom"
+                    HorizontalAlignment="Left"
+                    Margin="16,0,0,16" />
+        </Grid>
+
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Image Grid.Row="0"
+                   Stretch="Uniform"
+                   Source="/Resources/koharu0.png"
+                   VerticalAlignment="Bottom"
+                   RenderOptions.BitmapScalingMode="Fant"
+                   Margin="0, 0,16,0"
+                   xf:Animations.Primary="{xf:Animate BasedOn={StaticResource FadeInAndSlideFromRight}, Duration=800, Delay=600, OffsetX=20}" />
+            <Grid Grid.Row="1"
+                  Margin="0,0,16,8"
+                  xf:Animations.Primary="{xf:Animate BasedOn={StaticResource FadeInAndSlideFromRight}, Duration=500, Delay=300, OffsetX=20}">
+                <Grid.Resources>
+                    <Style TargetType="{x:Type Button}"
+                           BasedOn="{StaticResource ButtonRoundRevealStyle}">
+                        <Setter Property="Margin" Value="8" />
+                        <Setter Property="Width" Value="48" />
+                        <Setter Property="Height" Value="48" />
+                        <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="FontSize" Value="28" />
+                        <Setter Property="FontFamily" Value="Segoe MDL2 Assets" />
+                    </Style>
+                    <Style x:Key="SliderThumbStyle"
+                           TargetType="{x:Type Thumb}">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Thumb}">
+                                    <Ellipse
+                                        Fill="{Binding Path=(fw:AccentColors.ImmersiveSystemAccentBrush)}"
+                                        Width="20" Height="20" />
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                    <Style TargetType="{x:Type Slider}">
+                        <Setter Property="Margin" Value="8" />
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate>
+                                    <Track x:Name="PART_Track">
+                                        <Track.DecreaseRepeatButton>
+                                            <RepeatButton Command="Slider.DecreaseLarge"
+                                                          BorderBrush="{DynamicResource SystemBaseLowColorBrush}"
+                                                          Background="{Binding Path=(fw:AccentColors.ImmersiveSystemAccentBrush)}"
+                                                          Height="6" />
+                                        </Track.DecreaseRepeatButton>
+                                        <Track.IncreaseRepeatButton>
+                                            <RepeatButton Command="Slider.IncreaseLarge"
+                                                          BorderBrush="{DynamicResource SystemBaseLowColorBrush}"
+                                                          Background="{DynamicResource SystemBaseMediumColorBrush}"
+                                                          Height="6" />
+                                        </Track.IncreaseRepeatButton>
+                                        <Track.Thumb>
+                                            <Thumb Style="{StaticResource SliderThumbStyle}" />
+                                        </Track.Thumb>
+                                    </Track>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Grid.Resources>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0"
+                        Content="{Binding VolumeIcon.Value}"
+                        VerticalAlignment="Center" />
+                <Slider Grid.Column="1"
+                        Value="{Binding Volume.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Minimum="0.0"
+                        Maximum="1.5"
+                        VerticalAlignment="Center"
+                        Margin="0,8,8,8" />
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>

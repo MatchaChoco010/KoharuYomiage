@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reactive.Disposables;
 using System.Windows.Media;
+using KoharuYomiageApp.Application.ReadText.Interfaces;
 using KoharuYomiageApp.Application.WindowLoaded.Interfaces;
 using KoharuYomiageApp.Infrastructures.GUI.Views;
 using Prism.Mvvm;
@@ -20,6 +21,7 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
         readonly PushStartButtonController _pushStartButtonController;
         readonly ShowLoadTalkerErrorPresenter _showLoadTalkerErrorPresenter;
         readonly StartAppPresenter _startAppPresenter;
+        readonly StartReadingController _startReadingController;
         readonly StartRegisteringAccountPresenter _startRegisteringAccountPresenter;
         readonly WindowLoadedController _windowLoadedController;
 
@@ -28,7 +30,7 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
             ShowLoadTalkerErrorPresenter showLoadTalkerErrorPresenter,
             PushStartButtonController pushStartButtonController,
             StartRegisteringAccountPresenter startRegisteringAccountPresenter, StartAppPresenter startAppPresenter,
-            IDialogService dialogService)
+            StartReadingController startReadingController, IDialogService dialogService)
         {
             _windowLoadedController = windowLoadedController;
             _finishLoadTalkerPresenter = finishLoadTalkerPresenter;
@@ -36,6 +38,7 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
             _pushStartButtonController = pushStartButtonController;
             _startRegisteringAccountPresenter = startRegisteringAccountPresenter;
             _startAppPresenter = startAppPresenter;
+            _startReadingController = startReadingController;
             _dialogService = dialogService;
         }
 
@@ -63,19 +66,28 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
             _showLoadTalkerErrorPresenter.OnShowLoadTalkerError.Subscribe(_ => ShowLoadErrorDialogs())
                 .AddTo(_disposable);
             _startRegisteringAccountPresenter.OnStartRegisterAccount.Subscribe(_ =>
-                navigationContext.NavigationService.RequestNavigate(nameof(SelectSNS),
-                    new NavigationParameters {{"FirstLogin", true}})).AddTo(_disposable);
+                {
+                    _startReadingController.StartReading();
+                    navigationContext.NavigationService.RequestNavigate(nameof(SelectSNS),
+                        new NavigationParameters {{"FirstLogin", true}});
+                }
+            ).AddTo(_disposable);
             _startAppPresenter.OnStartApp
-                .Subscribe(_ => navigationContext.NavigationService.RequestNavigate(nameof(ViewA))).AddTo(_disposable);
+                .Subscribe(_ =>
+                {
+                    _startReadingController.StartReading();
+                    navigationContext.NavigationService.RequestNavigate(nameof(MainControl));
+                }).AddTo(_disposable);
         }
 
         public bool IsNavigationTarget(NavigationContext navigationContext)
         {
-            return false;
+            return true;
         }
 
         public void OnNavigatedFrom(NavigationContext navigationContext)
         {
+            _startReadingController.Dispose();
             _disposable.Clear();
         }
 

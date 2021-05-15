@@ -3,6 +3,8 @@ using KoharuYomiageApp.Application.AddMastodonAccount.Interfaces;
 using KoharuYomiageApp.Application.AddMastodonAccount.UseCases;
 using KoharuYomiageApp.Application.AddMastodonTimelineItem.Interfaces;
 using KoharuYomiageApp.Application.AddMastodonTimelineItem.UseCases;
+using KoharuYomiageApp.Application.ReadText.Interfaces;
+using KoharuYomiageApp.Application.ReadText.UseCases;
 using KoharuYomiageApp.Application.Repositories.Interfaces;
 using KoharuYomiageApp.Application.Repositories.UseCases;
 using KoharuYomiageApp.Application.WindowLoaded.Interfaces;
@@ -39,6 +41,7 @@ namespace KoharuYomiageApp
             containerRegistry.RegisterForNavigation<SelectSNS>();
             containerRegistry.RegisterForNavigation<MastodonLogin>();
             containerRegistry.RegisterForNavigation<MastodonAuthCode>();
+            containerRegistry.RegisterForNavigation<MainControl>();
 
             // Application
             // LoadTalker Feature
@@ -92,6 +95,12 @@ namespace KoharuYomiageApp
             containerRegistry.RegisterSingleton<AddMastodonStatusController>();
             containerRegistry.RegisterSingleton<IMastodonSensitiveStatusReceiver, MastodonSensitiveStatusReceiver>();
             containerRegistry.RegisterSingleton<AddMastodonSensitiveStatusController>();
+            // ReadText
+            containerRegistry.RegisterSingleton<IStartReading, TextReader>();
+            containerRegistry.RegisterSingleton<StartReadingController>();
+            containerRegistry.RegisterManySingleton<SpeakTextPresenter>(typeof(ISpeakText), typeof(SpeakTextPresenter));
+            containerRegistry.RegisterManySingleton<UpdateTextListViewPresenter>(typeof(IUpdateTextListView),
+                typeof(UpdateTextListViewPresenter));
             // Repositories
             containerRegistry.RegisterSingleton<MastodonAccountRepository>();
             containerRegistry.RegisterSingleton<IMastodonAccountGateway, MastodonAccountGateway>();
@@ -103,6 +112,7 @@ namespace KoharuYomiageApp
             // CeVIOAI
             containerRegistry.RegisterManySingleton<CeVIOAIService>(
                 typeof(ICeVIOAILoadTalkerService),
+                typeof(ICeVIOAISpeakTextService),
                 typeof(CeVIOAIService));
             Container.Resolve<CeVIOAIService>();
             // MastodonApi

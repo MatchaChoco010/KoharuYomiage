@@ -70,7 +70,7 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
                     AuthenticateEnabled.Value = true;
                 }).AddTo(_disposable);
             _finishAuthorizeMastodonAccountPresenter.OnFinishAuthorize
-                .Subscribe(_ => navigationContext.NavigationService.RequestNavigate(nameof(ViewA)))
+                .Subscribe(_ => navigationContext.NavigationService.RequestNavigate(nameof(MainControl)))
                 .AddTo(_disposable);
         }
 

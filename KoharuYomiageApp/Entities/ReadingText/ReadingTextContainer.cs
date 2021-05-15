@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Subjects;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -9,12 +10,12 @@ namespace KoharuYomiageApp.Entities.ReadingText
     public class ReadingTextContainer
     {
         readonly List<ReadingTextItem> _list = new();
-
+        readonly Subject<IEnumerable<ReadingTextItem>> _onItemsChange = new();
         readonly object _syncObject = new();
-        List<WeakReference<TaskCompletionSource<bool>>> _listForOverflow = new();
 
-        List<WeakReference<TaskCompletionSource<ReadingTextItem>>> _listForTakeAsync = new();
-        uint _maxCount = 10;
+        List<TaskCompletionSource<bool>> _listForOverflow = new();
+        List<TaskCompletionSource<ReadingTextItem>> _listForTakeAsync = new();
+        uint _maxCount = 3;
 
         public uint MaxCount
         {
@@ -28,12 +29,12 @@ namespace KoharuYomiageApp.Entities.ReadingText
             }
         }
 
+        public IObservable<IEnumerable<ReadingTextItem>> OnItemsChange => _onItemsChange;
+
         void ClearWeakList()
         {
-            _listForTakeAsync = _listForTakeAsync.Where(weak => weak.TryGetTarget(out var tcs) && !tcs.Task.IsCompleted)
-                .ToList();
-            _listForOverflow = _listForOverflow.Where(weak => weak.TryGetTarget(out var tcs) && !tcs.Task.IsCompleted)
-                .ToList();
+            _listForTakeAsync = _listForTakeAsync.Where(tcs => !tcs.Task.IsCompleted).ToList();
+            _listForOverflow = _listForOverflow.Where(tcs => !tcs.Task.IsCompleted).ToList();
         }
 
         public void Add(ReadingTextItem item)
@@ -42,45 +43,29 @@ namespace KoharuYomiageApp.Entities.ReadingText
             {
                 ClearWeakList();
 
-                var listCount = _list.Count;
-                if (listCount is 0)
-                {
-                    if (_listForTakeAsync.Count is 0)
-                    {
-                        _list.Add(item);
-                    }
-                    else
-                    {
-                        foreach (var weak in _listForTakeAsync)
-                        {
-                            if (weak.TryGetTarget(out var tcs))
-                            {
-                                tcs.SetResult(item);
-                            }
-                        }
-                    }
-                }
-                else if (listCount > 0 && listCount < MaxCount)
-                {
-                    _list.Add(item);
-                }
-                else
-                {
-                    foreach (var weak in _listForOverflow)
-                    {
-                        if (weak.TryGetTarget(out var tcs))
-                        {
-                            tcs.SetResult(true);
-                        }
-                    }
+                _list.Add(item);
+                _onItemsChange.OnNext(new List<ReadingTextItem>(_list));
 
-                    _list.RemoveAt(0);
-                    _list.Add(item);
+                var listCount = _list.Count;
+                if (listCount is not 0)
+                {
+                    foreach (var tcs in _listForTakeAsync)
+                    {
+                        tcs.SetResult(item);
+                    }
+                }
+
+                if (listCount >= MaxCount)
+                {
+                    foreach (var tcs in _listForOverflow)
+                    {
+                        tcs.SetResult(true);
+                    }
                 }
             }
         }
 
-        public ValueTask<ReadingTextItem> TakeAsync(CancellationToken cancellationToken)
+        public ValueTask<ReadingTextItem> GetAsync(CancellationToken cancellationToken)
         {
             lock (_syncObject)
             {
@@ -89,15 +74,25 @@ namespace KoharuYomiageApp.Entities.ReadingText
                 if (_list.Count is >0)
                 {
                     var item = _list[0];
-                    _list.RemoveAt(0);
                     return new ValueTask<ReadingTextItem>(item);
                 }
 
                 var tcs = new TaskCompletionSource<ReadingTextItem>(cancellationToken);
-                _listForTakeAsync.Add(new WeakReference<TaskCompletionSource<ReadingTextItem>>(tcs));
+                _listForTakeAsync.Add(tcs);
 
                 return new ValueTask<ReadingTextItem>(tcs.Task);
             }
+        }
+
+        public void RemoveFirstItem()
+        {
+            if (_list.Count is not >0)
+            {
+                return;
+            }
+
+            _list.RemoveAt(0);
+            _onItemsChange.OnNext(_list.ToList());
         }
 
         public Task Overflow(CancellationToken cancellationToken)
@@ -106,8 +101,13 @@ namespace KoharuYomiageApp.Entities.ReadingText
             {
                 ClearWeakList();
 
+                if (_list.Count >= MaxCount)
+                {
+                    return Task.CompletedTask;
+                }
+
                 var tcs = new TaskCompletionSource<bool>(cancellationToken);
-                _listForOverflow.Add(new WeakReference<TaskCompletionSource<bool>>(tcs));
+                _listForOverflow.Add(tcs);
 
                 return tcs.Task;
             }
