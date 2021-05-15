@@ -10,5 +10,16 @@ namespace KoharuYomiageApp.Application.Repositories.Interfaces
         {
             return new(instance, clientId, clientSecret);
         }
+
+        public MastodonClient? FindMastodonClient(Instance instance)
+        {
+            // TODO
+            return null;
+        }
+
+        public void SaveMastodonClient(MastodonClient mastodonClient)
+        {
+            // TODO
+        }
     }
 }

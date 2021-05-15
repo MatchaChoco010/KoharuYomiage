@@ -23,24 +23,29 @@ namespace KoharuYomiageApp.Application.AddMastodonAccount.UseCases
 
         public async ValueTask Login(LoginInfo loginInfo)
         {
-            MastodonClientId clientId;
-            MastodonClientSecret clientSecret;
-
-            try
-            {
-                var (id, secret) = await _registerClient.RegisterClient(loginInfo);
-                clientId = new MastodonClientId(id);
-                clientSecret = new MastodonClientSecret(secret);
-            }
-            catch
-            {
-                _showRegisterClientError.ShowRegisterClientError();
-                return;
-            }
-
             var instance = new Instance(loginInfo.Instance);
 
-            var mastodonClient = _clientRepository.CreateMastodonClient(instance, clientId, clientSecret);
+            var mastodonClient = _clientRepository.FindMastodonClient(instance);
+            if (mastodonClient is null)
+            {
+                MastodonClientId clientId;
+                MastodonClientSecret clientSecret;
+
+                try
+                {
+                    var (id, secret) = await _registerClient.RegisterClient(loginInfo);
+                    clientId = new MastodonClientId(id);
+                    clientSecret = new MastodonClientSecret(secret);
+                }
+                catch
+                {
+                    _showRegisterClientError.ShowRegisterClientError();
+                    return;
+                }
+
+                mastodonClient = _clientRepository.CreateMastodonClient(instance, clientId, clientSecret);
+                _clientRepository.SaveMastodonClient(mastodonClient);
+            }
 
             var authorizeUrl = await mastodonClient.GetAuthorizeUri();
 

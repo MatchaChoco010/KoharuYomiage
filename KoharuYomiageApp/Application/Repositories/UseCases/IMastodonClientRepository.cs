@@ -6,5 +6,9 @@ namespace KoharuYomiageApp.Application.Repositories.UseCases
     {
         MastodonClient CreateMastodonClient(Instance instance, MastodonClientId clientId,
             MastodonClientSecret clientSecret);
+
+        MastodonClient? FindMastodonClient(Instance instance);
+
+        void SaveMastodonClient(MastodonClient mastodonClient);
     }
 }
