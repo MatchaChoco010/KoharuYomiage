@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Subjects;
+using System.Text.RegularExpressions;
 using KoharuYomiageApp.Application.ReadText.UseCases;
 
 namespace KoharuYomiageApp.Application.ReadText.Interfaces
@@ -21,15 +22,23 @@ namespace KoharuYomiageApp.Application.ReadText.Interfaces
             var itemList = list.ToList();
 
             var deleteList = _prevList.Where(item => !itemList.Contains(item));
-            foreach (var item in deleteList)
+            foreach (var (id, text) in deleteList)
             {
-                _onDeleteItem.OnNext(item);
+                string filteredText = text;
+                filteredText = Regex.Replace(filteredText, "<br[^>]*?>", "\n");
+                filteredText = Regex.Replace(filteredText, "</p>", "</p>\n\n");
+                filteredText = Regex.Replace(filteredText, "<[^>]*?>", "");
+                _onDeleteItem.OnNext((id, filteredText));
             }
 
             var addList = itemList.Where(item => !_prevList.Contains(item));
-            foreach (var item in addList)
+            foreach (var (id, text) in addList)
             {
-                _onAddItem.OnNext(item);
+                string filteredText = text;
+                filteredText = Regex.Replace(filteredText, "<br[^>]*?>", "\n");
+                filteredText = Regex.Replace(filteredText, "</p>", "</p>\n\n");
+                filteredText = Regex.Replace(filteredText, "<[^>]*?>", "");
+                _onAddItem.OnNext((id, filteredText));
             }
 
             _prevList = itemList;
