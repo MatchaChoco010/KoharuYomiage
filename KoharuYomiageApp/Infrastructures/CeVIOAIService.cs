@@ -3,32 +3,23 @@ using System.Reactive.Disposables;
 using System.Threading.Tasks;
 using CeVIOAI;
 using CeVIOAI.Exceptions;
-using KoharuYomiageApp.Application.LoadTalker.Interfaces;
+using KoharuYomiageApp.Application.WindowLoaded.Interfaces;
 using Reactive.Bindings.Extensions;
 
 namespace KoharuYomiageApp.Infrastructures
 {
-    public class CeVIOAIService : IDisposable
+    public class CeVIOAIService : IDisposable, ICeVIOAILoadTalkerService
     {
         readonly CompositeDisposable _disposable = new();
 
         KoharuRikka? _rikka;
 
-        public CeVIOAIService(LoadTalkerController loadTalkerController, LoadTalkerPresenter loadTalkerPresenter)
+        public async ValueTask LoadTalker()
         {
-            loadTalkerPresenter.OnLoadedWindow
-                .Subscribe(async _ =>
-                {
-                    try
-                    {
-                        await Task.Run(() => _rikka = new KoharuRikka());
-                        loadTalkerController.TalkerLoadedSuccess();
-                    }
-                    catch (Exception e) when (e is DllNotFound or CastNotFound)
-                    {
-                        loadTalkerController.TalkerLoadedFailure();
-                    }
-                }).AddTo(_disposable);
+            await Task.Run(() =>
+            {
+                _rikka = new KoharuRikka();
+            });
         }
 
         void IDisposable.Dispose()

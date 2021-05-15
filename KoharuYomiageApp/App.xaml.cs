@@ -1,10 +1,10 @@
 ﻿using System.Windows;
 using KoharuYomiageApp.Application.AddMastodonAccount.Interfaces;
 using KoharuYomiageApp.Application.AddMastodonAccount.UseCases;
-using KoharuYomiageApp.Application.LoadTalker.Interfaces;
-using KoharuYomiageApp.Application.LoadTalker.UseCases;
 using KoharuYomiageApp.Application.Repositories.Interfaces;
 using KoharuYomiageApp.Application.Repositories.UseCases;
+using KoharuYomiageApp.Application.WindowLoaded.Interfaces;
+using KoharuYomiageApp.Application.WindowLoaded.UseCases;
 using KoharuYomiageApp.Infrastructures;
 using KoharuYomiageApp.Infrastructures.GUI.Views;
 using KoharuYomiageApp.Infrastructures.JsonStorage;
@@ -40,10 +40,11 @@ namespace KoharuYomiageApp
 
             // Application
             // LoadTalker Feature
-            containerRegistry.RegisterSingleton<ILoadTalkerInputBoundary, LoadTalkerInteractor>();
-            containerRegistry.RegisterSingleton<LoadTalkerController>();
-            containerRegistry.RegisterManySingleton<LoadTalkerPresenter>(typeof(ILoadTalkerOutputBoundary),
-                typeof(LoadTalkerPresenter));
+            containerRegistry.RegisterSingleton<IWindowLoaded, WindowLoaded>();
+            containerRegistry.RegisterSingleton<WindowLoadedController>();
+            containerRegistry.RegisterManySingleton<LoadTalkerPresenter>(typeof(ILoadTalker), typeof(LoadTalkerPresenter));
+            containerRegistry.RegisterManySingleton<ShowLoadTalkerErrorPresenter>(typeof(IShowLoadTalkerError), typeof(ShowLoadTalkerErrorPresenter));
+            containerRegistry.RegisterManySingleton<FinishLoadTalkerPresenter>(typeof(IFinishLoadTalker), typeof(FinishLoadTalkerPresenter));
             // AddMastodonAccount Feature
             containerRegistry.RegisterSingleton<ILoginMastodonAccount, LoginMastodonAccount>();
             containerRegistry.RegisterSingleton<LoginMastodonAccountController>();
@@ -77,7 +78,9 @@ namespace KoharuYomiageApp
 
             // Infrastructures
             // CeVIOAI
-            containerRegistry.RegisterSingleton<CeVIOAIService>();
+            containerRegistry.RegisterManySingleton<CeVIOAIService>(
+                typeof(ICeVIOAILoadTalkerService),
+                typeof(CeVIOAIService));
             Container.Resolve<CeVIOAIService>();
             // MastodonApi
             containerRegistry.RegisterManySingleton<MastodonApiService>(
