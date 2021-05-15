@@ -50,7 +50,7 @@ namespace KoharuYomiageApp.Infrastructures
                             case UserStreamPayload.Status(var status):
                                 switch (status)
                                 {
-                                    case {sensitive: true, reblogged: false}:
+                                    case {sensitive: true, reblog: null}:
                                         _addMastodonSensitiveStatusController.AddMastodonSensitiveStatus(
                                             new MastodonSensitiveStatusInputData(username, instance,
                                                 status.account.display_name, status.account.username,
@@ -58,7 +58,7 @@ namespace KoharuYomiageApp.Infrastructures
                                                 status.content, status.muted ?? false,
                                                 status.media_attachments.Select(media => media.description ?? "")));
                                         break;
-                                    case {sensitive: false, reblogged: false}:
+                                    case {sensitive: false, reblog: null}:
                                         _addMastodonStatusController.AddMastodonStatus(new MastodonStatusInputData(
                                             username,
                                             instance, status.account.display_name, status.account.username,
@@ -66,7 +66,7 @@ namespace KoharuYomiageApp.Infrastructures
                                             status.muted ?? false,
                                             status.media_attachments.Select(media => media.description ?? "")));
                                         break;
-                                    case {sensitive: true, reblogged: true, reblog: { } reblog}:
+                                    case {sensitive: true, reblog: { } reblog}:
                                         _addMastodonBoostedSensitiveStatusController.AddMastodonBoostedSensitiveStatus(
                                             new MastodonBoostedSensitiveStatusInputData(username, instance,
                                                 status.account.display_name, status.account.username,
@@ -74,7 +74,7 @@ namespace KoharuYomiageApp.Infrastructures
                                                 status.spoiler_text, status.content, status.muted ?? false,
                                                 status.media_attachments.Select(media => media.description ?? "")));
                                         break;
-                                    case {sensitive: false, reblogged: true, reblog: { } reblog}:
+                                    case {sensitive: false, reblog: { } reblog}:
                                         _addMastodonBoostedStatusController.AddMastodonBoostedStatus(
                                             new MastodonBoostedStatusInputData(username, instance,
                                                 status.account.display_name, status.account.username,
