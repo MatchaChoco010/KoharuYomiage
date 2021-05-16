@@ -7,6 +7,8 @@ namespace KoharuYomiageApp.Application.Repositories.UseCases
     {
         readonly IGlobalVolumeGateway _gateway;
 
+        GlobalVolume? _globalVolume;
+
         public GlobalVolumeRepository(IGlobalVolumeGateway gateway)
         {
             _gateway = gateway;
@@ -14,15 +16,20 @@ namespace KoharuYomiageApp.Application.Repositories.UseCases
 
         public async Task<GlobalVolume> GetGlobalVolume()
         {
+            if (_globalVolume is not null)
+            {
+                return _globalVolume;
+            }
+
             var volume = await _gateway.FindGlobalVolume();
             if (volume is not null)
             {
-                return new GlobalVolume(volume.Value);
+                _globalVolume = new GlobalVolume(volume.Value);
+                return _globalVolume;
             }
 
-            var globalVolume = new GlobalVolume();
-            await _gateway.SaveGlobalVolume(globalVolume.Volume);
-            return globalVolume;
+            _globalVolume = new GlobalVolume();
+            return _globalVolume;
         }
 
         public async Task SaveGlobalVolume(GlobalVolume volume)

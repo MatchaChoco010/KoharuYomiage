@@ -16,25 +16,32 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
     {
         readonly ChangeImagePresenter _changeImagePresenter;
         readonly CompositeDisposable _disposable = new();
+
+        readonly ImageSource _koharuImage0 = new BitmapImage(new Uri("pack://application:,,,/Resources/koharu0.png"));
+        readonly ImageSource _koharuImage1 = new BitmapImage(new Uri("pack://application:,,,/Resources/koharu1.png"));
         readonly StartReadingController _startReadingController;
         readonly StartUpdatingVoiceParameterController _startUpdatingVoiceParameterController;
+        readonly UpdateGlobalVolumeController _updateGlobalVolumeController;
         readonly UpdateTextListViewPresenter _updateTextListViewPresenter;
+        bool _isMute;
 
-        readonly ImageSource KoharuImage0 = new BitmapImage(new Uri("pack://application:,,,/Resources/koharu0.png"));
-        readonly ImageSource KoharuImage1 = new BitmapImage(new Uri("pack://application:,,,/Resources/koharu1.png"));
+        double _prevVolume = 0.65;
 
         public MainControlViewModel(UpdateTextListViewPresenter updateTextListViewPresenter,
             ChangeImagePresenter changeImagePresenter, StartReadingController startReadingController,
-            StartUpdatingVoiceParameterController startUpdatingVoiceParameterController)
+            StartUpdatingVoiceParameterController startUpdatingVoiceParameterController,
+            UpdateGlobalVolumeController updateGlobalVolumeController)
         {
             _updateTextListViewPresenter = updateTextListViewPresenter;
             _changeImagePresenter = changeImagePresenter;
             _startReadingController = startReadingController;
             _startUpdatingVoiceParameterController = startUpdatingVoiceParameterController;
-            KoharuImage.Value = KoharuImage0;
+            _updateGlobalVolumeController = updateGlobalVolumeController;
+            KoharuImage.Value = _koharuImage0;
         }
 
         public ObservableCollection<TextItem> TextList { get; } = new();
+        public ReactiveCommand VolumeButtonCommand { get; } = new();
         public ReactivePropertySlim<ImageSource> KoharuImage { get; } = new();
         public ReactivePropertySlim<char> VolumeIcon { get; } = new('\uE767');
         public ReactivePropertySlim<double> Volume { get; } = new(0.65);
@@ -50,8 +57,25 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
             _updateTextListViewPresenter.OnAddItem
                 .Subscribe(item => TextList.Add(new TextItem(item.Item1, item.Item2)))
                 .AddTo(_disposable);
-            _changeImagePresenter.OnOpenMouth.Subscribe(_ => KoharuImage.Value = KoharuImage1).AddTo(_disposable);
-            _changeImagePresenter.OnCloseMouth.Subscribe(_ => KoharuImage.Value = KoharuImage0).AddTo(_disposable);
+            _changeImagePresenter.OnOpenMouth.Subscribe(_ => KoharuImage.Value = _koharuImage1).AddTo(_disposable);
+            _changeImagePresenter.OnCloseMouth.Subscribe(_ => KoharuImage.Value = _koharuImage0).AddTo(_disposable);
+
+            Volume.Subscribe(volume => _updateGlobalVolumeController.Update(volume)).AddTo(_disposable);
+            VolumeButtonCommand.Subscribe(_ =>
+            {
+                _isMute = !_isMute;
+                if (_isMute)
+                {
+                    VolumeIcon.Value = '\uE74F';
+                    _prevVolume = Volume.Value;
+                    Volume.Value = 0.0;
+                }
+                else
+                {
+                    VolumeIcon.Value = '\uE767';
+                    Volume.Value = _prevVolume;
+                }
+            }).AddTo(_disposable);
         }
 
         public bool IsNavigationTarget(NavigationContext navigationContext)

@@ -35,8 +35,7 @@ namespace KoharuYomiageApp.Application.Repositories.UseCases
                 var globalVolume = await _globalVolumeRepository.GetGlobalVolume();
                 var initialCurrentProfile =
                     await _voiceProfileRepository.GetVoiceProfile<VoiceProfile.MastodonStatusVoiceProfile>(
-                        mastodonAccount
-                            .AccountIdentifier);
+                        mastodonAccount.AccountIdentifier);
                 _instance = new VoiceParameterChangeNotifier(initialCurrentProfile, globalVolume);
                 return _instance;
             }

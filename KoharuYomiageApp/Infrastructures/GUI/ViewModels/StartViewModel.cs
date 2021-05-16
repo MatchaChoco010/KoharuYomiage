@@ -64,16 +64,11 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
             _showLoadTalkerErrorPresenter.OnShowLoadTalkerError.Subscribe(_ => ShowLoadErrorDialogs())
                 .AddTo(_disposable);
             _startRegisteringAccountPresenter.OnStartRegisterAccount.Subscribe(_ =>
-                {
-                    navigationContext.NavigationService.RequestNavigate(nameof(SelectSNS),
-                        new NavigationParameters {{"FirstLogin", true}});
-                }
-            ).AddTo(_disposable);
+                navigationContext.NavigationService.RequestNavigate(nameof(SelectSNS),
+                    new NavigationParameters {{"FirstLogin", true}})).AddTo(_disposable);
             _startAppPresenter.OnStartApp
-                .Subscribe(_ =>
-                {
-                    navigationContext.NavigationService.RequestNavigate(nameof(MainControl));
-                }).AddTo(_disposable);
+                .Subscribe(_ => navigationContext.NavigationService.RequestNavigate(nameof(MainControl)))
+                .AddTo(_disposable);
         }
 
         public bool IsNavigationTarget(NavigationContext navigationContext)

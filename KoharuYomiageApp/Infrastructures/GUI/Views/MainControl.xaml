@@ -146,6 +146,7 @@
                 </Grid.ColumnDefinitions>
                 <Button Grid.Column="0"
                         Content="{Binding VolumeIcon.Value}"
+                        Command="{Binding VolumeButtonCommand}"
                         VerticalAlignment="Center" />
                 <Slider Grid.Column="1"
                         Value="{Binding Volume.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
