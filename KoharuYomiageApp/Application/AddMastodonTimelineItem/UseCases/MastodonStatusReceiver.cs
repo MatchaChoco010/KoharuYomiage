@@ -18,12 +18,7 @@ namespace KoharuYomiageApp.Application.AddMastodonTimelineItem.UseCases
         {
             var status = new MastodonStatus(
                 new AccountIdentifier(new Username(data.Username), new Instance(data.Instance)), data.AuthorDisplayName,
-                data.AuthorUsername, data.Content, data.Muted, data.MediaDescriptions);
-
-            if (status.Muted)
-            {
-                return;
-            }
+                data.AuthorUsername, data.Content, data.MediaDescriptions);
 
             var container = _readingTextContainerRepository.GetContainer();
 

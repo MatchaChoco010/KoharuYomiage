@@ -30,4 +30,10 @@
     <Resource Include="Resources\*" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Application\UpdateVoiceParameters\Interfaces" />
+    <Folder Include="Application\UpdateVoiceParameters\UseCases" />
+    <Folder Include="Entities\VoiceParameters" />
+  </ItemGroup>
+
 </Project>

@@ -8,7 +8,7 @@ namespace KoharuYomiageApp.Entities.TimelineItem.Mastodon
     {
         public MastodonBoostedSensitiveStatus(AccountIdentifier accountIdentifier, string boostedUserDisplayName,
             string boostedUserUserName, string authorDisplayName, string authorUsername, string spoilerText,
-            string content, bool muted, IEnumerable<string>? mediaDescriptions = null) : base(accountIdentifier)
+            string content, IEnumerable<string>? mediaDescriptions = null) : base(accountIdentifier)
         {
             BoostedUserDisplayName = boostedUserDisplayName;
             BoostedUserUserName = boostedUserUserName;
@@ -16,7 +16,6 @@ namespace KoharuYomiageApp.Entities.TimelineItem.Mastodon
             AuthorUsername = authorUsername;
             SpoilerText = spoilerText;
             Content = content;
-            Muted = muted;
             MediaDescriptions = mediaDescriptions;
         }
 
@@ -26,12 +25,11 @@ namespace KoharuYomiageApp.Entities.TimelineItem.Mastodon
         public string AuthorUsername { get; }
         public string SpoilerText { get; }
         public string Content { get; }
-        public bool Muted { get; }
         public IEnumerable<string>? MediaDescriptions { get; }
 
         public override ReadingTextItem ConvertToReadingText()
         {
-            var text = $"{BoostedUserDisplayName}さんがブースト\n{SpoilerText}\n{AuthorDisplayName}さんの投稿\n{Content}";
+            var text = $"{BoostedUserDisplayName}さんがブースト\n{AuthorDisplayName}さんの投稿\n{SpoilerText}\n{Content}";
 
             if (MediaDescriptions is not null)
             {

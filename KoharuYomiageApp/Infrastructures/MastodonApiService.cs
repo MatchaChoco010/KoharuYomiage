@@ -51,35 +51,34 @@ namespace KoharuYomiageApp.Infrastructures
                                 switch (status)
                                 {
                                     case {sensitive: true, reblog: null}:
+                                    case {spoiler_text: var spoilerText, reblog: null} when !string.IsNullOrEmpty(spoilerText):
                                         _addMastodonSensitiveStatusController.AddMastodonSensitiveStatus(
                                             new MastodonSensitiveStatusInputData(username, instance,
                                                 status.account.display_name, status.account.username,
-                                                status.spoiler_text,
-                                                status.content, status.muted ?? false,
+                                                status.spoiler_text ?? "", status.content,
                                                 status.media_attachments.Select(media => media.description ?? "")));
                                         break;
                                     case {sensitive: false, reblog: null}:
                                         _addMastodonStatusController.AddMastodonStatus(new MastodonStatusInputData(
-                                            username,
-                                            instance, status.account.display_name, status.account.username,
+                                            username, instance, status.account.display_name, status.account.username,
                                             status.content,
-                                            status.muted ?? false,
                                             status.media_attachments.Select(media => media.description ?? "")));
                                         break;
-                                    case {sensitive: true, reblog: { } reblog}:
+                                    case {sensitive: true, reblog: not null}:
+                                    case {spoiler_text: var spoilerText, reblog: not null} when !string.IsNullOrEmpty(spoilerText):
                                         _addMastodonBoostedSensitiveStatusController.AddMastodonBoostedSensitiveStatus(
                                             new MastodonBoostedSensitiveStatusInputData(username, instance,
                                                 status.account.display_name, status.account.username,
-                                                reblog.account.display_name, reblog.account.username,
-                                                status.spoiler_text, status.content, status.muted ?? false,
+                                                status.reblog.account.display_name, status.reblog.account.username,
+                                                status.spoiler_text ?? "", status.content,
                                                 status.media_attachments.Select(media => media.description ?? "")));
                                         break;
-                                    case {sensitive: false, reblog: { } reblog}:
+                                    case {sensitive: false, reblog: not null}:
                                         _addMastodonBoostedStatusController.AddMastodonBoostedStatus(
                                             new MastodonBoostedStatusInputData(username, instance,
                                                 status.account.display_name, status.account.username,
-                                                reblog.account.display_name, reblog.account.username, status.content,
-                                                status.muted ?? false,
+                                                status.reblog.account.display_name, status.reblog.account.username,
+                                                status.content,
                                                 status.media_attachments.Select(media => media.description ?? "")));
                                         break;
                                 }

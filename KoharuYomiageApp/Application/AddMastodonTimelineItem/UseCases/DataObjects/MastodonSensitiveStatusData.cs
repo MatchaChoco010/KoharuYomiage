@@ -3,6 +3,5 @@
 namespace KoharuYomiageApp.Application.AddMastodonTimelineItem.UseCases.DataObjects
 {
     public record MastodonSensitiveStatusData(string Username, string Instance, string AuthorDisplayName,
-        string AuthorUsername,
-        string SpoilerText, string Content, bool Muted, IEnumerable<string>? MediaDescriptions);
+        string AuthorUsername, string SpoilerText, string Content, IEnumerable<string>? MediaDescriptions);
 }

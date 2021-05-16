@@ -17,8 +17,7 @@ namespace KoharuYomiageApp.Application.AddMastodonTimelineItem.Interfaces
         {
             _receiver.Receive(new MastodonBoostedSensitiveStatusData(inputData.Username, inputData.Instance,
                 inputData.BoostedUserDisplayName, inputData.BoostedUserUserName, inputData.AuthorDisplayName,
-                inputData.AuthorUsername, inputData.SpoilerText, inputData.Content, inputData.Muted,
-                inputData.MediaDescriptions));
+                inputData.AuthorUsername, inputData.SpoilerText, inputData.Content, inputData.MediaDescriptions));
         }
     }
 }

@@ -7,7 +7,7 @@ namespace KoharuYomiageApp.Entities.TimelineItem.Mastodon
     public class MastodonBoostedStatus : TimelineItem
     {
         public MastodonBoostedStatus(AccountIdentifier accountIdentifier, string boostedUserDisplayName,
-            string boostedUserUserName, string authorDisplayName, string authorUsername, string content, bool muted,
+            string boostedUserUserName, string authorDisplayName, string authorUsername, string content,
             IEnumerable<string>? mediaDescriptions = null) : base(accountIdentifier)
         {
             BoostedUserDisplayName = boostedUserDisplayName;
@@ -15,7 +15,6 @@ namespace KoharuYomiageApp.Entities.TimelineItem.Mastodon
             AuthorDisplayName = authorDisplayName;
             AuthorUsername = authorUsername;
             Content = content;
-            Muted = muted;
             MediaDescriptions = mediaDescriptions;
         }
 
@@ -24,7 +23,6 @@ namespace KoharuYomiageApp.Entities.TimelineItem.Mastodon
         public string AuthorDisplayName { get; }
         public string AuthorUsername { get; }
         public string Content { get; }
-        public bool Muted { get; }
         public IEnumerable<string>? MediaDescriptions { get; }
 
         public override ReadingTextItem ConvertToReadingText()

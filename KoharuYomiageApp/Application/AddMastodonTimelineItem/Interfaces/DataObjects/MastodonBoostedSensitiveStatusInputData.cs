@@ -4,5 +4,5 @@ namespace KoharuYomiageApp.Application.AddMastodonTimelineItem.Interfaces.DataOb
 {
     public record MastodonBoostedSensitiveStatusInputData(string Username, string Instance,
         string BoostedUserDisplayName, string BoostedUserUserName, string AuthorDisplayName, string AuthorUsername,
-        string SpoilerText, string Content, bool Muted, IEnumerable<string>? MediaDescriptions);
+        string SpoilerText, string Content, IEnumerable<string>? MediaDescriptions);
 }

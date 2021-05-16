@@ -19,12 +19,7 @@ namespace KoharuYomiageApp.Application.AddMastodonTimelineItem.UseCases
             var item = new MastodonBoostedStatus(
                 new AccountIdentifier(new Username(data.Username), new Instance(data.Instance)),
                 data.BoostedUserDisplayName, data.BoostedUserUserName, data.AuthorDisplayName, data.AuthorUsername,
-                data.Content, data.Muted, data.MediaDescriptions);
-
-            if (item.Muted)
-            {
-                return;
-            }
+                data.Content, data.MediaDescriptions);
 
             var container = _containerRepository.GetContainer();
 

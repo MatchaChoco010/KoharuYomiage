@@ -7,14 +7,13 @@ namespace KoharuYomiageApp.Entities.TimelineItem.Mastodon
     public class MastodonSensitiveStatus : TimelineItem
     {
         public MastodonSensitiveStatus(AccountIdentifier accountIdentifier, string authorDisplayName,
-            string authorUsername, string spoilerText, string content, bool muted,
-            IEnumerable<string>? mediaDescriptions = null) : base(accountIdentifier)
+            string authorUsername, string spoilerText, string content, IEnumerable<string>? mediaDescriptions = null)
+            : base(accountIdentifier)
         {
             AuthorDisplayName = authorDisplayName;
             AuthorUsername = authorUsername;
             SpoilerText = spoilerText;
             Content = content;
-            Muted = muted;
             MediaDescriptions = mediaDescriptions;
         }
 
@@ -22,7 +21,6 @@ namespace KoharuYomiageApp.Entities.TimelineItem.Mastodon
         public string AuthorUsername { get; }
         public string SpoilerText { get; }
         public string Content { get; }
-        public bool Muted { get; }
         public IEnumerable<string>? MediaDescriptions { get; }
 
         public override ReadingTextItem ConvertToReadingText()
