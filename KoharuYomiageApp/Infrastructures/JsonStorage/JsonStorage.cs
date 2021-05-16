@@ -137,7 +137,7 @@ namespace KoharuYomiageApp.Infrastructures.JsonStorage
 
         async Task SaveSettings(JsonData storage)
         {
-            using var json = File.OpenWrite(SettingsPath);
+            using var json = File.Open(SettingsPath, FileMode.Create);
             await JsonSerializer.SerializeAsync(json, storage);
         }
     }
