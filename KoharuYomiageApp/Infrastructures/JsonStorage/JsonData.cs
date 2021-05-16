@@ -5,13 +5,9 @@ namespace KoharuYomiageApp.Infrastructures.JsonStorage
 {
     public class JsonData
     {
-        public JsonData()
-        {
-            MastodonAccountData = new List<MastodonAccountSaveData>();
-            MastodonClientData = new List<MastodonClientSaveData>();
-        }
-
-        public List<MastodonAccountSaveData> MastodonAccountData { get; set; }
-        public List<MastodonClientSaveData> MastodonClientData { get; set; }
+        public List<MastodonAccountSaveData> MastodonAccountData { get; set; } = new();
+        public List<MastodonClientSaveData> MastodonClientData { get; set; } = new();
+        public List<VoiceProfileSaveData> VoiceProfileData { get; set; } = new();
+        public double? GlovalVolume { get; set; }
     }
 }

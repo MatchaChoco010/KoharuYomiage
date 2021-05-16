@@ -1,0 +1,233 @@
+﻿using System;
+using System.Reactive.Subjects;
+using KoharuYomiageApp.Entities.Account;
+
+namespace KoharuYomiageApp.Entities.VoiceParameters
+{
+    public abstract class VoiceProfile
+    {
+        public class MastodonStatusVoiceProfile : VoiceProfile
+        {
+            public MastodonStatusVoiceProfile(AccountIdentifier accountIdentifier) : base(accountIdentifier)
+            {
+            }
+        }
+
+        public class MastodonSensitiveStatusVoiceProfile : VoiceProfile
+        {
+            public MastodonSensitiveStatusVoiceProfile(AccountIdentifier accountIdentifier) : base(accountIdentifier)
+            {
+            }
+        }
+
+        public class MastodonBoostedStatusVoiceProfile : VoiceProfile
+        {
+            public MastodonBoostedStatusVoiceProfile(AccountIdentifier accountIdentifier) : base(accountIdentifier)
+            {
+            }
+        }
+
+        public class MastodonBoostedSensitiveStatusVoiceProfile : VoiceProfile
+        {
+            public MastodonBoostedSensitiveStatusVoiceProfile(AccountIdentifier accountIdentifier) : base(accountIdentifier)
+            {
+            }
+        }
+
+        public AccountIdentifier AccountIdentifier { get; }
+
+        double _volume = 0.5;
+
+        public double Volume
+        {
+            get => _volume;
+            private set
+            {
+                if (value is <0.0 or >1.0)
+                {
+                    throw new ArgumentException();
+                }
+
+                _volume = value;
+                _onUpdate.OnNext(this);
+            }
+        }
+
+        double _speed = 0.5;
+
+        public double Speed
+        {
+            get => _speed;
+            private set
+            {
+                if (value is <0.0 or >1.0)
+                {
+                    throw new ArgumentException();
+                }
+
+                _speed = value;
+                _onUpdate.OnNext(this);
+            }
+        }
+
+        double _tone = 0.5;
+
+        public double Tone
+        {
+            get => _tone;
+            private set
+            {
+                if (value is <0.0 or >1.0)
+                {
+                    throw new ArgumentException();
+                }
+
+                _tone = value;
+                _onUpdate.OnNext(this);
+            }
+        }
+
+        double _alpha = 0.5;
+
+        public double Alpha
+        {
+            get => _alpha;
+            private set
+            {
+                if (value is <0.0 or >1.0)
+                {
+                    throw new ArgumentException();
+                }
+
+                _alpha = value;
+                _onUpdate.OnNext(this);
+            }
+        }
+
+        double _toneScale = 0.5;
+
+        public double ToneScale
+        {
+            get => _toneScale;
+            private set
+            {
+                if (value is <0.0 or >1.0)
+                {
+                    throw new ArgumentException();
+                }
+
+                _toneScale = value;
+                _onUpdate.OnNext(this);
+            }
+        }
+
+        double _componentNormal = 0.5;
+
+        public double ComponentNormal
+        {
+            get => _componentNormal;
+            private set
+            {
+                if (value is <0.0 or >1.0)
+                {
+                    throw new ArgumentException();
+                }
+
+                _componentNormal = value;
+                _onUpdate.OnNext(this);
+            }
+        }
+
+        double _componentHappy = 0.5;
+
+        public double ComponentHappy
+        {
+            get => _componentHappy;
+            private set
+            {
+                if (value is <0.0 or >1.0)
+                {
+                    throw new ArgumentException();
+                }
+
+                _componentHappy = value;
+                _onUpdate.OnNext(this);
+            }
+        }
+
+        double _componentAnger = 0.5;
+
+        public double ComponentAnger
+        {
+            get => _componentAnger;
+            private set
+            {
+                if (value is <0.0 or >1.0)
+                {
+                    throw new ArgumentException();
+                }
+
+                _componentAnger = value;
+                _onUpdate.OnNext(this);
+            }
+        }
+
+        double _componentSorrow = 0.5;
+
+        public double ComponentSorrow
+        {
+            get => _componentSorrow;
+            private set
+            {
+                if (value is <0.0 or >1.0)
+                {
+                    throw new ArgumentException();
+                }
+
+                _componentSorrow = value;
+                _onUpdate.OnNext(this);
+            }
+        }
+
+        double _componenCalmness = 0.5;
+
+        public double ComponenCalmness
+        {
+            get => _componenCalmness;
+            private set
+            {
+                if (value is <0.0 or >1.0)
+                {
+                    throw new ArgumentException();
+                }
+
+                _componenCalmness = value;
+                _onUpdate.OnNext(this);
+            }
+        }
+
+        readonly Subject<VoiceProfile> _onUpdate = new();
+        public IObservable<VoiceProfile> OnUpdate => _onUpdate;
+
+        VoiceProfile(AccountIdentifier accountIdentifier)
+        {
+            AccountIdentifier = accountIdentifier;
+        }
+
+        public void Update(double volume, double speed, double tone, double alpha, double toneScale,
+            double componentNormal,
+            double componentHappy, double componentAnger, double componentSorrow, double componentCalmness)
+        {
+            Volume = volume;
+            Speed = speed;
+            Tone = tone;
+            Alpha = alpha;
+            ToneScale = toneScale;
+            ComponentNormal = componentNormal;
+            ComponentHappy = componentHappy;
+            ComponentAnger = componentAnger;
+            ComponentSorrow = componentSorrow;
+            ComponenCalmness = componentCalmness;
+        }
+    }
+}
