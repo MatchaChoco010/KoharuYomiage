@@ -1,35 +1,43 @@
 ﻿using System;
-using System.Reactive.Subjects;
+using Reactive.Bindings;
 
 namespace KoharuYomiageApp.Entities.VoiceParameters
 {
     public class VoiceParameterChangeNotifier : IDisposable
     {
-        VoiceProfile _currentVoiceProfile;
-        IDisposable _currentProfileDisposable;
-
         readonly GlobalVolume _globalVolume;
         readonly IDisposable _globalVolumeDisposable;
 
-        readonly Subject<VoiceParameter> _onVoiceParameterChanged = new();
-        public IObservable<VoiceParameter> OnVoiceParameterChanged => _onVoiceParameterChanged;
+        readonly ReactivePropertySlim<VoiceParameter> _voiceParameter;
+        IDisposable _currentProfileDisposable;
+        VoiceProfile _currentVoiceProfile;
 
         public VoiceParameterChangeNotifier(VoiceProfile currentVoiceProfile, GlobalVolume globalVolume)
         {
             _currentVoiceProfile = currentVoiceProfile;
             _globalVolume = globalVolume;
 
+            _voiceParameter = new ReactivePropertySlim<VoiceParameter>(ConvertVoiceParameter());
+
             _currentProfileDisposable = _currentVoiceProfile.OnUpdate
                 .Subscribe(profile =>
                 {
                     _currentVoiceProfile = profile;
-                    _onVoiceParameterChanged.OnNext(ConvertVoiceParameter());
+                    _voiceParameter.Value = ConvertVoiceParameter();
                 });
             _globalVolumeDisposable = _globalVolume.OnUpdate
                 .Subscribe(_ =>
                 {
-                    _onVoiceParameterChanged.OnNext(ConvertVoiceParameter());
+                    _voiceParameter.Value = ConvertVoiceParameter();
                 });
+        }
+
+        public IReadOnlyReactiveProperty<VoiceParameter> VoiceParameter => _voiceParameter;
+
+        public void Dispose()
+        {
+            _currentProfileDisposable.Dispose();
+            _globalVolumeDisposable.Dispose();
         }
 
         public void SetCurrentProfile(VoiceProfile newVoiceProfile)
@@ -39,7 +47,7 @@ namespace KoharuYomiageApp.Entities.VoiceParameters
                 .Subscribe(profile =>
                 {
                     _currentVoiceProfile = profile;
-                    _onVoiceParameterChanged.OnNext(ConvertVoiceParameter());
+                    _voiceParameter.Value = ConvertVoiceParameter();
                 });
         }
 
@@ -67,13 +75,8 @@ namespace KoharuYomiageApp.Entities.VoiceParameters
             componentSorrow = componentSorrow is >100 ? 100 : componentSorrow;
             componentCalmness = componentCalmness is >100 ? 100 : componentCalmness;
 
-            return new VoiceParameter(volume, speed, tone, alpha, toneScale, componentNormal, componentHappy, componentAnger, componentSorrow, componentCalmness);
-        }
-
-        public void Dispose()
-        {
-            _currentProfileDisposable.Dispose();
-            _globalVolumeDisposable.Dispose();
+            return new VoiceParameter(volume, speed, tone, alpha, toneScale, componentNormal, componentHappy,
+                componentAnger, componentSorrow, componentCalmness);
         }
     }
 }

@@ -4,17 +4,6 @@ namespace KoharuYomiageApp.Entities.VoiceParameters
 {
     public record VoiceParameter
     {
-        public uint Volume { get; }
-        public uint Speed { get; }
-        public uint Tone { get; }
-        public uint Alpha { get; }
-        public uint ToneScale { get; }
-        public uint ComponentNormal { get; }
-        public uint ComponentHappy { get; }
-        public uint ComponentAnger { get; }
-        public uint ComponentSorrow { get; }
-        public uint ComponentCalmness { get; }
-
         public VoiceParameter(uint volume, uint speed, uint tone, uint alpha, uint toneScale, uint commponentNormal,
             uint componentHappy, uint componentAnger, uint componentSorrow, uint componentCalmness)
         {
@@ -43,5 +32,16 @@ namespace KoharuYomiageApp.Entities.VoiceParameters
             ComponentSorrow = componentSorrow;
             ComponentCalmness = componentCalmness;
         }
+
+        public uint Volume { get; }
+        public uint Speed { get; }
+        public uint Tone { get; }
+        public uint Alpha { get; }
+        public uint ToneScale { get; }
+        public uint ComponentNormal { get; }
+        public uint ComponentHappy { get; }
+        public uint ComponentAnger { get; }
+        public uint ComponentSorrow { get; }
+        public uint ComponentCalmness { get; }
     }
 }

@@ -51,7 +51,8 @@ namespace KoharuYomiageApp.Infrastructures
                                 switch (status)
                                 {
                                     case {sensitive: true, reblog: null}:
-                                    case {spoiler_text: var spoilerText, reblog: null} when !string.IsNullOrEmpty(spoilerText):
+                                    case {spoiler_text: var spoilerText, reblog: null}
+                                        when !string.IsNullOrEmpty(spoilerText):
                                         _addMastodonSensitiveStatusController.AddMastodonSensitiveStatus(
                                             new MastodonSensitiveStatusInputData(username, instance,
                                                 status.account.display_name, status.account.username,
@@ -65,7 +66,8 @@ namespace KoharuYomiageApp.Infrastructures
                                             status.media_attachments.Select(media => media.description ?? "")));
                                         break;
                                     case {sensitive: true, reblog: not null}:
-                                    case {spoiler_text: var spoilerText, reblog: not null} when !string.IsNullOrEmpty(spoilerText):
+                                    case {spoiler_text: var spoilerText, reblog: not null}
+                                        when !string.IsNullOrEmpty(spoilerText):
                                         _addMastodonBoostedSensitiveStatusController.AddMastodonBoostedSensitiveStatus(
                                             new MastodonBoostedSensitiveStatusInputData(username, instance,
                                                 status.account.display_name, status.account.username,

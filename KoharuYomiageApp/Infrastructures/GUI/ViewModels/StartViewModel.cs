@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Reactive.Disposables;
 using System.Windows.Media;
-using KoharuYomiageApp.Application.ReadText.Interfaces;
 using KoharuYomiageApp.Application.WindowLoaded.Interfaces;
 using KoharuYomiageApp.Infrastructures.GUI.Views;
 using KoharuYomiageApp.Infrastructures.GUI.Views.Dialogs;
@@ -22,7 +21,6 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
         readonly PushStartButtonController _pushStartButtonController;
         readonly ShowLoadTalkerErrorPresenter _showLoadTalkerErrorPresenter;
         readonly StartAppPresenter _startAppPresenter;
-        readonly StartReadingController _startReadingController;
         readonly StartRegisteringAccountPresenter _startRegisteringAccountPresenter;
         readonly WindowLoadedController _windowLoadedController;
 
@@ -31,7 +29,7 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
             ShowLoadTalkerErrorPresenter showLoadTalkerErrorPresenter,
             PushStartButtonController pushStartButtonController,
             StartRegisteringAccountPresenter startRegisteringAccountPresenter, StartAppPresenter startAppPresenter,
-            StartReadingController startReadingController, IDialogService dialogService)
+            IDialogService dialogService)
         {
             _windowLoadedController = windowLoadedController;
             _finishLoadTalkerPresenter = finishLoadTalkerPresenter;
@@ -39,7 +37,6 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
             _pushStartButtonController = pushStartButtonController;
             _startRegisteringAccountPresenter = startRegisteringAccountPresenter;
             _startAppPresenter = startAppPresenter;
-            _startReadingController = startReadingController;
             _dialogService = dialogService;
         }
 
@@ -68,7 +65,6 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
                 .AddTo(_disposable);
             _startRegisteringAccountPresenter.OnStartRegisterAccount.Subscribe(_ =>
                 {
-                    _startReadingController.StartReading();
                     navigationContext.NavigationService.RequestNavigate(nameof(SelectSNS),
                         new NavigationParameters {{"FirstLogin", true}});
                 }
@@ -76,7 +72,6 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
             _startAppPresenter.OnStartApp
                 .Subscribe(_ =>
                 {
-                    _startReadingController.StartReading();
                     navigationContext.NavigationService.RequestNavigate(nameof(MainControl));
                 }).AddTo(_disposable);
         }
@@ -88,7 +83,6 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
 
         public void OnNavigatedFrom(NavigationContext navigationContext)
         {
-            _startReadingController.Dispose();
             _disposable.Clear();
         }
 

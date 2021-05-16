@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -10,7 +9,8 @@ using KoharuYomiageApp.Application.Repositories.Interfaces.DataObjects;
 
 namespace KoharuYomiageApp.Infrastructures.JsonStorage
 {
-    public class JsonStorage : IMastodonAccountStorage, IMastodonClientStorage, IVoiceProfileStorage, IGlobalVolumeStorage
+    public class JsonStorage : IMastodonAccountStorage, IMastodonClientStorage, IVoiceProfileStorage,
+        IGlobalVolumeStorage
     {
         string SettingsPath
         {
@@ -20,6 +20,21 @@ namespace KoharuYomiageApp.Infrastructures.JsonStorage
                 var settingFilePath = Path.Combine(Path.GetDirectoryName(exePath) ?? "", "settings.json");
                 return settingFilePath;
             }
+        }
+
+        public async Task<double?> FindGlobalVolume()
+        {
+            var storage = await GetOrCreateSettings();
+            return storage.GlovalVolume;
+        }
+
+        public async Task SaveGlobalVolume(double volume)
+        {
+            var storage = await GetOrCreateSettings();
+
+            storage.GlovalVolume = volume;
+
+            await SaveSettings(storage);
         }
 
         public async Task<MastodonAccountSaveData?> FindMastodonAccountData(string identifier)
@@ -91,7 +106,8 @@ namespace KoharuYomiageApp.Infrastructures.JsonStorage
         {
             var storage = await GetOrCreateSettings();
 
-            var index = storage.VoiceProfileData.FindIndex(d => d.AccountIdentifier == data.AccountIdentifier && d.Type == data.Type);
+            var index = storage.VoiceProfileData.FindIndex(d =>
+                d.AccountIdentifier == data.AccountIdentifier && d.Type == data.Type);
             if (index is not -1)
             {
                 storage.VoiceProfileData[index] = data;
@@ -100,21 +116,6 @@ namespace KoharuYomiageApp.Infrastructures.JsonStorage
             {
                 storage.VoiceProfileData.Add(data);
             }
-
-            await SaveSettings(storage);
-        }
-
-        public async Task<double?> FindGlobalVolume()
-        {
-            var storage = await GetOrCreateSettings();
-            return storage.GlovalVolume;
-        }
-
-        public async Task SaveGlobalVolume(double volume)
-        {
-            var storage = await GetOrCreateSettings();
-
-            storage.GlovalVolume = volume;
 
             await SaveSettings(storage);
         }

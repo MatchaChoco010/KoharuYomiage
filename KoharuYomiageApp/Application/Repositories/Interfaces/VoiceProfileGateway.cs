@@ -40,8 +40,10 @@ namespace KoharuYomiageApp.Application.Repositories.Interfaces
 
         public async Task SaveVoiceProfile(VoiceProfileData data)
         {
-            await _storage.SaveVoiceProfile(new VoiceProfileSaveData(data.AccountIdentifier, data.Type, data.Volume, data.Speed, data.Tone,
-                data.Alpha, data.ToneScale, data.ComponentNormal, data.ComponentHappy, data.ComponentAnger, data.ComponentSorrow,
+            await _storage.SaveVoiceProfile(new VoiceProfileSaveData(data.AccountIdentifier, data.Type, data.Volume,
+                data.Speed, data.Tone,
+                data.Alpha, data.ToneScale, data.ComponentNormal, data.ComponentHappy, data.ComponentAnger,
+                data.ComponentSorrow,
                 data.ComponentCalmness));
         }
     }

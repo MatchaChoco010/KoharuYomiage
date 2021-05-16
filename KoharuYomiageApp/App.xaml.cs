@@ -7,6 +7,8 @@ using KoharuYomiageApp.Application.ReadText.Interfaces;
 using KoharuYomiageApp.Application.ReadText.UseCases;
 using KoharuYomiageApp.Application.Repositories.Interfaces;
 using KoharuYomiageApp.Application.Repositories.UseCases;
+using KoharuYomiageApp.Application.UpdateVoiceParameters.Interfaces;
+using KoharuYomiageApp.Application.UpdateVoiceParameters.UseCases;
 using KoharuYomiageApp.Application.WindowLoaded.Interfaces;
 using KoharuYomiageApp.Application.WindowLoaded.UseCases;
 using KoharuYomiageApp.Infrastructures;
@@ -109,18 +111,29 @@ namespace KoharuYomiageApp
                 typeof(UpdateTextListViewPresenter));
             containerRegistry.RegisterManySingleton<ChangeImagePresenter>(typeof(IChangeImage),
                 typeof(ChangeImagePresenter));
+            // UpdateVoiceParameters
+            containerRegistry.RegisterSingleton<IStartUpdatingVoiceParameter, VoiceParameterUpdater>();
+            containerRegistry.RegisterSingleton<StartUpdatingVoiceParameterController>();
+            containerRegistry.RegisterManySingleton<UpdateVoiceParameterPresenter>(typeof(IUpdateVoiceParameter),
+                typeof(UpdateVoiceParameterPresenter));
             // Repositories
             containerRegistry.RegisterSingleton<MastodonAccountRepository>();
             containerRegistry.RegisterSingleton<IMastodonAccountGateway, MastodonAccountGateway>();
             containerRegistry.RegisterSingleton<MastodonClientRepository>();
             containerRegistry.RegisterSingleton<IMastodonClientGateway, MastodonClientGateway>();
             containerRegistry.RegisterSingleton<ReadingTextContainerRepository>();
+            containerRegistry.RegisterSingleton<GlobalVolumeRepository>();
+            containerRegistry.RegisterSingleton<IGlobalVolumeGateway, GlobalVolumeGateway>();
+            containerRegistry.RegisterSingleton<VoiceProfileRepository>();
+            containerRegistry.RegisterSingleton<IVoiceProfileGateway, VoiceProfileGateway>();
+            containerRegistry.RegisterSingleton<VoiceParameterChangeNotifierRepository>();
 
             // Infrastructures
             // CeVIOAI
             containerRegistry.RegisterManySingleton<CeVIOAIService>(
                 typeof(ICeVIOAILoadTalkerService),
                 typeof(ICeVIOAISpeakTextService),
+                typeof(ICeVIOAIUpdateVoiceParameterService),
                 typeof(CeVIOAIService));
             Container.Resolve<CeVIOAIService>();
             // MastodonApi
@@ -136,6 +149,8 @@ namespace KoharuYomiageApp
             containerRegistry.RegisterMany<JsonStorage>(
                 typeof(IMastodonAccountStorage),
                 typeof(IMastodonClientStorage),
+                typeof(IGlobalVolumeStorage),
+                typeof(IVoiceProfileStorage),
                 typeof(JsonStorage));
             Container.Resolve<JsonStorage>();
         }

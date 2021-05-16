@@ -4,6 +4,7 @@ using System.Reactive.Disposables;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using KoharuYomiageApp.Application.ReadText.Interfaces;
+using KoharuYomiageApp.Application.UpdateVoiceParameters.Interfaces;
 using Prism.Mvvm;
 using Prism.Regions;
 using Reactive.Bindings;
@@ -15,16 +16,21 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
     {
         readonly ChangeImagePresenter _changeImagePresenter;
         readonly CompositeDisposable _disposable = new();
+        readonly StartReadingController _startReadingController;
+        readonly StartUpdatingVoiceParameterController _startUpdatingVoiceParameterController;
         readonly UpdateTextListViewPresenter _updateTextListViewPresenter;
 
         readonly ImageSource KoharuImage0 = new BitmapImage(new Uri("pack://application:,,,/Resources/koharu0.png"));
         readonly ImageSource KoharuImage1 = new BitmapImage(new Uri("pack://application:,,,/Resources/koharu1.png"));
 
         public MainControlViewModel(UpdateTextListViewPresenter updateTextListViewPresenter,
-            ChangeImagePresenter changeImagePresenter)
+            ChangeImagePresenter changeImagePresenter, StartReadingController startReadingController,
+            StartUpdatingVoiceParameterController startUpdatingVoiceParameterController)
         {
             _updateTextListViewPresenter = updateTextListViewPresenter;
             _changeImagePresenter = changeImagePresenter;
+            _startReadingController = startReadingController;
+            _startUpdatingVoiceParameterController = startUpdatingVoiceParameterController;
             KoharuImage.Value = KoharuImage0;
         }
 
@@ -35,6 +41,9 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
 
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
+            _startReadingController.StartReading();
+            _startUpdatingVoiceParameterController.Start();
+
             _updateTextListViewPresenter.OnDeleteItem
                 .Subscribe(item => TextList.Remove(new TextItem(item.Item1, item.Item2)))
                 .AddTo(_disposable);
