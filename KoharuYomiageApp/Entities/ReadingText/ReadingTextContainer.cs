@@ -55,7 +55,7 @@ namespace KoharuYomiageApp.Entities.ReadingText
                     }
                 }
 
-                if (listCount >= MaxCount)
+                if (listCount > MaxCount)
                 {
                     foreach (var tcs in _listForOverflow)
                     {
