@@ -34,7 +34,7 @@ namespace KoharuYomiageApp.Application.Repositories.UseCases
 
         public async Task SaveGlobalVolume(GlobalVolume volume)
         {
-            await _gateway.SaveGlobalVolume(volume.Volume);
+            await _gateway.SaveGlobalVolume(volume.Volume.Value);
         }
     }
 }

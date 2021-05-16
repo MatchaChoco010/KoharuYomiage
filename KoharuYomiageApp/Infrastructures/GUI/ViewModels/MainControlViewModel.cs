@@ -23,20 +23,22 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
         readonly StartUpdatingVoiceParameterController _startUpdatingVoiceParameterController;
         readonly UpdateGlobalVolumeController _updateGlobalVolumeController;
         readonly UpdateTextListViewPresenter _updateTextListViewPresenter;
-        bool _isMute;
+        readonly InitializeGlobalVolumeViewPresenter _initializeGlobalVolumeView;
 
+        bool _isMute;
         double _prevVolume = 0.65;
 
         public MainControlViewModel(UpdateTextListViewPresenter updateTextListViewPresenter,
             ChangeImagePresenter changeImagePresenter, StartReadingController startReadingController,
             StartUpdatingVoiceParameterController startUpdatingVoiceParameterController,
-            UpdateGlobalVolumeController updateGlobalVolumeController)
+            UpdateGlobalVolumeController updateGlobalVolumeController, InitializeGlobalVolumeViewPresenter initializeGlobalVolumeViewPresenter)
         {
             _updateTextListViewPresenter = updateTextListViewPresenter;
             _changeImagePresenter = changeImagePresenter;
             _startReadingController = startReadingController;
             _startUpdatingVoiceParameterController = startUpdatingVoiceParameterController;
             _updateGlobalVolumeController = updateGlobalVolumeController;
+            _initializeGlobalVolumeView = initializeGlobalVolumeViewPresenter;
             KoharuImage.Value = _koharuImage0;
         }
 
@@ -44,12 +46,18 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
         public ReactiveCommand VolumeButtonCommand { get; } = new();
         public ReactivePropertySlim<ImageSource> KoharuImage { get; } = new();
         public ReactivePropertySlim<char> VolumeIcon { get; } = new('\uE767');
-        public ReactivePropertySlim<double> Volume { get; } = new(0.65);
+        public ReactivePropertySlim<double> Volume { get; } = new(0.65, ReactivePropertyMode.DistinctUntilChanged);
 
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
             _startReadingController.StartReading();
             _startUpdatingVoiceParameterController.Start();
+
+            _initializeGlobalVolumeView.OnInitializeGlobalVolumeView.Subscribe(volume =>
+            {
+                _prevVolume = volume;
+                Volume.Value = volume;
+            });
 
             _updateTextListViewPresenter.OnDeleteItem
                 .Subscribe(item => TextList.Remove(new TextItem(item.Item1, item.Item2)))

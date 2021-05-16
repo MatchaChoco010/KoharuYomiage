@@ -8,6 +8,6 @@ namespace KoharuYomiageApp.Infrastructures.JsonStorage
         public List<MastodonAccountSaveData> MastodonAccountData { get; set; } = new();
         public List<MastodonClientSaveData> MastodonClientData { get; set; } = new();
         public List<VoiceProfileSaveData> VoiceProfileData { get; set; } = new();
-        public double? GlovalVolume { get; set; }
+        public double? GlobalVolume { get; set; }
     }
 }

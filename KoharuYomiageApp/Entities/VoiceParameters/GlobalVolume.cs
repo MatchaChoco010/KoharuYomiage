@@ -1,30 +1,21 @@
 ﻿using System;
 using System.Reactive.Subjects;
+using Reactive.Bindings;
 
 namespace KoharuYomiageApp.Entities.VoiceParameters
 {
     public class GlobalVolume
     {
-        readonly Subject<GlobalVolume> _onUpdate = new();
-
         public GlobalVolume(double volume = 0.65)
         {
-            Volume = volume;
+            Volume = new ReactivePropertySlim<double>(volume);
         }
 
-        public IObservable<GlobalVolume> OnUpdate => _onUpdate;
-
-        public double Volume { get; private set; }
-
-        public void Update(double newVolume)
-        {
-            Volume = newVolume;
-            _onUpdate.OnNext(this);
-        }
+        public ReactivePropertySlim<double> Volume { get; }
 
         public double GetMultiplier()
         {
-            return Volume / 0.65;
+            return Volume.Value / 0.65;
         }
     }
 }

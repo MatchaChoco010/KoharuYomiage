@@ -25,14 +25,14 @@ namespace KoharuYomiageApp.Infrastructures.JsonStorage
         public async Task<double?> FindGlobalVolume()
         {
             var storage = await GetOrCreateSettings();
-            return storage.GlovalVolume;
+            return storage.GlobalVolume;
         }
 
         public async Task SaveGlobalVolume(double volume)
         {
             var storage = await GetOrCreateSettings();
 
-            storage.GlovalVolume = volume;
+            storage.GlobalVolume = volume;
 
             await SaveSettings(storage);
         }

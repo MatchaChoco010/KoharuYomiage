@@ -25,7 +25,7 @@ namespace KoharuYomiageApp.Entities.VoiceParameters
                     _currentVoiceProfile = profile;
                     _voiceParameter.Value = ConvertVoiceParameter();
                 });
-            _globalVolumeDisposable = _globalVolume.OnUpdate
+            _globalVolumeDisposable = _globalVolume.Volume
                 .Subscribe(_ =>
                 {
                     _voiceParameter.Value = ConvertVoiceParameter();

@@ -15,7 +15,7 @@ namespace KoharuYomiageApp.Application.UpdateVoiceParameters.UseCases
         public async Task Update(double volume)
         {
             var globalVolume = await _globalVolumeRepository.GetGlobalVolume();
-            globalVolume.Update(volume);
+            globalVolume.Volume.Value = volume;
             await _globalVolumeRepository.SaveGlobalVolume(globalVolume);
         }
     }

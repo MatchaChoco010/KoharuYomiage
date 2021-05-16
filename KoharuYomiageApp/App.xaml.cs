@@ -116,6 +116,8 @@ namespace KoharuYomiageApp
             containerRegistry.RegisterSingleton<StartUpdatingVoiceParameterController>();
             containerRegistry.RegisterManySingleton<UpdateVoiceParameterPresenter>(typeof(IUpdateVoiceParameter),
                 typeof(UpdateVoiceParameterPresenter));
+            containerRegistry.RegisterManySingleton<InitializeGlobalVolumeViewPresenter>(
+                typeof(IInitializeGlobalVolumeView), typeof(InitializeGlobalVolumeViewPresenter));
             containerRegistry.RegisterSingleton<IUpdateGlobalVolume, GlobalVolumeUpdater>();
             containerRegistry.RegisterSingleton<UpdateGlobalVolumeController>();
             // Repositories
