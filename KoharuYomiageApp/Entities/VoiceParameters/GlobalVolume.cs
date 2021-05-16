@@ -1,6 +1,4 @@
-﻿using System;
-using System.Reactive.Subjects;
-using Reactive.Bindings;
+﻿using Reactive.Bindings;
 
 namespace KoharuYomiageApp.Entities.VoiceParameters
 {

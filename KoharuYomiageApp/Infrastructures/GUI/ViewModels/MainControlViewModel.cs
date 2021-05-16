@@ -16,6 +16,7 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
     {
         readonly ChangeImagePresenter _changeImagePresenter;
         readonly CompositeDisposable _disposable = new();
+        readonly InitializeGlobalVolumeViewPresenter _initializeGlobalVolumeView;
 
         readonly ImageSource _koharuImage0 = new BitmapImage(new Uri("pack://application:,,,/Resources/koharu0.png"));
         readonly ImageSource _koharuImage1 = new BitmapImage(new Uri("pack://application:,,,/Resources/koharu1.png"));
@@ -23,7 +24,6 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
         readonly StartUpdatingVoiceParameterController _startUpdatingVoiceParameterController;
         readonly UpdateGlobalVolumeController _updateGlobalVolumeController;
         readonly UpdateTextListViewPresenter _updateTextListViewPresenter;
-        readonly InitializeGlobalVolumeViewPresenter _initializeGlobalVolumeView;
 
         bool _isMute;
         double _prevVolume = 0.65;
@@ -31,7 +31,8 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
         public MainControlViewModel(UpdateTextListViewPresenter updateTextListViewPresenter,
             ChangeImagePresenter changeImagePresenter, StartReadingController startReadingController,
             StartUpdatingVoiceParameterController startUpdatingVoiceParameterController,
-            UpdateGlobalVolumeController updateGlobalVolumeController, InitializeGlobalVolumeViewPresenter initializeGlobalVolumeViewPresenter)
+            UpdateGlobalVolumeController updateGlobalVolumeController,
+            InitializeGlobalVolumeViewPresenter initializeGlobalVolumeViewPresenter)
         {
             _updateTextListViewPresenter = updateTextListViewPresenter;
             _changeImagePresenter = changeImagePresenter;

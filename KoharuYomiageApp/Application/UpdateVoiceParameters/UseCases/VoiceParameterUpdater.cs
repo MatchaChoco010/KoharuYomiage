@@ -8,8 +8,8 @@ namespace KoharuYomiageApp.Application.UpdateVoiceParameters.UseCases
 {
     public class VoiceParameterUpdater : IStartUpdatingVoiceParameter, IDisposable
     {
-        readonly IUpdateVoiceParameter _updateVoiceParameter;
         readonly IInitializeGlobalVolumeView _initializeGlobalVolumeView;
+        readonly IUpdateVoiceParameter _updateVoiceParameter;
         readonly VoiceParameterChangeNotifierRepository _voiceParameterChangeNotifierRepository;
 
         IDisposable? _disposable;

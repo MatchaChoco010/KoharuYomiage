@@ -10,15 +10,15 @@ namespace KoharuYomiageApp.Entities.VoiceParameters
 
         double _alpha = 0.5;
 
-        double _componenCalmness = 0.5;
+        double _componenCalmness;
 
-        double _componentAnger = 0.5;
+        double _componentAnger;
 
-        double _componentHappy = 0.5;
+        double _componentHappy;
 
-        double _componentNormal = 0.5;
+        double _componentNormal = 1;
 
-        double _componentSorrow = 0.5;
+        double _componentSorrow;
 
         double _speed = 0.5;
 
