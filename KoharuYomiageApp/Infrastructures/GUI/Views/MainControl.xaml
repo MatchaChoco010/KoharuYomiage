@@ -150,7 +150,9 @@
                 <Slider Grid.Column="1"
                         Value="{Binding Volume.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Minimum="0.0"
-                        Maximum="1.5"
+                        Maximum="1.0"
+                        SmallChange="0.02"
+                        LargeChange="0.1"
                         VerticalAlignment="Center"
                         Margin="0,8,8,8" />
             </Grid>

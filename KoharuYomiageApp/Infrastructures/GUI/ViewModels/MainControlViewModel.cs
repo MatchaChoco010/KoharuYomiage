@@ -31,7 +31,7 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
         public ObservableCollection<TextItem> TextList { get; } = new();
         public ReactivePropertySlim<ImageSource> KoharuImage { get; } = new();
         public ReactivePropertySlim<char> VolumeIcon { get; } = new('\uE767');
-        public ReactivePropertySlim<double> Volume { get; } = new(1.0);
+        public ReactivePropertySlim<double> Volume { get; } = new(0.65);
 
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
