@@ -15,7 +15,15 @@ namespace CeVIOAI
         readonly Type _serviceControl2Type;
         readonly MeCabIpaDicTagger _tagger;
         readonly dynamic _talker;
+        readonly SemaphoreSlim _semaphore = new(1, 1);
 
+        CancellationTokenSource? _nowSpeakingTaskCancellationTokenSource;
+
+        /// <summary>
+        ///     CeVIO AIを立ち上げ、小春六花にキャストを設定する
+        /// </summary>
+        /// <exception cref="DllNotFound">CeVIO AIが正しくインストールされておらずdllが見つからない</exception>
+        /// <exception cref="CastNotFound">小春六花のトークボイスが見つからない</exception>
         public KoharuRikka()
         {
             var cevioAiPath = Environment.ExpandEnvironmentVariables("%ProgramW6432%") +
@@ -143,57 +151,86 @@ namespace CeVIOAI
             set => _talker.Components[4].Value = value;
         }
 
-
         public void Dispose()
         {
             var closeHostMethod =
                 _serviceControl2Type.GetMethod("CloseHost", BindingFlags.Static | BindingFlags.Public)!;
             closeHostMethod.Invoke(null, new object[] {0});
             _tagger.Dispose();
+            _semaphore.Dispose();
         }
 
-        async Task RawSpeak(string text, CancellationToken cancellationToken = new())
+        async Task RawSpeak(string text, CancellationToken cancellationToken)
         {
-            try
+            await Task.Run(() =>
             {
-                await Task.Run(() =>
+                try
                 {
                     dynamic state = _talker.Speak(text);
+                    // 現状では読み上げテキストが空白や絵文字などで読み上げられない場合、終了を検知する方法がない
+                    // Waitするとキャンセル処理が正しく働かない気がするが、次のSpeakでこの発話についてはキャンセルされるので多分大丈夫
+                    // while (!state.IsCompleted)
+                    // {
+                    //     await Task.Delay(50, cancellationToken);
+                    // }
                     state.Wait();
-                }, cancellationToken);
-            }
-            catch (OperationCanceledException)
-            {
-                _talker.Stop();
-            }
+                }
+                catch (OperationCanceledException)
+                {
+                    _talker.Stop();
+                    throw;
+                }
+            }, cancellationToken);
         }
 
+        /// <summary>
+        ///     CeVIO AIにテキストを読ませる。
+        ///     改行を含むテキストは改行ごとに500msの停止を含む。
+        /// </summary>
+        /// <param name="text">発話するテキスト</param>
+        /// <param name="cancellationToken">CancellationToken</param>
         public async Task Speak(string text, CancellationToken cancellationToken = new())
         {
-            foreach (var line in text.Split('\n'))
+            // マルチスレッドでCeVIO AIが死ぬので、内部でCeVIO AIのAPIを叩くのは同時に1スレッドまでに制限している。
+            // 発話中に次の発話リクエストが来た場合はキャンセルを飛ばしてから次の発話を実行している。
+
+            _nowSpeakingTaskCancellationTokenSource?.Cancel();
+            _nowSpeakingTaskCancellationTokenSource =
+                CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+            var token = _nowSpeakingTaskCancellationTokenSource.Token;
+
+            try
             {
-                var nodes = _tagger.Parse(line);
-                var speakingText = "";
-                foreach (var node in nodes)
+                await _semaphore.WaitAsync(token);
+
+                foreach (var line in text.Split('\n'))
                 {
-                    // CeVIO AI Talkは100文字以上連続して読み上げできない
-                    if (speakingText.Length + node.Surface.Length >= 100)
+                    var nodes = _tagger.Parse(line);
+                    var speakingText = "";
+                    foreach (var node in nodes)
                     {
-                        await RawSpeak(speakingText, cancellationToken);
-                        speakingText = "";
+                        // CeVIO AI Talkは100文字以上連続して読み上げできない
+                        if (speakingText.Length + node.Surface.Length >= 100)
+                        {
+                            await RawSpeak(speakingText, token);
+                            speakingText = "";
+                        }
+
+                        speakingText += node.Surface;
                     }
 
-                    speakingText += node.Surface;
+                    await RawSpeak(speakingText, token);
+
+                    // 行の終わりで一区切り
+                    await Task.Delay(500, token);
                 }
-
-                await RawSpeak(speakingText, cancellationToken);
-
-                // 行の終わりで一区切り
-                await Task.Delay(500, cancellationToken);
+            }
+            finally
+            {
+                _semaphore.Release();
             }
 
-            // テキストの終了時に一区切り
-            await Task.Delay(500, cancellationToken);
+            _nowSpeakingTaskCancellationTokenSource = null;
         }
     }
 }
