@@ -85,7 +85,7 @@ namespace KoharuYomiageApp.Data.Repository
             };
             var data = new VoiceProfileData(profile.AccountIdentifier.Value, type, profile.Volume, profile.Speed,
                 profile.Tone, profile.Alpha, profile.ToneScale, profile.ComponentNormal, profile.ComponentHappy,
-                profile.ComponentAnger, profile.ComponentSorrow, profile.ComponenCalmness);
+                profile.ComponentAnger, profile.ComponentSorrow, profile.ComponentCalmness);
             await _storage.SaveVoiceProfile(data);
         }
     }

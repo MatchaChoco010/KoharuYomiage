@@ -10,7 +10,7 @@ namespace KoharuYomiageApp.Domain.VoiceParameters
 
         double _alpha = 0.5;
 
-        double _componenCalmness;
+        double _componentCalmness;
 
         double _componentAnger;
 
@@ -170,9 +170,9 @@ namespace KoharuYomiageApp.Domain.VoiceParameters
             }
         }
 
-        public double ComponenCalmness
+        public double ComponentCalmness
         {
-            get => _componenCalmness;
+            get => _componentCalmness;
             private set
             {
                 if (value is <0.0 or >1.0)
@@ -180,7 +180,7 @@ namespace KoharuYomiageApp.Domain.VoiceParameters
                     throw new ArgumentException();
                 }
 
-                _componenCalmness = value;
+                _componentCalmness = value;
                 _onUpdate.OnNext(this);
             }
         }
@@ -200,7 +200,7 @@ namespace KoharuYomiageApp.Domain.VoiceParameters
             ComponentHappy = componentHappy;
             ComponentAnger = componentAnger;
             ComponentSorrow = componentSorrow;
-            ComponenCalmness = componentCalmness;
+            ComponentCalmness = componentCalmness;
         }
 
         public class MastodonStatusVoiceProfile : VoiceProfile

@@ -64,7 +64,7 @@ namespace KoharuYomiageApp.Domain.VoiceParameters
             var componentHappy = (uint)(_currentVoiceProfile.ComponentHappy * 100.0);
             var componentAnger = (uint)(_currentVoiceProfile.ComponentAnger * 100.0);
             var componentSorrow = (uint)(_currentVoiceProfile.ComponentSorrow * 100.0);
-            var componentCalmness = (uint)(_currentVoiceProfile.ComponenCalmness * 100.0);
+            var componentCalmness = (uint)(_currentVoiceProfile.ComponentCalmness * 100.0);
 
             volume = volume is >100 ? 100 : volume;
             speed = speed is >100 ? 100 : speed;
