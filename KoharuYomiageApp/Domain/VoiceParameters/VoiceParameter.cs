@@ -4,7 +4,7 @@ namespace KoharuYomiageApp.Domain.VoiceParameters
 {
     public record VoiceParameter
     {
-        public VoiceParameter(uint volume, uint speed, uint tone, uint alpha, uint toneScale, uint commponentNormal,
+        public VoiceParameter(uint volume, uint speed, uint tone, uint alpha, uint toneScale, uint componentNormal,
             uint componentHappy, uint componentAnger, uint componentSorrow, uint componentCalmness)
         {
             if (volume is >100 ||
@@ -12,7 +12,7 @@ namespace KoharuYomiageApp.Domain.VoiceParameters
                 tone is >100 ||
                 alpha is >100 ||
                 toneScale is >100 ||
-                commponentNormal is >100 ||
+                componentNormal is >100 ||
                 componentHappy is >100 ||
                 componentAnger is >100 ||
                 componentSorrow is >100 ||
@@ -26,7 +26,7 @@ namespace KoharuYomiageApp.Domain.VoiceParameters
             Tone = tone;
             Alpha = alpha;
             ToneScale = toneScale;
-            ComponentNormal = commponentNormal;
+            ComponentNormal = componentNormal;
             ComponentHappy = componentHappy;
             ComponentAnger = componentAnger;
             ComponentSorrow = componentSorrow;
