@@ -8,14 +8,14 @@ namespace KoharuYomiageApp.Data.Repository
     {
         readonly ReadingTextContainer _container = new();
 
-        public ReadingTextContainer GetContainer()
-        {
-            return _container;
-        }
-
         public void Dispose()
         {
             _container.Dispose();
+        }
+
+        public ReadingTextContainer GetContainer()
+        {
+            return _container;
         }
     }
 }

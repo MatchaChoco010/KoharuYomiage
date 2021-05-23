@@ -15,14 +15,15 @@ namespace KoharuYomiageApp.Presentation.GUI
             _authorizeMastodonAccount = authorizeMastodonAccount;
         }
 
-        public void AuthorizeMastodonAccount(string instance, string authorizationCode)
-        {
-            _ = _authorizeMastodonAccount.Authorize(new InstanceAndAuthenticationCode(instance, authorizationCode), _cancellationTokenSource.Token);
-        }
-
         public void Dispose()
         {
             _cancellationTokenSource.Dispose();
+        }
+
+        public void AuthorizeMastodonAccount(string instance, string authorizationCode)
+        {
+            _ = _authorizeMastodonAccount.Authorize(new InstanceAndAuthenticationCode(instance, authorizationCode),
+                _cancellationTokenSource.Token);
         }
     }
 }

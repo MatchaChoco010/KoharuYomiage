@@ -7,16 +7,22 @@ namespace KoharuYomiageApp.Infrastructures.GUI.Views.AttachedBehavior
 {
     public class DisposeClosedViewsBehavior : RegionBehavior
     {
-        protected override void OnAttach() =>
+        protected override void OnAttach()
+        {
             Region.Views.CollectionChanged += Views_CollectionChanged;
+        }
 
         static void Views_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.Action is not (NotifyCollectionChangedAction.Remove or NotifyCollectionChangedAction.Replace))
+            {
                 return;
+            }
 
             foreach (var removedView in e.OldItems)
+            {
                 MvvmHelpers.ViewAndViewModelAction<IDisposable>(removedView, d => d.Dispose());
+            }
         }
     }
 }

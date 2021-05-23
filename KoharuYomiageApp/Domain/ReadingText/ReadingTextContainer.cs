@@ -31,6 +31,11 @@ namespace KoharuYomiageApp.Domain.ReadingText
 
         public IObservable<IEnumerable<ReadingTextItem>> OnItemsChange => _onItemsChange;
 
+        public void Dispose()
+        {
+            _onItemsChange.Dispose();
+        }
+
         void ClearWeakList()
         {
             _listForTakeAsync = _listForTakeAsync.Where(tcs => !tcs.Task.IsCompleted).ToList();
@@ -111,11 +116,6 @@ namespace KoharuYomiageApp.Domain.ReadingText
 
                 return tcs.Task;
             }
-        }
-
-        public void Dispose()
-        {
-            _onItemsChange.Dispose();
         }
     }
 }

@@ -17,6 +17,14 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
         public ReactiveCommand SelectMastodonCommand { get; } = new();
         public ReactiveCommand BackCommand { get; } = new();
 
+        public void Dispose()
+        {
+            _disposable.Dispose();
+            BackButtonVisibility.Dispose();
+            SelectMastodonCommand.Dispose();
+            BackCommand.Dispose();
+        }
+
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
             var isFirstLogin = navigationContext.Parameters["FirstLogin"] as bool? ?? false;
@@ -41,14 +49,6 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
         public void OnNavigatedFrom(NavigationContext navigationContext)
         {
             _disposable.Clear();
-        }
-
-        public void Dispose()
-        {
-            _disposable.Dispose();
-            BackButtonVisibility.Dispose();
-            SelectMastodonCommand.Dispose();
-            BackCommand.Dispose();
         }
     }
 }

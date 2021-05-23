@@ -12,14 +12,14 @@ namespace KoharuYomiageApp.Domain.VoiceParameters
 
         public ReactivePropertySlim<double> Volume { get; }
 
-        public double GetMultiplier()
-        {
-            return Volume.Value / 0.65;
-        }
-
         public void Dispose()
         {
             Volume.Dispose();
+        }
+
+        public double GetMultiplier()
+        {
+            return Volume.Value / 0.65;
         }
     }
 }

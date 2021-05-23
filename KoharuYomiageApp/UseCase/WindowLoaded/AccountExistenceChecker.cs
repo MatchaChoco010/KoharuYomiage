@@ -28,7 +28,8 @@ namespace KoharuYomiageApp.UseCase.WindowLoaded
 
         public async Task PushStartButton(CancellationToken cancellationToken)
         {
-            var mastodonAccounts = (await _mastodonAccountRepository.GetAllMastodonAccounts(cancellationToken)).ToArray();
+            var mastodonAccounts =
+                (await _mastodonAccountRepository.GetAllMastodonAccounts(cancellationToken)).ToArray();
 
             if (mastodonAccounts.Length is 0)
             {

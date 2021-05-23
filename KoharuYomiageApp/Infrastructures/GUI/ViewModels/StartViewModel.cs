@@ -37,6 +37,19 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
         public ReactivePropertySlim<Brush> StartButtonForeground { get; } = new(Brushes.Black);
         public ReactivePropertySlim<Brush> StartButtonBackground { get; } = new(Brushes.Gray);
 
+        public void Dispose()
+        {
+            _disposable.Dispose();
+            _startController.Dispose();
+            LoadedCommand.Dispose();
+            NavigateCommand.Dispose();
+            Close.Dispose();
+            StatusText.Dispose();
+            StartButtonIsEnabled.Dispose();
+            StartButtonForeground.Dispose();
+            StartButtonBackground.Dispose();
+        }
+
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
             LoadedCommand.Subscribe(_ => _startController.WindowLoaded()).AddTo(_disposable);
@@ -75,19 +88,6 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
             _dialogService.ShowDialog(nameof(LoadTalkerError));
             _dialogService.ShowDialog(nameof(LoadTalkerLink));
             Close.Value = true;
-        }
-
-        public void Dispose()
-        {
-            _disposable.Dispose();
-            _startController.Dispose();
-            LoadedCommand.Dispose();
-            NavigateCommand.Dispose();
-            Close.Dispose();
-            StatusText.Dispose();
-            StartButtonIsEnabled.Dispose();
-            StartButtonForeground.Dispose();
-            StartButtonBackground.Dispose();
         }
     }
 }

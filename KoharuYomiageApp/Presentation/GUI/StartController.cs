@@ -6,14 +6,19 @@ namespace KoharuYomiageApp.Presentation.GUI
 {
     public class StartController : IDisposable
     {
+        readonly CancellationTokenSource _cancellationTokenSource = new();
         readonly IPushStartButton _pushStartButton;
         readonly IWindowLoaded _windowLoaded;
-        readonly CancellationTokenSource _cancellationTokenSource = new();
 
         public StartController(IWindowLoaded windowLoaded, IPushStartButton pushStartButton)
         {
             _windowLoaded = windowLoaded;
             _pushStartButton = pushStartButton;
+        }
+
+        public void Dispose()
+        {
+            _cancellationTokenSource.Dispose();
         }
 
         public void WindowLoaded()
@@ -24,11 +29,6 @@ namespace KoharuYomiageApp.Presentation.GUI
         public void PushStartButton()
         {
             _ = _pushStartButton.PushStartButton(_cancellationTokenSource.Token);
-        }
-
-        public void Dispose()
-        {
-            _cancellationTokenSource.Dispose();
         }
     }
 }

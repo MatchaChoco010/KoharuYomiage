@@ -33,6 +33,17 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
         public ReactivePropertySlim<bool> AuthenticateEnabled { get; } = new();
         public ReactivePropertySlim<string> AuthenticationCode { get; } = new("");
 
+        public void Dispose()
+        {
+            _disposable.Dispose();
+            _mastodonAuthCodeController.Dispose();
+            BackCommand.Dispose();
+            OpenBrowserCommand.Dispose();
+            AuthenticateCommand.Dispose();
+            AuthenticateEnabled.Dispose();
+            AuthenticationCode.Dispose();
+        }
+
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
             var authUrl = (navigationContext.Parameters["AuthUrl"] as Uri)!;
@@ -76,17 +87,6 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
         public void OnNavigatedFrom(NavigationContext navigationContext)
         {
             _disposable.Clear();
-        }
-
-        public void Dispose()
-        {
-            _disposable.Dispose();
-            _mastodonAuthCodeController.Dispose();
-            BackCommand.Dispose();
-            OpenBrowserCommand.Dispose();
-            AuthenticateCommand.Dispose();
-            AuthenticateEnabled.Dispose();
-            AuthenticationCode.Dispose();
         }
     }
 }

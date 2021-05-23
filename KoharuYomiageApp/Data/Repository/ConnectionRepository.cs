@@ -10,14 +10,6 @@ namespace KoharuYomiageApp.Data.Repository
     {
         readonly Dictionary<AccountIdentifier, Connection> _connections = new();
 
-        public void Dispose()
-        {
-            foreach (var item in _connections)
-            {
-                item.Value.Dispose();
-            }
-        }
-
         public void AddConnection(Connection connection)
         {
             _connections.Add(connection.AccountIdentifier, connection);
@@ -27,6 +19,14 @@ namespace KoharuYomiageApp.Data.Repository
         {
             _connections[accountId].Dispose();
             _connections.Remove(accountId);
+        }
+
+        public void Dispose()
+        {
+            foreach (var item in _connections)
+            {
+                item.Value.Dispose();
+            }
         }
     }
 }

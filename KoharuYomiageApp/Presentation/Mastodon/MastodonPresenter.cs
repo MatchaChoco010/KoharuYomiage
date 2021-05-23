@@ -24,11 +24,13 @@ namespace KoharuYomiageApp.Presentation.Mastodon
             _connection = connection;
         }
 
-        public async Task<AccessInfo> AuthorizeMastodonAccountWithCode(AuthorizationInfo authorizationInfo, CancellationToken cancellationToken)
+        public async Task<AccessInfo> AuthorizeMastodonAccountWithCode(AuthorizationInfo authorizationInfo,
+            CancellationToken cancellationToken)
         {
             var accessToken =
                 await _authorizeAccountWithCode.AuthorizeWithCode(authorizationInfo.Instance,
-                    authorizationInfo.ClientId, authorizationInfo.ClientSecret, authorizationInfo.AuthorizationCode, cancellationToken);
+                    authorizationInfo.ClientId, authorizationInfo.ClientSecret, authorizationInfo.AuthorizationCode,
+                    cancellationToken);
             return new AccessInfo(authorizationInfo.Instance, accessToken);
         }
 

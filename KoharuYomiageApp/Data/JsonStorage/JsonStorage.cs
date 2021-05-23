@@ -37,13 +37,15 @@ namespace KoharuYomiageApp.Data.JsonStorage
             await SaveSettings(storage, cancellationToken);
         }
 
-        public async Task<MastodonAccountData?> FindMastodonAccountData(string identifier, CancellationToken cancellationToken)
+        public async Task<MastodonAccountData?> FindMastodonAccountData(string identifier,
+            CancellationToken cancellationToken)
         {
             var storage = await GetOrCreateSettings(cancellationToken);
             return storage.MastodonAccountData.Find(data => data.Username + "@" + data.Instance == identifier);
         }
 
-        public async Task SaveMastodonAccountData(MastodonAccountData accountSaveData, CancellationToken cancellationToken)
+        public async Task SaveMastodonAccountData(MastodonAccountData accountSaveData,
+            CancellationToken cancellationToken)
         {
             var storage = await GetOrCreateSettings(cancellationToken);
 
@@ -67,7 +69,8 @@ namespace KoharuYomiageApp.Data.JsonStorage
             return storage.MastodonAccountData;
         }
 
-        public async Task<MastodonClientData?> FindMastodonClientData(string instance, CancellationToken cancellationToken)
+        public async Task<MastodonClientData?> FindMastodonClientData(string instance,
+            CancellationToken cancellationToken)
         {
             var storage = await GetOrCreateSettings(cancellationToken);
             return storage.MastodonClientData.Find(data => data.Instance == instance);
@@ -90,13 +93,15 @@ namespace KoharuYomiageApp.Data.JsonStorage
             await SaveSettings(storage, cancellationToken);
         }
 
-        public async Task<VoiceProfileData?> FindVoiceProfile(string accountIdentifier, string type, CancellationToken cancellationToken)
+        public async Task<VoiceProfileData?> FindVoiceProfile(string accountIdentifier, string type,
+            CancellationToken cancellationToken)
         {
             var storage = await GetOrCreateSettings(cancellationToken);
             return storage.VoiceProfileData.Find(d => d.AccountIdentifier == accountIdentifier && d.Type == type);
         }
 
-        public async Task<IEnumerable<VoiceProfileData>> GetVoiceProfiles(string accountIdentifier, CancellationToken cancellationToken)
+        public async Task<IEnumerable<VoiceProfileData>> GetVoiceProfiles(string accountIdentifier,
+            CancellationToken cancellationToken)
         {
             var storage = await GetOrCreateSettings(cancellationToken);
             return storage.VoiceProfileData.FindAll(d => d.AccountIdentifier == accountIdentifier);
@@ -125,7 +130,8 @@ namespace KoharuYomiageApp.Data.JsonStorage
             try
             {
                 using var json = File.OpenRead(SettingsPath);
-                return await JsonSerializer.DeserializeAsync<JsonData>(json, cancellationToken: cancellationToken) ?? throw new FileNotFoundException();
+                return await JsonSerializer.DeserializeAsync<JsonData>(json, cancellationToken: cancellationToken) ??
+                    throw new FileNotFoundException();
             }
             catch (FileNotFoundException)
             {

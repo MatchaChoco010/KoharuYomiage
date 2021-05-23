@@ -14,6 +14,12 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
 
         public ReactiveCommand NavigateCommand { get; } = new();
 
+        public void Dispose()
+        {
+            _disposable.Dispose();
+            NavigateCommand.Dispose();
+        }
+
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
             NavigateCommand.Subscribe(() => navigationContext.NavigationService.RequestNavigate(nameof(ViewB)))
@@ -28,12 +34,6 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
         public void OnNavigatedFrom(NavigationContext navigationContext)
         {
             _disposable.Clear();
-        }
-
-        public void Dispose()
-        {
-            _disposable.Dispose();
-            NavigateCommand.Dispose();
         }
     }
 }

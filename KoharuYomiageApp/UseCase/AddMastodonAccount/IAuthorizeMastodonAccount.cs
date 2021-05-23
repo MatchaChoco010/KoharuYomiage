@@ -6,6 +6,7 @@ namespace KoharuYomiageApp.UseCase.AddMastodonAccount
 {
     public interface IAuthorizeMastodonAccount
     {
-        Task Authorize(InstanceAndAuthenticationCode instanceAndAuthenticationCode, CancellationToken cancellationToken);
+        Task Authorize(InstanceAndAuthenticationCode instanceAndAuthenticationCode,
+            CancellationToken cancellationToken);
     }
 }

@@ -38,6 +38,16 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
         public ReactivePropertySlim<char> VolumeIcon { get; } = new('\uE767');
         public ReactivePropertySlim<double> Volume { get; } = new(0.65, ReactivePropertyMode.DistinctUntilChanged);
 
+        public void Dispose()
+        {
+            _disposable.Dispose();
+            _mainControlController.Dispose();
+            VolumeButtonCommand.Dispose();
+            KoharuImage.Dispose();
+            VolumeIcon.Dispose();
+            Volume.Dispose();
+        }
+
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
             _mainControlController.StartReading();
@@ -87,15 +97,5 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
         }
 
         public record TextItem(Guid Id, string Text);
-
-        public void Dispose()
-        {
-            _disposable.Dispose();
-            _mainControlController.Dispose();
-            VolumeButtonCommand.Dispose();
-            KoharuImage.Dispose();
-            VolumeIcon.Dispose();
-            Volume.Dispose();
-        }
     }
 }

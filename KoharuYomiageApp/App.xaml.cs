@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Threading;
 using System.Windows;
 using KoharuYomiageApp.Data.JsonStorage;
@@ -23,7 +22,6 @@ using Microsoft.Windows.Sdk;
 using Prism.DryIoc;
 using Prism.Ioc;
 using Prism.Regions;
-using ValueTaskSupplement;
 
 namespace KoharuYomiageApp
 {

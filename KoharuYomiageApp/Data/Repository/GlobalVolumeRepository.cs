@@ -10,8 +10,8 @@ namespace KoharuYomiageApp.Data.Repository
     public class GlobalVolumeRepository : IDisposable, IGlobalVolumeRepository
     {
         readonly CancellationTokenSource _cancellationTokenSource = new();
-        readonly IGlobalVolumeStorage _storage;
         readonly AsyncLazy<GlobalVolume> _globalVolume;
+        readonly IGlobalVolumeStorage _storage;
 
         public GlobalVolumeRepository(IGlobalVolumeStorage storage)
         {
@@ -23,6 +23,11 @@ namespace KoharuYomiageApp.Data.Repository
             });
         }
 
+        public void Dispose()
+        {
+            _globalVolume.AsValueTask().AsTask().Wait();
+        }
+
         public async Task<GlobalVolume> GetGlobalVolume(CancellationToken cancellationToken)
         {
             cancellationToken.Register(_cancellationTokenSource.Cancel);
@@ -32,11 +37,6 @@ namespace KoharuYomiageApp.Data.Repository
         public async Task SaveGlobalVolume(GlobalVolume volume, CancellationToken cancellationToken)
         {
             await _storage.SaveGlobalVolume(volume.Volume.Value, cancellationToken);
-        }
-
-        public void Dispose()
-        {
-            _globalVolume.AsValueTask().AsTask().Wait();
         }
     }
 }

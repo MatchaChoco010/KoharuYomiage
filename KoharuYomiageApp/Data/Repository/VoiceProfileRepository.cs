@@ -12,14 +12,23 @@ namespace KoharuYomiageApp.Data.Repository
 {
     public class VoiceProfileRepository : IDisposable, IVoiceProfileRepository
     {
-        readonly SemaphoreSlim _semaphore = new(1, 1);
         readonly Dictionary<(AccountIdentifier, string), VoiceProfile> _profiles = new();
+        readonly SemaphoreSlim _semaphore = new(1, 1);
 
         readonly IVoiceProfileStorage _storage;
 
         public VoiceProfileRepository(IVoiceProfileStorage storage)
         {
             _storage = storage;
+        }
+
+        public void Dispose()
+        {
+            _semaphore.Dispose();
+            foreach (var item in _profiles)
+            {
+                item.Value.Dispose();
+            }
         }
 
         public async ValueTask<VoiceProfile> GetVoiceProfile<T>(AccountIdentifier accountIdentifier,
@@ -131,15 +140,6 @@ namespace KoharuYomiageApp.Data.Repository
                 profile.Tone, profile.Alpha, profile.ToneScale, profile.ComponentNormal, profile.ComponentHappy,
                 profile.ComponentAnger, profile.ComponentSorrow, profile.ComponentCalmness);
             await _storage.SaveVoiceProfile(data, cancellationToken);
-        }
-
-        public void Dispose()
-        {
-            _semaphore.Dispose();
-            foreach (var item in _profiles)
-            {
-                item.Value.Dispose();
-            }
         }
     }
 }

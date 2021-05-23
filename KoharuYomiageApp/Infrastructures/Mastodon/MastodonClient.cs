@@ -76,11 +76,13 @@ namespace KoharuYomiageApp.Infrastructures.Mastodon
             string code, CancellationToken cancellationToken)
         {
             var accessToken =
-                await Api.AuthorizeWithCode(instance, new ClientId(clientId), new ClientSecret(clientSecret), code, cancellationToken);
+                await Api.AuthorizeWithCode(instance, new ClientId(clientId), new ClientSecret(clientSecret), code,
+                    cancellationToken);
             return accessToken.Token;
         }
 
-        public async Task<(string, Uri)> GetAccountInfo(string instance, string accessToken, CancellationToken cancellationToken)
+        public async Task<(string, Uri)> GetAccountInfo(string instance, string accessToken,
+            CancellationToken cancellationToken)
         {
             var account = await Api.GetAccountInformation(instance, new AccessToken(accessToken), cancellationToken);
             return (account.username, new Uri(account.avatar_static));

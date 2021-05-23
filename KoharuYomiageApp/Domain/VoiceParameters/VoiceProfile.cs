@@ -28,6 +28,11 @@ namespace KoharuYomiageApp.Domain.VoiceParameters
 
         public IObservable<VoiceProfile> OnUpdate => _onUpdate;
 
+        public void Dispose()
+        {
+            _onUpdate.Dispose();
+        }
+
         public void Update(double volume, double speed, double tone, double alpha, double toneScale,
             double componentNormal,
             double componentHappy, double componentAnger, double componentSorrow, double componentCalmness)
@@ -87,11 +92,6 @@ namespace KoharuYomiageApp.Domain.VoiceParameters
                 accountIdentifier)
             {
             }
-        }
-
-        public void Dispose()
-        {
-            _onUpdate.Dispose();
         }
     }
 }

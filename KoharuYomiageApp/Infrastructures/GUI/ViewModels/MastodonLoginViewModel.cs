@@ -31,6 +31,16 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
         public ReactiveCommand LoginCommand { get; } = new();
         public ReactiveCommand BackCommand { get; } = new();
 
+        public void Dispose()
+        {
+            _disposable.Dispose();
+            _mastodonLoginController.Dispose();
+            InstanceName.Dispose();
+            LoginEnabled.Dispose();
+            LoginCommand.Dispose();
+            BackCommand.Dispose();
+        }
+
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
             var isFirstLogin = navigationContext.Parameters["FirstLogin"] as bool? ?? false;
@@ -74,16 +84,6 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
         static bool IsInstanceName(string accountText)
         {
             return Uri.CheckHostName(accountText) is not UriHostNameType.Unknown;
-        }
-
-        public void Dispose()
-        {
-            _disposable.Dispose();
-            _mastodonLoginController.Dispose();
-            InstanceName.Dispose();
-            LoginEnabled.Dispose();
-            LoginCommand.Dispose();
-            BackCommand.Dispose();
         }
     }
 }

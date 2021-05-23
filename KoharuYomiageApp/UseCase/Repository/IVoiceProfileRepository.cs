@@ -8,10 +8,13 @@ namespace KoharuYomiageApp.UseCase.Repository
 {
     public interface IVoiceProfileRepository
     {
-        ValueTask<VoiceProfile> GetVoiceProfile<T>(AccountIdentifier accountIdentifier, CancellationToken cancellationToken)
+        ValueTask<VoiceProfile> GetVoiceProfile<T>(AccountIdentifier accountIdentifier,
+            CancellationToken cancellationToken)
             where T : VoiceProfile;
 
-        Task<IEnumerable<VoiceProfile>> GetVoiceProfiles(AccountIdentifier accountIdentifier, CancellationToken cancellationToken);
+        Task<IEnumerable<VoiceProfile>> GetVoiceProfiles(AccountIdentifier accountIdentifier,
+            CancellationToken cancellationToken);
+
         Task SaveVoiceProfile(VoiceProfile profile, CancellationToken cancellationToken);
     }
 }

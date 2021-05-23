@@ -18,7 +18,8 @@ namespace KoharuYomiageApp.Data.Repository
             _storage = storage;
         }
 
-        public async Task<MastodonAccount?> FindMastodonAccount(AccountIdentifier identifier, CancellationToken cancellationToken)
+        public async Task<MastodonAccount?> FindMastodonAccount(AccountIdentifier identifier,
+            CancellationToken cancellationToken)
         {
             var data = await _storage.FindMastodonAccountData(identifier.Value, cancellationToken);
             if (data is not null)
@@ -39,7 +40,8 @@ namespace KoharuYomiageApp.Data.Repository
         public async Task SaveMastodonAccount(MastodonAccount accountData, CancellationToken cancellationToken)
         {
             await _storage.SaveMastodonAccountData(new MastodonAccountData(accountData.Username.Value,
-                accountData.Instance.Value, accountData.AccessToken.Token, accountData.IconUrl.IconUrl), cancellationToken);
+                    accountData.Instance.Value, accountData.AccessToken.Token, accountData.IconUrl.IconUrl),
+                cancellationToken);
         }
 
         public async Task<IEnumerable<MastodonAccount>> GetAllMastodonAccounts(CancellationToken cancellationToken)

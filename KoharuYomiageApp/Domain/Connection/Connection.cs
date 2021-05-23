@@ -7,13 +7,13 @@ namespace KoharuYomiageApp.Domain.Connection
     {
         readonly IDisposable _connection;
 
-        public AccountIdentifier AccountIdentifier { get; }
-
         public Connection(AccountIdentifier accountId, IDisposable connection)
         {
             AccountIdentifier = accountId;
             _connection = connection;
         }
+
+        public AccountIdentifier AccountIdentifier { get; }
 
         public void Dispose()
         {

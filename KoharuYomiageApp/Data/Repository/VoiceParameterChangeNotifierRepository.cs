@@ -18,7 +18,8 @@ namespace KoharuYomiageApp.Data.Repository
         {
             _instance = new AsyncLazy<VoiceParameterChangeNotifier>(async () =>
             {
-                var mastodonAccounts = await mastodonAccountRepository.GetAllMastodonAccounts(_cancellationTokenSource.Token);
+                var mastodonAccounts =
+                    await mastodonAccountRepository.GetAllMastodonAccounts(_cancellationTokenSource.Token);
                 var mastodonAccount = mastodonAccounts.FirstOrDefault();
                 if (mastodonAccount is not null)
                 {
@@ -34,16 +35,16 @@ namespace KoharuYomiageApp.Data.Repository
             });
         }
 
-        public async ValueTask<VoiceParameterChangeNotifier> GetInstance(CancellationToken cancellationToken)
-        {
-            cancellationToken.Register(_cancellationTokenSource.Cancel);
-            return await _instance;
-        }
-
         public void Dispose()
         {
             _cancellationTokenSource.Dispose();
             _instance.AsValueTask().AsTask().Wait();
+        }
+
+        public async ValueTask<VoiceParameterChangeNotifier> GetInstance(CancellationToken cancellationToken)
+        {
+            cancellationToken.Register(_cancellationTokenSource.Cancel);
+            return await _instance;
         }
     }
 }
