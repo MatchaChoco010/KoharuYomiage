@@ -36,9 +36,9 @@ namespace KoharuYomiageApp.UseCase.AddMastodonAccount
             _finishAuthorizeMastodonAccount = finishAuthorizeMastodonAccount;
         }
 
-        public async Task Authorize(InstanceAndAuthenticationCode instanceAndAuthentiacationCode)
+        public async Task Authorize(InstanceAndAuthenticationCode instanceAndAuthenticationCode)
         {
-            var instance = new Instance(instanceAndAuthentiacationCode.Instance);
+            var instance = new Instance(instanceAndAuthenticationCode.Instance);
 
             AccessInfo accessInfo;
             try
@@ -51,7 +51,7 @@ namespace KoharuYomiageApp.UseCase.AddMastodonAccount
                 }
 
                 var authorizationInfo = new AuthorizationInfo(instance.Value, client.ClientId.Value,
-                    client.ClientSecret.Value, instanceAndAuthentiacationCode.AuthenticationCode);
+                    client.ClientSecret.Value, instanceAndAuthenticationCode.AuthenticationCode);
                 accessInfo =
                     await _authorizeMastodonAccountWithCode.AuthorizeMastodonAccountWithCode(authorizationInfo);
             }

@@ -1,8 +1,6 @@
-﻿using System.Windows.Controls;
-
-namespace KoharuYomiageApp.Infrastructures.GUI.Views.Dialogs
+﻿namespace KoharuYomiageApp.Infrastructures.GUI.Views.Dialogs
 {
-    public partial class LoadTalkerLink : UserControl
+    public partial class LoadTalkerLink
     {
         public LoadTalkerLink()
         {

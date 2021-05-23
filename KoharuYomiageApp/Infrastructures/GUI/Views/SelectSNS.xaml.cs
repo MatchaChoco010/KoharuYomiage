@@ -1,8 +1,6 @@
-﻿using System.Windows.Controls;
-
-namespace KoharuYomiageApp.Infrastructures.GUI.Views
+﻿namespace KoharuYomiageApp.Infrastructures.GUI.Views
 {
-    public partial class SelectSNS : UserControl
+    public partial class SelectSNS
     {
         public SelectSNS()
         {

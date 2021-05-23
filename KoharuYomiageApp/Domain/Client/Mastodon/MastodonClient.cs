@@ -15,9 +15,9 @@ namespace KoharuYomiageApp.Domain.Client.Mastodon
             ClientSecret = clientSecret;
         }
 
-        public Instance Instance { get; init; }
-        public MastodonClientId ClientId { get; init; }
-        public MastodonClientSecret ClientSecret { get; init; }
+        public Instance Instance { get; }
+        public MastodonClientId ClientId { get; }
+        public MastodonClientSecret ClientSecret { get; }
 
         public async Task<Uri> GetAuthorizeUri()
         {

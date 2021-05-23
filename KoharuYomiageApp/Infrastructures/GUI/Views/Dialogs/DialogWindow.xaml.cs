@@ -1,10 +1,9 @@
 ﻿using System.Windows.Input;
 using Prism.Services.Dialogs;
-using SourceChord.FluentWPF;
 
 namespace KoharuYomiageApp.Infrastructures.GUI.Views.Dialogs
 {
-    public partial class DialogWindow : AcrylicWindow, IDialogWindow
+    public partial class DialogWindow : IDialogWindow
     {
         public DialogWindow()
         {

@@ -1,8 +1,6 @@
-﻿using System.Windows.Controls;
-
-namespace KoharuYomiageApp.Infrastructures.GUI.Views
+﻿namespace KoharuYomiageApp.Infrastructures.GUI.Views
 {
-    public partial class MastodonAuthCode : UserControl
+    public partial class MastodonAuthCode
     {
         public MastodonAuthCode()
         {

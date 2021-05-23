@@ -1,8 +1,6 @@
-﻿using SourceChord.FluentWPF;
-
-namespace KoharuYomiageApp.Infrastructures.GUI.Views
+﻿namespace KoharuYomiageApp.Infrastructures.GUI.Views
 {
-    public partial class MainWindow : AcrylicWindow
+    public partial class MainWindow
     {
         public MainWindow()
         {

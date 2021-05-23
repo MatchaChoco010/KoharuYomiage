@@ -8,20 +8,20 @@ namespace KoharuYomiageApp.Presentation.GUI
 {
     public class MastodonLoginPresenter : IShowAuthUrl, IShowRegisterClientError
     {
-        readonly Subject<Uri> onShowAuthUrl = new();
-        readonly Subject<Unit> onShowRegisterClientError = new();
+        readonly Subject<Uri> _onShowAuthUrl = new();
+        readonly Subject<Unit> _onShowRegisterClientError = new();
 
-        public IObservable<Uri> OnShowAuthUrl => onShowAuthUrl;
-        public IObservable<Unit> OnShowRegisterClientError => onShowRegisterClientError;
+        public IObservable<Uri> OnShowAuthUrl => _onShowAuthUrl;
+        public IObservable<Unit> OnShowRegisterClientError => _onShowRegisterClientError;
 
         public void ShowAuthUrl(AuthorizationUrl authorizationUrl)
         {
-            onShowAuthUrl.OnNext(authorizationUrl.Url);
+            _onShowAuthUrl.OnNext(authorizationUrl.Url);
         }
 
         public void ShowRegisterClientError()
         {
-            onShowRegisterClientError.OnNext(Unit.Default);
+            _onShowRegisterClientError.OnNext(Unit.Default);
         }
     }
 }

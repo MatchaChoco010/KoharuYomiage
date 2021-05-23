@@ -1,8 +1,6 @@
-﻿using System.Windows.Controls;
-
-namespace KoharuYomiageApp.Infrastructures.GUI.Views.Dialogs
+﻿namespace KoharuYomiageApp.Infrastructures.GUI.Views.Dialogs
 {
-    public partial class GetMastodonAccountInfoError : UserControl
+    public partial class GetMastodonAccountInfoError
     {
         public GetMastodonAccountInfoError()
         {

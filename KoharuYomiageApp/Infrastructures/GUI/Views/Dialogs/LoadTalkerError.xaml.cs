@@ -1,8 +1,6 @@
-﻿using System.Windows.Controls;
-
-namespace KoharuYomiageApp.Infrastructures.GUI.Views.Dialogs
+﻿namespace KoharuYomiageApp.Infrastructures.GUI.Views.Dialogs
 {
-    public partial class LoadTalkerError : UserControl
+    public partial class LoadTalkerError
     {
         public LoadTalkerError()
         {

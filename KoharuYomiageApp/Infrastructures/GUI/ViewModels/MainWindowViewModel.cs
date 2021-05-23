@@ -10,19 +10,19 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
 {
     public class MainWindowViewModel : BindableBase, IDestructible
     {
-        readonly CompositeDisposable disposable = new();
+        readonly CompositeDisposable _disposable = new();
 
         public MainWindowViewModel(IRegionManager regionManager)
         {
             LoadedCommand.Subscribe(() => regionManager.RequestNavigate("ContentRegion", nameof(Start)))
-                .AddTo(disposable);
+                .AddTo(_disposable);
         }
 
         public ReactiveCommand LoadedCommand { get; } = new();
 
         public void Destroy()
         {
-            disposable.Dispose();
+            _disposable.Dispose();
         }
     }
 }

@@ -9,12 +9,12 @@ namespace KoharuYomiageApp.Presentation.GUI
         IShowMastodonAuthenticationError
     {
         readonly Subject<Unit> _onFinishAuthorize = new();
-        readonly Subject<Unit> onGetMastodonAccountInfoError = new();
-        readonly Subject<Unit> onMastodonAuthenticationError = new();
+        readonly Subject<Unit> _onGetMastodonAccountInfoError = new();
+        readonly Subject<Unit> _onMastodonAuthenticationError = new();
 
         public IObservable<Unit> OnFinishAuthorize => _onFinishAuthorize;
-        public IObservable<Unit> OnGetMastodonAccountInfoError => onGetMastodonAccountInfoError;
-        public IObservable<Unit> OnMastodonAuthenticationError => onMastodonAuthenticationError;
+        public IObservable<Unit> OnGetMastodonAccountInfoError => _onGetMastodonAccountInfoError;
+        public IObservable<Unit> OnMastodonAuthenticationError => _onMastodonAuthenticationError;
 
         public void FinishAuthorizeMastodonAccount()
         {
@@ -23,12 +23,12 @@ namespace KoharuYomiageApp.Presentation.GUI
 
         public void ShowGetMastodonAccountInfoError()
         {
-            onGetMastodonAccountInfoError.OnNext(Unit.Default);
+            _onGetMastodonAccountInfoError.OnNext(Unit.Default);
         }
 
         public void ShowMastodonAuthenticationError()
         {
-            onMastodonAuthenticationError.OnNext(Unit.Default);
+            _onMastodonAuthenticationError.OnNext(Unit.Default);
         }
     }
 }

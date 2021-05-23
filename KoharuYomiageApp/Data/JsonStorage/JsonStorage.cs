@@ -12,7 +12,7 @@ namespace KoharuYomiageApp.Data.JsonStorage
     public class JsonStorage : IMastodonAccountStorage, IMastodonClientStorage, IVoiceProfileStorage,
         IGlobalVolumeStorage
     {
-        string SettingsPath
+        static string SettingsPath
         {
             get
             {

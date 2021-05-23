@@ -15,10 +15,7 @@ namespace KoharuYomiageApp.Presentation.Mastodon
 
         public MastodonPresenter(IMastodonRegisterClient registerClient,
             IMastodonAuthorizeAccountWithCode authorizeAccountWithCode, IMastodonGetAccountInfo getAccountInfo,
-            IMastodonAddAccountToReader addAccountToReader, IMastodonStatusReceiver statusReceiver,
-            IMastodonSensitiveStatusReceiver sensitiveStatusReceiver,
-            IMastodonBoostedStatusReceiver boostedStatusReceiver,
-            IMastodonBoostedSensitiveStatusReceiver boostedSensitiveStatusReceiver)
+            IMastodonAddAccountToReader addAccountToReader)
         {
             _registerClient = registerClient;
             _authorizeAccountWithCode = authorizeAccountWithCode;

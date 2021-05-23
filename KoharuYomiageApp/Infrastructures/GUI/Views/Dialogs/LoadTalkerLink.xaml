@@ -38,8 +38,7 @@
                    Grid.Column="1"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center">
-            <Hyperlink x:Name="Link"
-                       NavigateUri="https://www.ah-soft.com/cevio/rikka/#cart"
+            <Hyperlink NavigateUri="https://www.ah-soft.com/cevio/rikka/#cart"
                        Foreground="Aqua">
                 <b:Interaction.Triggers>
                     <b:EventTrigger EventName="RequestNavigate">

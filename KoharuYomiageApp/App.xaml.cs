@@ -21,7 +21,7 @@ using Prism.Ioc;
 
 namespace KoharuYomiageApp
 {
-    public partial class App : PrismApplication
+    public partial class App
     {
         protected override Window CreateShell()
         {

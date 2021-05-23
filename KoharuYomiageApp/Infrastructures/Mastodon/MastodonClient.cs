@@ -43,8 +43,7 @@ namespace KoharuYomiageApp.Infrastructures.Mastodon
                                         _mastodonController.AddMastodonSensitiveStatus(
                                             new MastodonSensitiveStatusInputData(username, instance,
                                                 status.account.display_name, status.account.username,
-                                                status.spoiler_text ?? "", status.content,
-                                                status.media_attachments.Select(media => media.description ?? "")));
+                                                status.spoiler_text, status.content, status.media_attachments.Select(media => media.description ?? "")));
                                         break;
                                     case {sensitive: false, reblog: null}:
                                         _mastodonController.AddMastodonStatus(new MastodonStatusInputData(
@@ -59,8 +58,7 @@ namespace KoharuYomiageApp.Infrastructures.Mastodon
                                             new MastodonBoostedSensitiveStatusInputData(username, instance,
                                                 status.account.display_name, status.account.username,
                                                 status.reblog.account.display_name, status.reblog.account.username,
-                                                status.spoiler_text ?? "", status.content,
-                                                status.media_attachments.Select(media => media.description ?? "")));
+                                                status.spoiler_text, status.content, status.media_attachments.Select(media => media.description ?? "")));
                                         break;
                                     case {sensitive: false, reblog: not null}:
                                         _mastodonController.AddMastodonBoostedStatus(
