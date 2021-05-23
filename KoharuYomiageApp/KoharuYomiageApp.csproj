@@ -3,6 +3,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
+    <ApplicationIcon>Resources/appIcon.ico</ApplicationIcon>
     <TargetFramework>net48</TargetFramework>
     <IncludePackageReferencesDuringMarkupCompilation>true</IncludePackageReferencesDuringMarkupCompilation>
     <UseWPF>true</UseWPF>
