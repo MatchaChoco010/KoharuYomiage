@@ -36,12 +36,14 @@ namespace KoharuYomiageApp.Domain.VoiceParameters
 
         public void Dispose()
         {
+            _currentVoiceProfile.Dispose();
             _currentProfileDisposable.Dispose();
             _globalVolumeDisposable.Dispose();
         }
 
         public void SetCurrentProfile(VoiceProfile newVoiceProfile)
         {
+            _currentVoiceProfile.Dispose();
             _currentProfileDisposable.Dispose();
 
             _currentVoiceProfile = newVoiceProfile;

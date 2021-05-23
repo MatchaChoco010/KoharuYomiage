@@ -1,15 +1,21 @@
-﻿using KoharuYomiageApp.Domain.ReadingText;
+﻿using System;
+using KoharuYomiageApp.Domain.ReadingText;
 using KoharuYomiageApp.UseCase.Repository;
 
 namespace KoharuYomiageApp.Data.Repository
 {
-    public class ReadingTextContainerRepository : IReadingTextContainerRepository
+    public class ReadingTextContainerRepository : IDisposable, IReadingTextContainerRepository
     {
         readonly ReadingTextContainer _container = new();
 
         public ReadingTextContainer GetContainer()
         {
             return _container;
+        }
+
+        public void Dispose()
+        {
+            _container.Dispose();
         }
     }
 }

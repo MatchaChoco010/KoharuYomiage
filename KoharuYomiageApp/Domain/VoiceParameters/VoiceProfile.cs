@@ -4,7 +4,7 @@ using KoharuYomiageApp.Domain.Account;
 
 namespace KoharuYomiageApp.Domain.VoiceParameters
 {
-    public abstract class VoiceProfile
+    public abstract class VoiceProfile : IDisposable
     {
         readonly Subject<VoiceProfile> _onUpdate = new();
 
@@ -87,6 +87,11 @@ namespace KoharuYomiageApp.Domain.VoiceParameters
                 accountIdentifier)
             {
             }
+        }
+
+        public void Dispose()
+        {
+            _onUpdate.Dispose();
         }
     }
 }

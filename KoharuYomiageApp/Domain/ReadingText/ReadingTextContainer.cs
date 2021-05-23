@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace KoharuYomiageApp.Domain.ReadingText
 {
-    public class ReadingTextContainer
+    public class ReadingTextContainer : IDisposable
     {
         readonly List<ReadingTextItem> _list = new();
         readonly Subject<IEnumerable<ReadingTextItem>> _onItemsChange = new();
@@ -55,7 +55,7 @@ namespace KoharuYomiageApp.Domain.ReadingText
                     }
                 }
 
-                if (listCount > MaxCount)
+                if (listCount >= MaxCount)
                 {
                     foreach (var tcs in _listForOverflow)
                     {
@@ -111,6 +111,11 @@ namespace KoharuYomiageApp.Domain.ReadingText
 
                 return tcs.Task;
             }
+        }
+
+        public void Dispose()
+        {
+            _onItemsChange.Dispose();
         }
     }
 }

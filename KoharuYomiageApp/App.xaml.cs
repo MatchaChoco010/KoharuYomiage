@@ -108,13 +108,24 @@ namespace KoharuYomiageApp
 
             // Data
             //   Repository
-            containerRegistry.RegisterSingleton<IGlobalVolumeRepository, GlobalVolumeRepository>();
+            containerRegistry.RegisterManySingleton<GlobalVolumeRepository>(
+                typeof(IDisposable),
+                typeof(IGlobalVolumeRepository),
+                typeof(GlobalVolumeRepository));
             containerRegistry.RegisterSingleton<IMastodonAccountRepository, MastodonAccountRepository>();
             containerRegistry.RegisterSingleton<IMastodonClientRepository, MastodonClientRepository>();
-            containerRegistry.RegisterSingleton<IReadingTextContainerRepository, ReadingTextContainerRepository>();
-            containerRegistry
-                .RegisterSingleton<IVoiceParameterChangeNotifierRepository, VoiceParameterChangeNotifierRepository>();
-            containerRegistry.RegisterSingleton<IVoiceProfileRepository, VoiceProfileRepository>();
+            containerRegistry.RegisterManySingleton<ReadingTextContainerRepository>(
+                typeof(IDisposable),
+                typeof(IReadingTextContainerRepository),
+                typeof(ReadingTextContainerRepository));
+            containerRegistry.RegisterManySingleton<VoiceParameterChangeNotifierRepository>(
+                typeof(IDisposable),
+                typeof(IVoiceParameterChangeNotifierRepository),
+                typeof(VoiceParameterChangeNotifierRepository));
+            containerRegistry.RegisterManySingleton<VoiceProfileRepository>(
+                typeof(IDisposable),
+                typeof(IVoiceProfileRepository),
+                typeof(VoiceProfileRepository));
             containerRegistry.RegisterManySingleton<ConnectionRepository>(
                 typeof(IDisposable),
                 typeof(IConnectionRepository),

@@ -1,10 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using KoharuYomiageApp.Domain.VoiceParameters;
 using KoharuYomiageApp.UseCase.Repository;
 
 namespace KoharuYomiageApp.Data.Repository
 {
-    public class GlobalVolumeRepository : IGlobalVolumeRepository
+    public class GlobalVolumeRepository : IDisposable, IGlobalVolumeRepository
     {
         readonly IGlobalVolumeStorage _storage;
 
@@ -36,6 +37,11 @@ namespace KoharuYomiageApp.Data.Repository
         public async Task SaveGlobalVolume(GlobalVolume volume)
         {
             await _storage.SaveGlobalVolume(volume.Volume.Value);
+        }
+
+        public void Dispose()
+        {
+            _globalVolume?.Dispose();
         }
     }
 }

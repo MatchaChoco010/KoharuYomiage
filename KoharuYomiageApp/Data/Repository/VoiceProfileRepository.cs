@@ -9,8 +9,10 @@ using KoharuYomiageApp.UseCase.Repository;
 
 namespace KoharuYomiageApp.Data.Repository
 {
-    public class VoiceProfileRepository : IVoiceProfileRepository
+    public class VoiceProfileRepository : IDisposable, IVoiceProfileRepository
     {
+        readonly Dictionary<(AccountIdentifier, string), VoiceProfile> _profiles = new();
+
         readonly IVoiceProfileStorage _storage;
 
         public VoiceProfileRepository(IVoiceProfileStorage storage)
@@ -31,6 +33,11 @@ namespace KoharuYomiageApp.Data.Repository
                 _ => throw new ArgumentException()
             };
 
+            if (_profiles.TryGetValue((accountIdentifier, type), out var p))
+            {
+                return p;
+            }
+
             VoiceProfile profile = type switch
             {
                 "MastodonStatus" => new VoiceProfile.MastodonStatusVoiceProfile(accountIdentifier),
@@ -40,6 +47,8 @@ namespace KoharuYomiageApp.Data.Repository
                     accountIdentifier),
                 _ => throw new ArgumentException()
             };
+
+            _profiles.Add((accountIdentifier, type), profile);
 
             var data = await _storage.FindVoiceProfile(accountIdentifier.Value, type);
             if (data is null)
@@ -57,6 +66,11 @@ namespace KoharuYomiageApp.Data.Repository
             var data = await _storage.GetVoiceProfiles(accountIdentifier.Value);
             return data.Select(d =>
             {
+                if (_profiles.TryGetValue((accountIdentifier, d.Type), out var p))
+                {
+                    return p;
+                }
+
                 VoiceProfile profile = d.Type switch
                 {
                     "MastodonStatus" => new VoiceProfile.MastodonStatusVoiceProfile(accountIdentifier),
@@ -69,6 +83,9 @@ namespace KoharuYomiageApp.Data.Repository
                 };
                 profile.Update(d.Volume, d.Speed, d.Tone, d.Alpha, d.ToneScale, d.ComponentNormal, d.ComponentHappy,
                     d.ComponentAnger, d.ComponentSorrow, d.ComponentCalmness);
+
+                _profiles.Add((accountIdentifier, d.Type), profile);
+
                 return profile;
             });
         }
@@ -83,10 +100,19 @@ namespace KoharuYomiageApp.Data.Repository
                 VoiceProfile.MastodonBoostedSensitiveStatusVoiceProfile => "MastodonBoostedSensitiveStatus",
                 _ => throw new ArgumentException()
             };
+
             var data = new VoiceProfileData(profile.AccountIdentifier.Value, type, profile.Volume, profile.Speed,
                 profile.Tone, profile.Alpha, profile.ToneScale, profile.ComponentNormal, profile.ComponentHappy,
                 profile.ComponentAnger, profile.ComponentSorrow, profile.ComponentCalmness);
             await _storage.SaveVoiceProfile(data);
+        }
+
+        public void Dispose()
+        {
+            foreach (var item in _profiles)
+            {
+                item.Value.Dispose();
+            }
         }
     }
 }

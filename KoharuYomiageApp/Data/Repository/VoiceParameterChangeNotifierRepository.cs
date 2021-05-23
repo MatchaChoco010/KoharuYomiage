@@ -6,7 +6,7 @@ using KoharuYomiageApp.UseCase.Repository;
 
 namespace KoharuYomiageApp.Data.Repository
 {
-    public class VoiceParameterChangeNotifierRepository : IVoiceParameterChangeNotifierRepository
+    public class VoiceParameterChangeNotifierRepository : IDisposable, IVoiceParameterChangeNotifierRepository
     {
         readonly IGlobalVolumeRepository _globalVolumeRepository;
         readonly IMastodonAccountRepository _mastodonAccountRepository;
@@ -43,6 +43,11 @@ namespace KoharuYomiageApp.Data.Repository
 
             // The VoicePlayerChangeNotifierRepository is never instantiated before the Account is created.
             throw new InvalidProgramException();
+        }
+
+        public void Dispose()
+        {
+            _instance?.Dispose();
         }
     }
 }

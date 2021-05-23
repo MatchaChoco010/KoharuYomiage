@@ -1,8 +1,9 @@
-﻿using Reactive.Bindings;
+﻿using System;
+using Reactive.Bindings;
 
 namespace KoharuYomiageApp.Domain.VoiceParameters
 {
-    public class GlobalVolume
+    public class GlobalVolume : IDisposable
     {
         public GlobalVolume(double volume = 0.65)
         {
@@ -14,6 +15,11 @@ namespace KoharuYomiageApp.Domain.VoiceParameters
         public double GetMultiplier()
         {
             return Volume.Value / 0.65;
+        }
+
+        public void Dispose()
+        {
+            Volume.Dispose();
         }
     }
 }
