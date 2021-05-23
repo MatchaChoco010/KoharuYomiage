@@ -43,6 +43,8 @@ namespace KoharuYomiageApp.Domain.VoiceParameters
         public void SetCurrentProfile(VoiceProfile newVoiceProfile)
         {
             _currentProfileDisposable.Dispose();
+
+            _currentVoiceProfile = newVoiceProfile;
             _currentProfileDisposable = _currentVoiceProfile.OnUpdate
                 .Subscribe(profile =>
                 {
