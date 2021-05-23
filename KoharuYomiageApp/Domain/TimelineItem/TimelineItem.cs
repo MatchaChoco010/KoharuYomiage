@@ -5,7 +5,7 @@ namespace KoharuYomiageApp.Domain.TimelineItem
 {
     public abstract class TimelineItem
     {
-        public TimelineItem(AccountIdentifier accountIdentifier)
+        protected TimelineItem(AccountIdentifier accountIdentifier)
         {
             AccountIdentifier = accountIdentifier;
         }
