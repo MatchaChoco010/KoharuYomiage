@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Reactive.Disposables;
-using KoharuYomiageApp.Application.AddMastodonAccount.Interfaces;
 using KoharuYomiageApp.Infrastructures.GUI.Views;
 using KoharuYomiageApp.Infrastructures.GUI.Views.Dialogs;
+using KoharuYomiageApp.Presentation.GUI;
 using Prism.Mvvm;
 using Prism.Regions;
 using Prism.Services.Dialogs;
@@ -15,17 +15,14 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
     {
         readonly IDialogService _dialogService;
         readonly CompositeDisposable _disposable = new();
-        readonly LoginMastodonAccountController _loginMastodonAccountController;
-        readonly ShowAuthUrlPresenter _showAuthUrlPresenter;
-        readonly ShowRegisterClientErrorPresenter _showRegisterClientErrorPresenter;
+        readonly MastodonLoginController _mastodonLoginController;
+        readonly MastodonLoginPresenter _mastodonLoginPresenter;
 
-        public MastodonLoginViewModel(LoginMastodonAccountController loginMastodonAccountController,
-            ShowRegisterClientErrorPresenter showRegisterClientErrorPresenter,
-            ShowAuthUrlPresenter showAuthUrlPresenter, IDialogService dialogService)
+        public MastodonLoginViewModel(MastodonLoginPresenter mastodonLoginPresenter,
+            MastodonLoginController mastodonLoginController, IDialogService dialogService)
         {
-            _loginMastodonAccountController = loginMastodonAccountController;
-            _showRegisterClientErrorPresenter = showRegisterClientErrorPresenter;
-            _showAuthUrlPresenter = showAuthUrlPresenter;
+            _mastodonLoginPresenter = mastodonLoginPresenter;
+            _mastodonLoginController = mastodonLoginController;
             _dialogService = dialogService;
         }
 
@@ -41,7 +38,7 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
             LoginCommand.Subscribe(_ =>
                 {
                     LoginEnabled.Value = false;
-                    _loginMastodonAccountController.LoginMastodonAccount(InstanceName.Value);
+                    _mastodonLoginController.LoginMastodonAccount(InstanceName.Value);
                 })
                 .AddTo(_disposable);
             BackCommand.Subscribe(_ =>
@@ -50,14 +47,14 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
                 .AddTo(_disposable);
             InstanceName.Subscribe(text => LoginEnabled.Value = IsInstanceName(text)).AddTo(_disposable);
 
-            _showRegisterClientErrorPresenter.OnShowRegisterClientError
+            _mastodonLoginPresenter.OnShowRegisterClientError
                 .Subscribe(_ =>
                 {
                     _dialogService.ShowDialog(nameof(RegisterClientError));
                     LoginEnabled.Value = true;
                 })
                 .AddTo(_disposable);
-            _showAuthUrlPresenter.OnShowAuthUrl
+            _mastodonLoginPresenter.OnShowAuthUrl
                 .Subscribe(authUrl =>
                     navigationContext.NavigationService.RequestNavigate(nameof(MastodonAuthCode),
                         new NavigationParameters {{"AuthUrl", authUrl}, {"InstanceName", InstanceName.Value}}))

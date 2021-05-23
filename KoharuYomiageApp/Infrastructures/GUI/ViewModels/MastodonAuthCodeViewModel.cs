@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Reactive.Disposables;
-using KoharuYomiageApp.Application.AddMastodonAccount.Interfaces;
 using KoharuYomiageApp.Infrastructures.GUI.Views;
 using KoharuYomiageApp.Infrastructures.GUI.Views.Dialogs;
+using KoharuYomiageApp.Presentation.GUI;
 using Prism.Mvvm;
 using Prism.Regions;
 using Prism.Services.Dialogs;
@@ -14,23 +14,16 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
 {
     public class MastodonAuthCodeViewModel : BindableBase, INavigationAware
     {
-        readonly AuthorizeMastodonAccountController _authorizeMastodonAccountController;
         readonly IDialogService _dialogService;
         readonly CompositeDisposable _disposable = new();
-        readonly FinishAuthorizeMastodonAccountPresenter _finishAuthorizeMastodonAccountPresenter;
-        readonly ShowGetMastodonAccountInfoErrorPresenter _showGetMastodonAccountInfoErrorPresenter;
-        readonly ShowMastodonAuthenticationErrorPresenter _showMastodonAuthenticationErrorPresenter;
+        readonly MastodonAuthCodeController _mastodonAuthCodeController;
+        readonly MastodonAuthCodePresenter _mastodonAuthCodePresenter;
 
-        public MastodonAuthCodeViewModel(AuthorizeMastodonAccountController authorizeMastodonAccountController,
-            ShowMastodonAuthenticationErrorPresenter showMastodonAuthenticationErrorPresenter,
-            ShowGetMastodonAccountInfoErrorPresenter showGetMastodonAccountInfoErrorPresenter,
-            FinishAuthorizeMastodonAccountPresenter finishAuthorizeMastodonAccountPresenter,
-            IDialogService dialogService)
+        public MastodonAuthCodeViewModel(MastodonAuthCodePresenter mastodonAuthCodePresenter,
+            MastodonAuthCodeController mastodonAuthCodeController, IDialogService dialogService)
         {
-            _authorizeMastodonAccountController = authorizeMastodonAccountController;
-            _showMastodonAuthenticationErrorPresenter = showMastodonAuthenticationErrorPresenter;
-            _showGetMastodonAccountInfoErrorPresenter = showGetMastodonAccountInfoErrorPresenter;
-            _finishAuthorizeMastodonAccountPresenter = finishAuthorizeMastodonAccountPresenter;
+            _mastodonAuthCodePresenter = mastodonAuthCodePresenter;
+            _mastodonAuthCodeController = mastodonAuthCodeController;
             _dialogService = dialogService;
         }
 
@@ -50,7 +43,7 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
             OpenBrowserCommand.Subscribe(_ => Process.Start(authUrl.ToString())).AddTo(_disposable);
             AuthenticateCommand.Subscribe(_ =>
                 {
-                    _authorizeMastodonAccountController.AuthorizeMastodonAccount(instanceName,
+                    _mastodonAuthCodeController.AuthorizeMastodonAccount(instanceName,
                         AuthenticationCode.Value);
                     AuthenticateEnabled.Value = false;
                 })
@@ -58,19 +51,19 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
             AuthenticationCode.Subscribe(code => AuthenticateEnabled.Value = !string.IsNullOrWhiteSpace(code))
                 .AddTo(_disposable);
 
-            _showMastodonAuthenticationErrorPresenter.OnMastodonAuthenticationError
+            _mastodonAuthCodePresenter.OnMastodonAuthenticationError
                 .Subscribe(_ =>
                 {
                     _dialogService.ShowDialog(nameof(MastodonAuthenticationError));
                     AuthenticateEnabled.Value = true;
                 }).AddTo(_disposable);
-            _showGetMastodonAccountInfoErrorPresenter.OnGetMastodonAccountInfoError
+            _mastodonAuthCodePresenter.OnGetMastodonAccountInfoError
                 .Subscribe(_ =>
                 {
                     _dialogService.ShowDialog(nameof(GetMastodonAccountInfoError));
                     AuthenticateEnabled.Value = true;
                 }).AddTo(_disposable);
-            _finishAuthorizeMastodonAccountPresenter.OnFinishAuthorize
+            _mastodonAuthCodePresenter.OnFinishAuthorize
                 .Subscribe(_ => navigationContext.NavigationService.RequestNavigate(nameof(MainControl)))
                 .AddTo(_disposable);
         }

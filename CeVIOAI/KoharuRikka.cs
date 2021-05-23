@@ -11,11 +11,11 @@ namespace CeVIOAI
     public class KoharuRikka : IDisposable
     {
         const string CastName = "小春六花";
+        readonly SemaphoreSlim _semaphore = new(1, 1);
 
         readonly Type _serviceControl2Type;
         readonly MeCabIpaDicTagger _tagger;
         readonly dynamic _talker;
-        readonly SemaphoreSlim _semaphore = new(1, 1);
 
         CancellationTokenSource? _nowSpeakingTaskCancellationTokenSource;
 

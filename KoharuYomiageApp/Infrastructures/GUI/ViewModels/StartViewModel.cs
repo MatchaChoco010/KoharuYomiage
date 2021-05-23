@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Reactive.Disposables;
 using System.Windows.Media;
-using KoharuYomiageApp.Application.WindowLoaded.Interfaces;
 using KoharuYomiageApp.Infrastructures.GUI.Views;
 using KoharuYomiageApp.Infrastructures.GUI.Views.Dialogs;
+using KoharuYomiageApp.Presentation.GUI;
 using Prism.Mvvm;
 using Prism.Regions;
 using Prism.Services.Dialogs;
@@ -17,26 +17,15 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
     {
         readonly IDialogService _dialogService;
         readonly CompositeDisposable _disposable = new();
-        readonly FinishLoadTalkerPresenter _finishLoadTalkerPresenter;
-        readonly PushStartButtonController _pushStartButtonController;
-        readonly ShowLoadTalkerErrorPresenter _showLoadTalkerErrorPresenter;
-        readonly StartAppPresenter _startAppPresenter;
-        readonly StartRegisteringAccountPresenter _startRegisteringAccountPresenter;
-        readonly WindowLoadedController _windowLoadedController;
+        readonly StartController _startController;
 
-        public StartViewModel(WindowLoadedController windowLoadedController,
-            FinishLoadTalkerPresenter finishLoadTalkerPresenter,
-            ShowLoadTalkerErrorPresenter showLoadTalkerErrorPresenter,
-            PushStartButtonController pushStartButtonController,
-            StartRegisteringAccountPresenter startRegisteringAccountPresenter, StartAppPresenter startAppPresenter,
+        readonly StartPresenter _startPresenter;
+
+        public StartViewModel(StartPresenter startPresenter, StartController startController,
             IDialogService dialogService)
         {
-            _windowLoadedController = windowLoadedController;
-            _finishLoadTalkerPresenter = finishLoadTalkerPresenter;
-            _showLoadTalkerErrorPresenter = showLoadTalkerErrorPresenter;
-            _pushStartButtonController = pushStartButtonController;
-            _startRegisteringAccountPresenter = startRegisteringAccountPresenter;
-            _startAppPresenter = startAppPresenter;
+            _startPresenter = startPresenter;
+            _startController = startController;
             _dialogService = dialogService;
         }
 
@@ -50,10 +39,10 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
 
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
-            LoadedCommand.Subscribe(_ => _windowLoadedController.WindowLoaded()).AddTo(_disposable);
-            NavigateCommand.Subscribe(_ => _pushStartButtonController.PushStartButton()).AddTo(_disposable);
+            LoadedCommand.Subscribe(_ => _startController.WindowLoaded()).AddTo(_disposable);
+            NavigateCommand.Subscribe(_ => _startController.PushStartButton()).AddTo(_disposable);
 
-            _finishLoadTalkerPresenter.OnFinishLoadTalker.Subscribe(_ =>
+            _startPresenter.OnFinishLoadTalker.Subscribe(_ =>
                 {
                     StartButtonIsEnabled.Value = true;
                     StatusText.Value = "CeVIO AI と接続が完了しました！";
@@ -61,12 +50,12 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
                     StartButtonBackground.Value = AccentColors.ImmersiveSystemAccentBrush;
                 })
                 .AddTo(_disposable);
-            _showLoadTalkerErrorPresenter.OnShowLoadTalkerError.Subscribe(_ => ShowLoadErrorDialogs())
+            _startPresenter.OnShowLoadTalkerError.Subscribe(_ => ShowLoadErrorDialogs())
                 .AddTo(_disposable);
-            _startRegisteringAccountPresenter.OnStartRegisterAccount.Subscribe(_ =>
+            _startPresenter.OnStartRegisterAccount.Subscribe(_ =>
                 navigationContext.NavigationService.RequestNavigate(nameof(SelectSNS),
                     new NavigationParameters {{"FirstLogin", true}})).AddTo(_disposable);
-            _startAppPresenter.OnStartApp
+            _startPresenter.OnStartApp
                 .Subscribe(_ => navigationContext.NavigationService.RequestNavigate(nameof(MainControl)))
                 .AddTo(_disposable);
         }

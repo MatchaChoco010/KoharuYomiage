@@ -1,20 +1,21 @@
-﻿using System.Windows;
-using KoharuYomiageApp.Application.AddMastodonAccount.Interfaces;
-using KoharuYomiageApp.Application.AddMastodonAccount.UseCases;
-using KoharuYomiageApp.Application.AddMastodonTimelineItem.Interfaces;
-using KoharuYomiageApp.Application.AddMastodonTimelineItem.UseCases;
-using KoharuYomiageApp.Application.ReadText.Interfaces;
-using KoharuYomiageApp.Application.ReadText.UseCases;
-using KoharuYomiageApp.Application.Repositories.Interfaces;
-using KoharuYomiageApp.Application.Repositories.UseCases;
-using KoharuYomiageApp.Application.UpdateVoiceParameters.Interfaces;
-using KoharuYomiageApp.Application.UpdateVoiceParameters.UseCases;
-using KoharuYomiageApp.Application.WindowLoaded.Interfaces;
-using KoharuYomiageApp.Application.WindowLoaded.UseCases;
-using KoharuYomiageApp.Infrastructures;
+﻿using System;
+using System.Windows;
+using KoharuYomiageApp.Data.JsonStorage;
+using KoharuYomiageApp.Data.Repository;
+using KoharuYomiageApp.Infrastructures.CeVIOAI;
+using KoharuYomiageApp.Infrastructures.GUI.ViewModels;
 using KoharuYomiageApp.Infrastructures.GUI.Views;
 using KoharuYomiageApp.Infrastructures.GUI.Views.Dialogs;
-using KoharuYomiageApp.Infrastructures.JsonStorage;
+using KoharuYomiageApp.Infrastructures.Mastodon;
+using KoharuYomiageApp.Presentation.CeVIOAI;
+using KoharuYomiageApp.Presentation.GUI;
+using KoharuYomiageApp.Presentation.Mastodon;
+using KoharuYomiageApp.UseCase.AddMastodonAccount;
+using KoharuYomiageApp.UseCase.AddMastodonTimelineItem;
+using KoharuYomiageApp.UseCase.ReadText;
+using KoharuYomiageApp.UseCase.Repository;
+using KoharuYomiageApp.UseCase.UpdateVoiceParameter;
+using KoharuYomiageApp.UseCase.WindowLoaded;
 using Prism.DryIoc;
 using Prism.Ioc;
 
@@ -29,133 +30,121 @@ namespace KoharuYomiageApp
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            // GUI
-            // Dialog
+            // Infrastructures
+            //   GUI
+            //     Dialog
             containerRegistry.RegisterDialogWindow<DialogWindow>();
             containerRegistry.RegisterDialog<LoadTalkerError>();
             containerRegistry.RegisterDialog<LoadTalkerLink>();
             containerRegistry.RegisterDialog<RegisterClientError>();
             containerRegistry.RegisterDialog<GetMastodonAccountInfoError>();
             containerRegistry.RegisterDialog<MastodonAuthenticationError>();
-            // Views
+            //     Views
             containerRegistry.RegisterForNavigation<ViewA>();
             containerRegistry.RegisterForNavigation<ViewB>();
             containerRegistry.RegisterForNavigation<Start>();
+            containerRegistry.Register<StartViewModel>();
             containerRegistry.RegisterForNavigation<SelectSNS>();
             containerRegistry.RegisterForNavigation<MastodonLogin>();
             containerRegistry.RegisterForNavigation<MastodonAuthCode>();
             containerRegistry.RegisterForNavigation<MainControl>();
+            //   CeVIOAI
+            containerRegistry.RegisterManySingleton<CeVIOAIHost>(
+                typeof(IDisposable),
+                typeof(ICeVIOAILoadTalker),
+                typeof(ICeVIOAISpeakText),
+                typeof(ICeVIOAIUpdateVoiceParameter),
+                typeof(CeVIOAIHost));
+            //   MastodonApi
+            containerRegistry.RegisterManySingleton<MastodonClient>(
+                typeof(IMastodonAddAccountToReader),
+                typeof(IMastodonAuthorizeAccountWithCode),
+                typeof(IMastodonGetAccountInfo),
+                typeof(IMastodonRegisterClient),
+                typeof(MastodonClient));
 
-            // Application
-            // LoadTalker Feature
-            containerRegistry.RegisterSingleton<IWindowLoaded, TalkerInitializer>();
-            containerRegistry.RegisterSingleton<WindowLoadedController>();
-            containerRegistry.RegisterManySingleton<LoadTalkerPresenter>(typeof(ILoadTalker),
-                typeof(LoadTalkerPresenter));
-            containerRegistry.RegisterManySingleton<ShowLoadTalkerErrorPresenter>(typeof(IShowLoadTalkerError),
-                typeof(ShowLoadTalkerErrorPresenter));
-            containerRegistry.RegisterManySingleton<FinishLoadTalkerPresenter>(typeof(IFinishLoadTalker),
-                typeof(FinishLoadTalkerPresenter));
-            containerRegistry.RegisterSingleton<IPushStartButton, AccountExistenceChecker>();
-            containerRegistry.RegisterSingleton<PushStartButtonController>();
-            containerRegistry.RegisterManySingleton<StartRegisteringAccountPresenter>(typeof(IStartRegisteringAccount),
-                typeof(StartRegisteringAccountPresenter));
-            containerRegistry
-                .RegisterManySingleton<Application.WindowLoaded.Interfaces.AddMastodonAccountToReaderPresenter>(
-                    typeof(Application.WindowLoaded.UseCases.IAddMastodonAccountToReader),
-                    typeof(Application.WindowLoaded.Interfaces.AddMastodonAccountToReaderPresenter));
-            containerRegistry.RegisterManySingleton<StartAppPresenter>(typeof(IStartApp), typeof(StartAppPresenter));
-            // AddMastodonAccount Feature
-            containerRegistry.RegisterSingleton<ILoginMastodonAccount, LoginMastodonAccount>();
-            containerRegistry.RegisterSingleton<LoginMastodonAccountController>();
-            containerRegistry.RegisterSingleton<IRegisterClient, RegisterClientPresenter>();
-            containerRegistry.RegisterManySingleton<ShowRegisterClientErrorPresenter>(typeof(IShowRegisterClientError),
-                typeof(ShowRegisterClientErrorPresenter));
-            containerRegistry.RegisterManySingleton<ShowAuthUrlPresenter>(typeof(IShowAuthUrl),
-                typeof(ShowAuthUrlPresenter));
-            containerRegistry.RegisterSingleton<IAuthorizeMastodonAccount, AuthorizeMastodonAccount>();
-            containerRegistry.RegisterSingleton<AuthorizeMastodonAccountController>();
-            containerRegistry.RegisterManySingleton<AuthorizeMastodonAccountWithCodePresenter>(
-                typeof(IAuthorizeMastodonAccountWithCode),
-                typeof(AuthorizeMastodonAccountWithCodePresenter));
-            containerRegistry.RegisterManySingleton<ShowMastodonAuthenticationErrorPresenter>(
-                typeof(IShowMastodonAuthenticationError),
-                typeof(ShowMastodonAuthenticationErrorPresenter));
-            containerRegistry.RegisterManySingleton<GetAccountInfoPresenter>(typeof(IGetAccountInfo),
-                typeof(GetAccountInfoPresenter));
-            containerRegistry.RegisterManySingleton<ShowGetMastodonAccountInfoErrorPresenter>(
-                typeof(IShowGetMastodonAccountInfoError),
-                typeof(ShowGetMastodonAccountInfoErrorPresenter));
-            containerRegistry
-                .RegisterManySingleton<Application.AddMastodonAccount.Interfaces.AddMastodonAccountToReaderPresenter>(
-                    typeof(Application.AddMastodonAccount.UseCases.IAddMastodonAccountToReader),
-                    typeof(Application.AddMastodonAccount.Interfaces.AddMastodonAccountToReaderPresenter));
-            containerRegistry.RegisterManySingleton<FinishAuthorizeMastodonAccountPresenter>(
+            // Presentation
+            //   GUI
+            containerRegistry.RegisterManySingleton<StartPresenter>(
+                typeof(StartPresenter),
+                typeof(IStartApp),
+                typeof(IStartRegisteringAccount),
+                typeof(IFinishLoadTalker),
+                typeof(IShowLoadTalkerError));
+            containerRegistry.RegisterSingleton<StartController>();
+            containerRegistry.RegisterManySingleton<MastodonLoginPresenter>(
+                typeof(MastodonLoginPresenter),
+                typeof(IShowAuthUrl),
+                typeof(IShowRegisterClientError));
+            containerRegistry.RegisterSingleton<MastodonLoginController>();
+            containerRegistry.RegisterManySingleton<MastodonAuthCodePresenter>(
+                typeof(MastodonAuthCodePresenter),
                 typeof(IFinishAuthorizeMastodonAccount),
-                typeof(FinishAuthorizeMastodonAccountPresenter));
-            // AddMastodonTimelineItem
-            containerRegistry.RegisterSingleton<IMastodonStatusReceiver, MastodonStatusReceiver>();
-            containerRegistry.RegisterSingleton<AddMastodonStatusController>();
-            containerRegistry.RegisterSingleton<IMastodonSensitiveStatusReceiver, MastodonSensitiveStatusReceiver>();
-            containerRegistry.RegisterSingleton<AddMastodonSensitiveStatusController>();
-            containerRegistry.RegisterSingleton<IMastodonBoostedStatusReceiver, MastodonBoostedStatusReceiver>();
-            containerRegistry.RegisterSingleton<AddMastodonBoostedStatusController>();
-            containerRegistry
-                .RegisterSingleton<IMastodonBoostedSensitiveStatusReceiver, MastodonBoostedSensitiveStatusReceiver>();
-            containerRegistry.RegisterSingleton<AddMastodonBoostedSensitiveStatusController>();
-            // ReadText
-            containerRegistry.RegisterSingleton<IStartReading, TextReader>();
-            containerRegistry.RegisterSingleton<StartReadingController>();
-            containerRegistry.RegisterManySingleton<SpeakTextPresenter>(typeof(ISpeakText), typeof(SpeakTextPresenter));
-            containerRegistry.RegisterManySingleton<UpdateTextListViewPresenter>(typeof(IUpdateTextListView),
-                typeof(UpdateTextListViewPresenter));
-            containerRegistry.RegisterManySingleton<ChangeImagePresenter>(typeof(IChangeImage),
-                typeof(ChangeImagePresenter));
-            // UpdateVoiceParameters
-            containerRegistry.RegisterSingleton<IStartUpdatingVoiceParameter, VoiceParameterUpdater>();
-            containerRegistry.RegisterSingleton<StartUpdatingVoiceParameterController>();
-            containerRegistry.RegisterManySingleton<UpdateVoiceParameterPresenter>(typeof(IUpdateVoiceParameter),
-                typeof(UpdateVoiceParameterPresenter));
-            containerRegistry.RegisterManySingleton<InitializeGlobalVolumeViewPresenter>(
-                typeof(IInitializeGlobalVolumeView), typeof(InitializeGlobalVolumeViewPresenter));
-            containerRegistry.RegisterSingleton<IUpdateGlobalVolume, GlobalVolumeUpdater>();
-            containerRegistry.RegisterSingleton<UpdateGlobalVolumeController>();
-            // Repositories
-            containerRegistry.RegisterSingleton<MastodonAccountRepository>();
-            containerRegistry.RegisterSingleton<IMastodonAccountGateway, MastodonAccountGateway>();
-            containerRegistry.RegisterSingleton<MastodonClientRepository>();
-            containerRegistry.RegisterSingleton<IMastodonClientGateway, MastodonClientGateway>();
-            containerRegistry.RegisterSingleton<ReadingTextContainerRepository>();
-            containerRegistry.RegisterSingleton<GlobalVolumeRepository>();
-            containerRegistry.RegisterSingleton<IGlobalVolumeGateway, GlobalVolumeGateway>();
-            containerRegistry.RegisterSingleton<VoiceProfileRepository>();
-            containerRegistry.RegisterSingleton<IVoiceProfileGateway, VoiceProfileGateway>();
-            containerRegistry.RegisterSingleton<VoiceParameterChangeNotifierRepository>();
+                typeof(IShowGetMastodonAccountInfoError),
+                typeof(IShowMastodonAuthenticationError));
+            containerRegistry.RegisterSingleton<MastodonAuthCodeController>();
+            containerRegistry.RegisterManySingleton<MainControlPresenter>(
+                typeof(MainControlPresenter),
+                typeof(IInitializeGlobalVolumeView),
+                typeof(IChangeImage),
+                typeof(IUpdateTextListView));
+            containerRegistry.RegisterManySingleton<MainControlController>(
+                typeof(MainControlController),
+                typeof(IDisposable));
+            //   CeVIOAI
+            containerRegistry.RegisterManySingleton<CeVIOAIPresenter>(
+                typeof(ILoadTalker),
+                typeof(ISpeakText),
+                typeof(IUpdateVoiceParameter));
+            //   Mastodon
+            containerRegistry.RegisterManySingleton<MastodonPresenter>(
+                typeof(MastodonPresenter),
+                typeof(IRegisterClient),
+                typeof(IAuthorizeMastodonAccountWithCode),
+                typeof(IGetAccountInfo),
+                typeof(UseCase.AddMastodonAccount.IAddMastodonAccountToReader),
+                typeof(UseCase.WindowLoaded.IAddMastodonAccountToReader));
+            containerRegistry.RegisterSingleton<MastodonController>();
 
-            // Infrastructures
-            // CeVIOAI
-            containerRegistry.RegisterManySingleton<CeVIOAIService>(
-                typeof(ICeVIOAILoadTalkerService),
-                typeof(ICeVIOAISpeakTextService),
-                typeof(ICeVIOAIUpdateVoiceParameterService),
-                typeof(CeVIOAIService));
-            Container.Resolve<CeVIOAIService>();
-            // MastodonApi
-            containerRegistry.RegisterManySingleton<MastodonApiService>(
-                typeof(Application.WindowLoaded.Interfaces.IMastodonApiAddAccountToReaderService),
-                typeof(Application.AddMastodonAccount.Interfaces.IMastodonApiAddAccountToReaderService),
-                typeof(IMastodonApiAuthorizeAccountWithCodeService),
-                typeof(IMastodonApiGetAccountInfoService),
-                typeof(IMastodonApiRegisterClientService),
-                typeof(MastodonApiService));
-            Container.Resolve<MastodonApiService>();
-            // JsonStorage
-            containerRegistry.RegisterMany<JsonStorage>(
+            // Data
+            //   Repository
+            containerRegistry.RegisterSingleton<IGlobalVolumeRepository, GlobalVolumeRepository>();
+            containerRegistry.RegisterSingleton<IMastodonAccountRepository, MastodonAccountRepository>();
+            containerRegistry.RegisterSingleton<IMastodonClientRepository, MastodonClientRepository>();
+            containerRegistry.RegisterSingleton<IReadingTextContainerRepository, ReadingTextContainerRepository>();
+            containerRegistry
+                .RegisterSingleton<IVoiceParameterChangeNotifierRepository, VoiceParameterChangeNotifierRepository>();
+            containerRegistry.RegisterSingleton<IVoiceProfileRepository, VoiceProfileRepository>();
+            //   JsonStorage
+            containerRegistry.RegisterManySingleton<JsonStorage>(
                 typeof(IMastodonAccountStorage),
                 typeof(IMastodonClientStorage),
                 typeof(IGlobalVolumeStorage),
                 typeof(IVoiceProfileStorage),
                 typeof(JsonStorage));
+
+            // UseCase
+            //   WindowLoaded
+            containerRegistry.RegisterSingleton<IPushStartButton, AccountExistenceChecker>();
+            containerRegistry.RegisterSingleton<IWindowLoaded, TalkerInitializer>();
+            //   AddMastodonAccount
+            containerRegistry.RegisterSingleton<IAuthorizeMastodonAccount, AuthorizeMastodonAccount>();
+            containerRegistry.RegisterSingleton<ILoginMastodonAccount, LoginMastodonAccount>();
+            //   AddMastodonTimelineItem
+            containerRegistry.RegisterSingleton<IMastodonStatusReceiver, MastodonStatusReceiver>();
+            containerRegistry.RegisterSingleton<IMastodonSensitiveStatusReceiver, MastodonSensitiveStatusReceiver>();
+            containerRegistry.RegisterSingleton<IMastodonBoostedStatusReceiver, MastodonBoostedStatusReceiver>();
+            containerRegistry
+                .RegisterSingleton<IMastodonBoostedSensitiveStatusReceiver, MastodonBoostedSensitiveStatusReceiver>();
+            //   ReadText
+            containerRegistry.RegisterSingleton<IStartReading, TextReader>();
+            //   UpdateVoiceParameter
+            containerRegistry.RegisterSingleton<IUpdateGlobalVolume, GlobalVolumeUpdater>();
+            containerRegistry.RegisterSingleton<IStartUpdatingVoiceParameter, VoiceParameterUpdater>();
+
+            // Instantiate Infrastructure Instance
+            Container.Resolve<CeVIOAIHost>();
+            Container.Resolve<MastodonClient>();
             Container.Resolve<JsonStorage>();
         }
 
