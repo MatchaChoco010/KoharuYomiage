@@ -4,51 +4,46 @@ using System.Threading;
 using System.Threading.Tasks;
 using KoharuYomiageApp.Domain.VoiceParameters;
 using KoharuYomiageApp.UseCase.Repository;
+using ValueTaskSupplement;
 
 namespace KoharuYomiageApp.Data.Repository
 {
     public class VoiceParameterChangeNotifierRepository : IDisposable, IVoiceParameterChangeNotifierRepository
     {
-        readonly IGlobalVolumeRepository _globalVolumeRepository;
-        readonly IMastodonAccountRepository _mastodonAccountRepository;
-        readonly IVoiceProfileRepository _voiceProfileRepository;
-
-        VoiceParameterChangeNotifier? _instance;
+        readonly CancellationTokenSource _cancellationTokenSource = new();
+        readonly AsyncLazy<VoiceParameterChangeNotifier> _instance;
 
         public VoiceParameterChangeNotifierRepository(IMastodonAccountRepository mastodonAccountRepository,
             IGlobalVolumeRepository globalVolumeRepository, IVoiceProfileRepository voiceProfileRepository)
         {
-            _mastodonAccountRepository = mastodonAccountRepository;
-            _globalVolumeRepository = globalVolumeRepository;
-            _voiceProfileRepository = voiceProfileRepository;
+            _instance = new AsyncLazy<VoiceParameterChangeNotifier>(async () =>
+            {
+                var mastodonAccounts = await mastodonAccountRepository.GetAllMastodonAccounts(_cancellationTokenSource.Token);
+                var mastodonAccount = mastodonAccounts.FirstOrDefault();
+                if (mastodonAccount is not null)
+                {
+                    var globalVolume = await globalVolumeRepository.GetGlobalVolume(_cancellationTokenSource.Token);
+                    var initialCurrentProfile =
+                        await voiceProfileRepository.GetVoiceProfile<VoiceProfile.MastodonStatusVoiceProfile>(
+                            mastodonAccount.AccountIdentifier, _cancellationTokenSource.Token);
+                    return new VoiceParameterChangeNotifier(initialCurrentProfile, globalVolume);
+                }
+
+                // The VoicePlayerChangeNotifierRepository is never instantiated before the Account is created.
+                throw new InvalidProgramException();
+            });
         }
 
         public async ValueTask<VoiceParameterChangeNotifier> GetInstance(CancellationToken cancellationToken)
         {
-            if (_instance is not null)
-            {
-                return _instance;
-            }
-
-            var mastodonAccounts = await _mastodonAccountRepository.GetAllMastodonAccounts(cancellationToken);
-            var mastodonAccount = mastodonAccounts.FirstOrDefault();
-            if (mastodonAccount is not null)
-            {
-                var globalVolume = await _globalVolumeRepository.GetGlobalVolume(cancellationToken);
-                var initialCurrentProfile =
-                    await _voiceProfileRepository.GetVoiceProfile<VoiceProfile.MastodonStatusVoiceProfile>(
-                        mastodonAccount.AccountIdentifier, cancellationToken);
-                _instance = new VoiceParameterChangeNotifier(initialCurrentProfile, globalVolume);
-                return _instance;
-            }
-
-            // The VoicePlayerChangeNotifierRepository is never instantiated before the Account is created.
-            throw new InvalidProgramException();
+            cancellationToken.Register(_cancellationTokenSource.Cancel);
+            return await _instance;
         }
 
         public void Dispose()
         {
-            _instance?.Dispose();
+            _cancellationTokenSource.Dispose();
+            _instance.AsValueTask().AsTask().Wait();
         }
     }
 }

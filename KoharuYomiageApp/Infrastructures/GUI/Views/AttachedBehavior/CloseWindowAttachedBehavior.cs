@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Windows;
 
-namespace KoharuYomiageApp.Infrastructures.GUI.Views.AttachedProperties
+namespace KoharuYomiageApp.Infrastructures.GUI.Views.AttachedBehavior
 {
     public class CloseWindowAttachedBehavior
     {

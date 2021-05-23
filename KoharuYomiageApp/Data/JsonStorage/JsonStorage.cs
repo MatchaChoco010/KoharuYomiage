@@ -4,7 +4,6 @@ using System.Reflection;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using ImTools;
 using KoharuYomiageApp.Data.Repository;
 using KoharuYomiageApp.Data.Repository.DataObjects;
 
@@ -94,7 +93,7 @@ namespace KoharuYomiageApp.Data.JsonStorage
         public async Task<VoiceProfileData?> FindVoiceProfile(string accountIdentifier, string type, CancellationToken cancellationToken)
         {
             var storage = await GetOrCreateSettings(cancellationToken);
-            return storage.VoiceProfileData.FindFirst(d => d.AccountIdentifier == accountIdentifier && d.Type == type);
+            return storage.VoiceProfileData.Find(d => d.AccountIdentifier == accountIdentifier && d.Type == type);
         }
 
         public async Task<IEnumerable<VoiceProfileData>> GetVoiceProfiles(string accountIdentifier, CancellationToken cancellationToken)

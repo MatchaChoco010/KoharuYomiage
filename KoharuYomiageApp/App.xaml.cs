@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Windows;
 using KoharuYomiageApp.Data.JsonStorage;
@@ -6,6 +7,7 @@ using KoharuYomiageApp.Data.Repository;
 using KoharuYomiageApp.Infrastructures.CeVIOAI;
 using KoharuYomiageApp.Infrastructures.GUI.ViewModels;
 using KoharuYomiageApp.Infrastructures.GUI.Views;
+using KoharuYomiageApp.Infrastructures.GUI.Views.AttachedBehavior;
 using KoharuYomiageApp.Infrastructures.GUI.Views.Dialogs;
 using KoharuYomiageApp.Infrastructures.Mastodon;
 using KoharuYomiageApp.Presentation.CeVIOAI;
@@ -20,6 +22,8 @@ using KoharuYomiageApp.UseCase.WindowLoaded;
 using Microsoft.Windows.Sdk;
 using Prism.DryIoc;
 using Prism.Ioc;
+using Prism.Regions;
+using ValueTaskSupplement;
 
 namespace KoharuYomiageApp
 {
@@ -119,26 +123,21 @@ namespace KoharuYomiageApp
             //   Repository
             containerRegistry.RegisterManySingleton<GlobalVolumeRepository>(
                 typeof(IDisposable),
-                typeof(IGlobalVolumeRepository),
-                typeof(GlobalVolumeRepository));
+                typeof(IGlobalVolumeRepository));
             containerRegistry.RegisterSingleton<IMastodonAccountRepository, MastodonAccountRepository>();
             containerRegistry.RegisterSingleton<IMastodonClientRepository, MastodonClientRepository>();
             containerRegistry.RegisterManySingleton<ReadingTextContainerRepository>(
                 typeof(IDisposable),
-                typeof(IReadingTextContainerRepository),
-                typeof(ReadingTextContainerRepository));
+                typeof(IReadingTextContainerRepository));
             containerRegistry.RegisterManySingleton<VoiceParameterChangeNotifierRepository>(
                 typeof(IDisposable),
-                typeof(IVoiceParameterChangeNotifierRepository),
-                typeof(VoiceParameterChangeNotifierRepository));
+                typeof(IVoiceParameterChangeNotifierRepository));
             containerRegistry.RegisterManySingleton<VoiceProfileRepository>(
                 typeof(IDisposable),
-                typeof(IVoiceProfileRepository),
-                typeof(VoiceProfileRepository));
+                typeof(IVoiceProfileRepository));
             containerRegistry.RegisterManySingleton<ConnectionRepository>(
                 typeof(IDisposable),
-                typeof(IConnectionRepository),
-                typeof(ConnectionRepository));
+                typeof(IConnectionRepository));
             //   JsonStorage
             containerRegistry.RegisterManySingleton<JsonStorage>(
                 typeof(IMastodonAccountStorage),
@@ -170,6 +169,12 @@ namespace KoharuYomiageApp
             Container.Resolve<CeVIOAIHost>();
             Container.Resolve<MastodonClient>();
             Container.Resolve<JsonStorage>();
+        }
+
+        protected override void ConfigureDefaultRegionBehaviors(IRegionBehaviorFactory regionBehaviors)
+        {
+            regionBehaviors.AddIfMissing(nameof(DisposeClosedViewsBehavior), typeof(DisposeClosedViewsBehavior));
+            base.ConfigureDefaultRegionBehaviors(regionBehaviors);
         }
 
         protected override void OnStartup(StartupEventArgs e)
