@@ -13,7 +13,7 @@ using SourceChord.FluentWPF;
 
 namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
 {
-    public class StartViewModel : BindableBase, INavigationAware
+    public class StartViewModel : BindableBase, INavigationAware, IDisposable
     {
         readonly IDialogService _dialogService;
         readonly CompositeDisposable _disposable = new();
@@ -75,6 +75,19 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
             _dialogService.ShowDialog(nameof(LoadTalkerError));
             _dialogService.ShowDialog(nameof(LoadTalkerLink));
             Close.Value = true;
+        }
+
+        public void Dispose()
+        {
+            _disposable.Dispose();
+            _startController.Dispose();
+            LoadedCommand.Dispose();
+            NavigateCommand.Dispose();
+            Close.Dispose();
+            StatusText.Dispose();
+            StartButtonIsEnabled.Dispose();
+            StartButtonForeground.Dispose();
+            StartButtonBackground.Dispose();
         }
     }
 }

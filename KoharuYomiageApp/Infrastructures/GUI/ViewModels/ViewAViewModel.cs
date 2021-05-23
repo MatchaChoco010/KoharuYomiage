@@ -1,4 +1,5 @@
-﻿using System.Reactive.Disposables;
+﻿using System;
+using System.Reactive.Disposables;
 using KoharuYomiageApp.Infrastructures.GUI.Views;
 using Prism.Mvvm;
 using Prism.Regions;
@@ -7,7 +8,7 @@ using Reactive.Bindings.Extensions;
 
 namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
 {
-    public class ViewAViewModel : BindableBase, INavigationAware
+    public class ViewAViewModel : BindableBase, INavigationAware, IDisposable
     {
         readonly CompositeDisposable _disposable = new();
 
@@ -27,6 +28,12 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
         public void OnNavigatedFrom(NavigationContext navigationContext)
         {
             _disposable.Clear();
+        }
+
+        public void Dispose()
+        {
+            _disposable.Dispose();
+            NavigateCommand.Dispose();
         }
     }
 }

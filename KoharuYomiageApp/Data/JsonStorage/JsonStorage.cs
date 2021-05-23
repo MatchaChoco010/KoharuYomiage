@@ -2,6 +2,7 @@
 using System.IO;
 using System.Reflection;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 using ImTools;
 using KoharuYomiageApp.Data.Repository;
@@ -22,30 +23,30 @@ namespace KoharuYomiageApp.Data.JsonStorage
             }
         }
 
-        public async Task<double?> FindGlobalVolume()
+        public async Task<double?> FindGlobalVolume(CancellationToken cancellationToken)
         {
-            var storage = await GetOrCreateSettings();
+            var storage = await GetOrCreateSettings(cancellationToken);
             return storage.GlobalVolume;
         }
 
-        public async Task SaveGlobalVolume(double volume)
+        public async Task SaveGlobalVolume(double volume, CancellationToken cancellationToken)
         {
-            var storage = await GetOrCreateSettings();
+            var storage = await GetOrCreateSettings(cancellationToken);
 
             storage.GlobalVolume = volume;
 
-            await SaveSettings(storage);
+            await SaveSettings(storage, cancellationToken);
         }
 
-        public async Task<MastodonAccountData?> FindMastodonAccountData(string identifier)
+        public async Task<MastodonAccountData?> FindMastodonAccountData(string identifier, CancellationToken cancellationToken)
         {
-            var storage = await GetOrCreateSettings();
+            var storage = await GetOrCreateSettings(cancellationToken);
             return storage.MastodonAccountData.Find(data => data.Username + "@" + data.Instance == identifier);
         }
 
-        public async Task SaveMastodonAccountData(MastodonAccountData accountSaveData)
+        public async Task SaveMastodonAccountData(MastodonAccountData accountSaveData, CancellationToken cancellationToken)
         {
-            var storage = await GetOrCreateSettings();
+            var storage = await GetOrCreateSettings(cancellationToken);
 
             var index = storage.MastodonAccountData.FindIndex(data =>
                 data.Username == accountSaveData.Username && data.Instance == accountSaveData.Instance);
@@ -58,24 +59,24 @@ namespace KoharuYomiageApp.Data.JsonStorage
                 storage.MastodonAccountData.Add(accountSaveData);
             }
 
-            await SaveSettings(storage);
+            await SaveSettings(storage, cancellationToken);
         }
 
-        public async Task<IEnumerable<MastodonAccountData>> GetMastodonAccountData()
+        public async Task<IEnumerable<MastodonAccountData>> GetMastodonAccountData(CancellationToken cancellationToken)
         {
-            var storage = await GetOrCreateSettings();
+            var storage = await GetOrCreateSettings(cancellationToken);
             return storage.MastodonAccountData;
         }
 
-        public async Task<MastodonClientData?> FindMastodonClientData(string instance)
+        public async Task<MastodonClientData?> FindMastodonClientData(string instance, CancellationToken cancellationToken)
         {
-            var storage = await GetOrCreateSettings();
+            var storage = await GetOrCreateSettings(cancellationToken);
             return storage.MastodonClientData.Find(data => data.Instance == instance);
         }
 
-        public async Task SaveMastodonClientData(MastodonClientData clientSaveData)
+        public async Task SaveMastodonClientData(MastodonClientData clientSaveData, CancellationToken cancellationToken)
         {
-            var storage = await GetOrCreateSettings();
+            var storage = await GetOrCreateSettings(cancellationToken);
 
             var index = storage.MastodonClientData.FindIndex(data => data.Instance == clientSaveData.Instance);
             if (index is not -1)
@@ -87,24 +88,24 @@ namespace KoharuYomiageApp.Data.JsonStorage
                 storage.MastodonClientData.Add(clientSaveData);
             }
 
-            await SaveSettings(storage);
+            await SaveSettings(storage, cancellationToken);
         }
 
-        public async Task<VoiceProfileData?> FindVoiceProfile(string accountIdentifier, string type)
+        public async Task<VoiceProfileData?> FindVoiceProfile(string accountIdentifier, string type, CancellationToken cancellationToken)
         {
-            var storage = await GetOrCreateSettings();
+            var storage = await GetOrCreateSettings(cancellationToken);
             return storage.VoiceProfileData.FindFirst(d => d.AccountIdentifier == accountIdentifier && d.Type == type);
         }
 
-        public async Task<IEnumerable<VoiceProfileData>> GetVoiceProfiles(string accountIdentifier)
+        public async Task<IEnumerable<VoiceProfileData>> GetVoiceProfiles(string accountIdentifier, CancellationToken cancellationToken)
         {
-            var storage = await GetOrCreateSettings();
+            var storage = await GetOrCreateSettings(cancellationToken);
             return storage.VoiceProfileData.FindAll(d => d.AccountIdentifier == accountIdentifier);
         }
 
-        public async Task SaveVoiceProfile(VoiceProfileData data)
+        public async Task SaveVoiceProfile(VoiceProfileData data, CancellationToken cancellationToken)
         {
-            var storage = await GetOrCreateSettings();
+            var storage = await GetOrCreateSettings(cancellationToken);
 
             var index = storage.VoiceProfileData.FindIndex(d =>
                 d.AccountIdentifier == data.AccountIdentifier && d.Type == data.Type);
@@ -117,28 +118,28 @@ namespace KoharuYomiageApp.Data.JsonStorage
                 storage.VoiceProfileData.Add(data);
             }
 
-            await SaveSettings(storage);
+            await SaveSettings(storage, cancellationToken);
         }
 
-        async Task<JsonData> GetOrCreateSettings()
+        async Task<JsonData> GetOrCreateSettings(CancellationToken cancellationToken)
         {
             try
             {
                 using var json = File.OpenRead(SettingsPath);
-                return await JsonSerializer.DeserializeAsync<JsonData>(json) ?? throw new FileNotFoundException();
+                return await JsonSerializer.DeserializeAsync<JsonData>(json, cancellationToken: cancellationToken) ?? throw new FileNotFoundException();
             }
             catch (FileNotFoundException)
             {
                 var storage = new JsonData();
-                await SaveSettings(storage);
+                await SaveSettings(storage, cancellationToken);
                 return storage;
             }
         }
 
-        async Task SaveSettings(JsonData storage)
+        async Task SaveSettings(JsonData storage, CancellationToken cancellationToken)
         {
             using var json = File.Open(SettingsPath, FileMode.Create);
-            await JsonSerializer.SerializeAsync(json, storage);
+            await JsonSerializer.SerializeAsync(json, storage, cancellationToken: cancellationToken);
         }
     }
 }

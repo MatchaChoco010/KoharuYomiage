@@ -10,7 +10,6 @@ namespace KoharuYomiageApp.Presentation.GUI
         readonly CancellationTokenSource _cancellationTokenSource = new();
         readonly IStartReading _startReading;
         readonly IStartUpdatingVoiceParameter _startUpdatingVoiceParameter;
-
         readonly IUpdateGlobalVolume _updateGlobalVolume;
 
         public MainControlController(IUpdateGlobalVolume updateGlobalVolume,
@@ -28,12 +27,12 @@ namespace KoharuYomiageApp.Presentation.GUI
 
         public void UpdateVolume(double volume)
         {
-            _ = _updateGlobalVolume.Update(volume);
+            _ = _updateGlobalVolume.Update(volume, _cancellationTokenSource.Token);
         }
 
         public void StartUpdatingVoiceParameter()
         {
-            _ = _startUpdatingVoiceParameter.Start();
+            _ = _startUpdatingVoiceParameter.Start(_cancellationTokenSource.Token);
         }
 
         public void StartReading()

@@ -1,10 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using KoharuYomiageApp.UseCase.AddMastodonAccount.DataObjects;
 
 namespace KoharuYomiageApp.UseCase.AddMastodonAccount
 {
     public interface IGetAccountInfo
     {
-        Task<AccountInfo> GetAccountInfo(AccessInfo accessInfo);
+        Task<AccountInfo> GetAccountInfo(AccessInfo accessInfo, CancellationToken cancellationToken);
     }
 }

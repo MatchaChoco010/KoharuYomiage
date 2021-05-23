@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using KoharuYomiageApp.Presentation.Mastodon;
 using KoharuYomiageApp.Presentation.Mastodon.DataObjects;
@@ -72,22 +73,22 @@ namespace KoharuYomiageApp.Infrastructures.Mastodon
         }
 
         public async Task<string> AuthorizeWithCode(string instance, string clientId, string clientSecret,
-            string code)
+            string code, CancellationToken cancellationToken)
         {
             var accessToken =
-                await Api.AuthorizeWithCode(instance, new ClientId(clientId), new ClientSecret(clientSecret), code);
+                await Api.AuthorizeWithCode(instance, new ClientId(clientId), new ClientSecret(clientSecret), code, cancellationToken);
             return accessToken.Token;
         }
 
-        public async Task<(string, Uri)> GetAccountInfo(string instance, string accessToken)
+        public async Task<(string, Uri)> GetAccountInfo(string instance, string accessToken, CancellationToken cancellationToken)
         {
-            var account = await Api.GetAccountInformation(instance, new AccessToken(accessToken));
+            var account = await Api.GetAccountInformation(instance, new AccessToken(accessToken), cancellationToken);
             return (account.username, new Uri(account.avatar_static));
         }
 
-        public async Task<(string, string)> RegisterClient(string instance)
+        public async Task<(string, string)> RegisterClient(string instance, CancellationToken cancellationToken)
         {
-            var (id, secret) = await Api.RegisterApp(instance);
+            var (id, secret) = await Api.RegisterApp(instance, cancellationToken);
             return (id.Id, secret.Secret);
         }
     }

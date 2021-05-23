@@ -1,10 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using KoharuYomiageApp.Domain.VoiceParameters;
 
 namespace KoharuYomiageApp.UseCase.Repository
 {
     public interface IVoiceParameterChangeNotifierRepository
     {
-        ValueTask<VoiceParameterChangeNotifier> GetInstance();
+        ValueTask<VoiceParameterChangeNotifier> GetInstance(CancellationToken cancellationToken);
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 
 namespace KoharuYomiageApp.UseCase.WindowLoaded
 {
@@ -16,11 +17,11 @@ namespace KoharuYomiageApp.UseCase.WindowLoaded
             _finishLoadTalker = finishLoadTalker;
         }
 
-        public async Task WindowLoaded()
+        public async Task WindowLoaded(CancellationToken cancellationToken)
         {
             try
             {
-                await _loadTalker.LoadTalker();
+                await _loadTalker.LoadTalker(cancellationToken);
             }
             catch
             {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using KoharuYomiageApp.Data.Repository.DataObjects;
 using KoharuYomiageApp.Domain.Account;
@@ -20,7 +21,7 @@ namespace KoharuYomiageApp.Data.Repository
             _storage = storage;
         }
 
-        public async Task<VoiceProfile> GetVoiceProfile<T>(AccountIdentifier accountIdentifier)
+        public async Task<VoiceProfile> GetVoiceProfile<T>(AccountIdentifier accountIdentifier, CancellationToken cancellationToken)
             where T : VoiceProfile
         {
             var type = typeof(T) switch
@@ -50,7 +51,7 @@ namespace KoharuYomiageApp.Data.Repository
 
             _profiles.Add((accountIdentifier, type), profile);
 
-            var data = await _storage.FindVoiceProfile(accountIdentifier.Value, type);
+            var data = await _storage.FindVoiceProfile(accountIdentifier.Value, type, cancellationToken);
             if (data is null)
             {
                 return profile;
@@ -61,9 +62,9 @@ namespace KoharuYomiageApp.Data.Repository
             return profile;
         }
 
-        public async Task<IEnumerable<VoiceProfile>> GetVoiceProfiles(AccountIdentifier accountIdentifier)
+        public async Task<IEnumerable<VoiceProfile>> GetVoiceProfiles(AccountIdentifier accountIdentifier, CancellationToken cancellationToken)
         {
-            var data = await _storage.GetVoiceProfiles(accountIdentifier.Value);
+            var data = await _storage.GetVoiceProfiles(accountIdentifier.Value, cancellationToken);
             return data.Select(d =>
             {
                 if (_profiles.TryGetValue((accountIdentifier, d.Type), out var p))
@@ -90,7 +91,7 @@ namespace KoharuYomiageApp.Data.Repository
             });
         }
 
-        public async Task SaveVoiceProfile(VoiceProfile profile)
+        public async Task SaveVoiceProfile(VoiceProfile profile, CancellationToken cancellationToken)
         {
             var type = profile switch
             {
@@ -104,7 +105,7 @@ namespace KoharuYomiageApp.Data.Repository
             var data = new VoiceProfileData(profile.AccountIdentifier.Value, type, profile.Volume, profile.Speed,
                 profile.Tone, profile.Alpha, profile.ToneScale, profile.ComponentNormal, profile.ComponentHappy,
                 profile.ComponentAnger, profile.ComponentSorrow, profile.ComponentCalmness);
-            await _storage.SaveVoiceProfile(data);
+            await _storage.SaveVoiceProfile(data, cancellationToken);
         }
 
         public void Dispose()

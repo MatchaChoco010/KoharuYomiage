@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 using MastodonApi.Exceptions;
 using MastodonApi.Payloads;
@@ -15,7 +16,7 @@ namespace MastodonApi
     {
         static readonly HttpClientHandler s_httpClientHandler = new();
 
-        public static async Task<(ClientId, ClientSecret)> RegisterApp(string hostName)
+        public static async Task<(ClientId, ClientSecret)> RegisterApp(string hostName, CancellationToken cancellationToken = new())
         {
             if (Uri.CheckHostName(hostName) == UriHostNameType.Unknown)
             {
@@ -33,7 +34,7 @@ namespace MastodonApi
             var uriBuilder = new UriBuilder {Scheme = "https", Host = hostName, Path = "api/v1/apps"};
 
             using var client = new HttpClient(s_httpClientHandler, false);
-            var response = await client.PostAsync(uriBuilder.Uri, content);
+            var response = await client.PostAsync(uriBuilder.Uri, content, cancellationToken);
 
             if (response.StatusCode != HttpStatusCode.OK)
             {
@@ -41,12 +42,12 @@ namespace MastodonApi
             }
 
             var json = (await JsonSerializer.DeserializeAsync<RegisterAppJson>(
-                await response.Content.ReadAsStreamAsync()))!;
+                await response.Content.ReadAsStreamAsync(), cancellationToken: cancellationToken))!;
 
             return (new ClientId(json.client_id), new ClientSecret(json.client_secret));
         }
 
-        public static async Task<Uri> GetAuthorizeUri(string hostName, ClientId clientId)
+        public static async Task<Uri> GetAuthorizeUri(string hostName, ClientId clientId, CancellationToken cancellationToken = new())
         {
             if (Uri.CheckHostName(hostName) == UriHostNameType.Unknown)
             {
@@ -72,7 +73,7 @@ namespace MastodonApi
         }
 
         public static async Task<AccessToken> AuthorizeWithCode(string hostName, ClientId clientId,
-            ClientSecret clientSecret, string code)
+            ClientSecret clientSecret, string code, CancellationToken cancellationToken = new())
         {
             if (Uri.CheckHostName(hostName) == UriHostNameType.Unknown)
             {
@@ -91,7 +92,7 @@ namespace MastodonApi
             var uriBuilder = new UriBuilder {Scheme = "https", Host = hostName, Path = "oauth/token"};
 
             using var client = new HttpClient(s_httpClientHandler, false);
-            var response = await client.PostAsync(uriBuilder.Uri, content);
+            var response = await client.PostAsync(uriBuilder.Uri, content, cancellationToken);
 
             if (response.StatusCode != HttpStatusCode.OK)
             {
@@ -99,12 +100,12 @@ namespace MastodonApi
             }
 
             var json = (await JsonSerializer.DeserializeAsync<Token>(
-                await response.Content.ReadAsStreamAsync()))!;
+                await response.Content.ReadAsStreamAsync(), cancellationToken: cancellationToken))!;
 
             return new AccessToken(json.access_token);
         }
 
-        public static async Task<Account> GetAccountInformation(string hostName, AccessToken accessToken)
+        public static async Task<Account> GetAccountInformation(string hostName, AccessToken accessToken, CancellationToken cancellationToken = new())
         {
             var uriBuilder = new UriBuilder
             {
@@ -114,7 +115,7 @@ namespace MastodonApi
             using var client = new HttpClient(s_httpClientHandler, false);
             client.DefaultRequestHeaders.Add("Authorization", $"Bearer {accessToken.Token}");
 
-            var response = await client.GetAsync(uriBuilder.Uri);
+            var response = await client.GetAsync(uriBuilder.Uri, cancellationToken);
 
             if (response.StatusCode != HttpStatusCode.OK)
             {
@@ -122,18 +123,18 @@ namespace MastodonApi
             }
 
             var account = (await JsonSerializer.DeserializeAsync<Account>(
-                await response.Content.ReadAsStreamAsync()))!;
+                await response.Content.ReadAsStreamAsync(), cancellationToken: cancellationToken))!;
 
             return account;
         }
 
-        public static async Task<Instance> GetInstanceInformation(string hostName)
+        public static async Task<Instance> GetInstanceInformation(string hostName, CancellationToken cancellationToken = new())
         {
             var uriBuilder = new UriBuilder {Scheme = "https", Host = hostName, Path = "api/v1/instance"};
 
             using var client = new HttpClient(s_httpClientHandler, false);
 
-            var response = await client.GetAsync(uriBuilder.Uri);
+            var response = await client.GetAsync(uriBuilder.Uri, cancellationToken);
 
             if (response.StatusCode != HttpStatusCode.OK)
             {
@@ -141,7 +142,7 @@ namespace MastodonApi
             }
 
             var instance = (await JsonSerializer.DeserializeAsync<Instance>(
-                await response.Content.ReadAsStreamAsync()))!;
+                await response.Content.ReadAsStreamAsync(), cancellationToken: cancellationToken))!;
 
             return instance;
         }

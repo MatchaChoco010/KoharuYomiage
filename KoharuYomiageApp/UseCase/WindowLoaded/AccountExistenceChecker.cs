@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using KoharuYomiageApp.Domain.Connection;
 using KoharuYomiageApp.UseCase.Repository;
@@ -25,9 +26,9 @@ namespace KoharuYomiageApp.UseCase.WindowLoaded
             _startApp = startApp;
         }
 
-        public async Task PushStartButton()
+        public async Task PushStartButton(CancellationToken cancellationToken)
         {
-            var mastodonAccounts = (await _mastodonAccountRepository.GetAllMastodonAccounts()).ToArray();
+            var mastodonAccounts = (await _mastodonAccountRepository.GetAllMastodonAccounts(cancellationToken)).ToArray();
 
             if (mastodonAccounts.Length is 0)
             {

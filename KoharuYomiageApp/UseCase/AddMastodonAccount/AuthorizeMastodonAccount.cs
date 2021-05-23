@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using KoharuYomiageApp.Domain.Account;
 using KoharuYomiageApp.Domain.Account.Mastodon;
 using KoharuYomiageApp.Domain.Connection;
@@ -40,14 +41,14 @@ namespace KoharuYomiageApp.UseCase.AddMastodonAccount
             _finishAuthorizeMastodonAccount = finishAuthorizeMastodonAccount;
         }
 
-        public async Task Authorize(InstanceAndAuthenticationCode instanceAndAuthenticationCode)
+        public async Task Authorize(InstanceAndAuthenticationCode instanceAndAuthenticationCode, CancellationToken cancellationToken)
         {
             var instance = new Instance(instanceAndAuthenticationCode.Instance);
 
             AccessInfo accessInfo;
             try
             {
-                var client = await _mastodonClientRepository.FindMastodonClient(instance);
+                var client = await _mastodonClientRepository.FindMastodonClient(instance, cancellationToken);
                 if (client is null)
                 {
                     _showMastodonAuthenticationError.ShowMastodonAuthenticationError();
@@ -57,7 +58,7 @@ namespace KoharuYomiageApp.UseCase.AddMastodonAccount
                 var authorizationInfo = new AuthorizationInfo(instance.Value, client.ClientId.Value,
                     client.ClientSecret.Value, instanceAndAuthenticationCode.AuthenticationCode);
                 accessInfo =
-                    await _authorizeMastodonAccountWithCode.AuthorizeMastodonAccountWithCode(authorizationInfo);
+                    await _authorizeMastodonAccountWithCode.AuthorizeMastodonAccountWithCode(authorizationInfo, cancellationToken);
             }
             catch
             {
@@ -68,7 +69,7 @@ namespace KoharuYomiageApp.UseCase.AddMastodonAccount
             AccountInfo accountInfo;
             try
             {
-                accountInfo = await _getAccountInfo.GetAccountInfo(accessInfo);
+                accountInfo = await _getAccountInfo.GetAccountInfo(accessInfo, cancellationToken);
             }
             catch
             {
@@ -81,7 +82,7 @@ namespace KoharuYomiageApp.UseCase.AddMastodonAccount
             var iconUrl = new MastodonAccountIconUrl(accountInfo.IconUrl);
 
             var account =
-                await _mastodonAccountRepository.FindMastodonAccount(new AccountIdentifier(username, instance));
+                await _mastodonAccountRepository.FindMastodonAccount(new AccountIdentifier(username, instance), cancellationToken);
             if (account is null)
             {
                 account = _mastodonAccountRepository.CreateMastodonAccount(username, instance, accessToken, iconUrl);
@@ -91,7 +92,7 @@ namespace KoharuYomiageApp.UseCase.AddMastodonAccount
                 account = account with {AccessToken = accessToken, IconUrl = iconUrl};
             }
 
-            await _mastodonAccountRepository.SaveMastodonAccount(account);
+            await _mastodonAccountRepository.SaveMastodonAccount(account, cancellationToken);
 
             var connection = _makeMastodonConnection.MakeConnection(new AddReaderInfo(account.AccountIdentifier.Value,
                 account.Username.Value, account.Instance.Value, account.AccessToken.Token));

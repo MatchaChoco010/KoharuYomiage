@@ -9,7 +9,7 @@ using Reactive.Bindings.Extensions;
 
 namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
 {
-    public class SelectSNSViewModel : BindableBase, INavigationAware
+    public class SelectSNSViewModel : BindableBase, INavigationAware, IDisposable
     {
         readonly CompositeDisposable _disposable = new();
 
@@ -41,6 +41,14 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
         public void OnNavigatedFrom(NavigationContext navigationContext)
         {
             _disposable.Clear();
+        }
+
+        public void Dispose()
+        {
+            _disposable.Dispose();
+            BackButtonVisibility.Dispose();
+            SelectMastodonCommand.Dispose();
+            BackCommand.Dispose();
         }
     }
 }

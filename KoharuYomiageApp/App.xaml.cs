@@ -71,18 +71,24 @@ namespace KoharuYomiageApp
                 typeof(IStartRegisteringAccount),
                 typeof(IFinishLoadTalker),
                 typeof(IShowLoadTalkerError));
-            containerRegistry.RegisterSingleton<StartController>();
+            containerRegistry.RegisterManySingleton<StartController>(
+                typeof(StartController),
+                typeof(IDisposable));
             containerRegistry.RegisterManySingleton<MastodonLoginPresenter>(
                 typeof(MastodonLoginPresenter),
                 typeof(IShowAuthUrl),
                 typeof(IShowRegisterClientError));
-            containerRegistry.RegisterSingleton<MastodonLoginController>();
+            containerRegistry.RegisterManySingleton<MastodonLoginController>(
+                typeof(MastodonLoginController),
+                typeof(IDisposable));
             containerRegistry.RegisterManySingleton<MastodonAuthCodePresenter>(
                 typeof(MastodonAuthCodePresenter),
                 typeof(IFinishAuthorizeMastodonAccount),
                 typeof(IShowGetMastodonAccountInfoError),
                 typeof(IShowMastodonAuthenticationError));
-            containerRegistry.RegisterSingleton<MastodonAuthCodeController>();
+            containerRegistry.RegisterManySingleton<MastodonAuthCodeController>(
+                typeof(MastodonAuthCodeController),
+                typeof(IDisposable));
             containerRegistry.RegisterManySingleton<MainControlPresenter>(
                 typeof(MainControlPresenter),
                 typeof(IInitializeGlobalVolumeView),
@@ -98,7 +104,6 @@ namespace KoharuYomiageApp
                 typeof(IUpdateVoiceParameter));
             //   Mastodon
             containerRegistry.RegisterManySingleton<MastodonPresenter>(
-                typeof(MastodonPresenter),
                 typeof(IRegisterClient),
                 typeof(IAuthorizeMastodonAccountWithCode),
                 typeof(IGetAccountInfo),

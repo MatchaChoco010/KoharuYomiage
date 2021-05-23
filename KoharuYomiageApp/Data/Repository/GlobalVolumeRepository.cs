@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using KoharuYomiageApp.Domain.VoiceParameters;
 using KoharuYomiageApp.UseCase.Repository;
@@ -16,14 +17,14 @@ namespace KoharuYomiageApp.Data.Repository
             _storage = storage;
         }
 
-        public async Task<GlobalVolume> GetGlobalVolume()
+        public async Task<GlobalVolume> GetGlobalVolume(CancellationToken cancellationToken)
         {
             if (_globalVolume is not null)
             {
                 return _globalVolume;
             }
 
-            var volume = await _storage.FindGlobalVolume();
+            var volume = await _storage.FindGlobalVolume(cancellationToken);
             if (volume is not null)
             {
                 _globalVolume = new GlobalVolume(volume.Value);
@@ -34,9 +35,9 @@ namespace KoharuYomiageApp.Data.Repository
             return _globalVolume;
         }
 
-        public async Task SaveGlobalVolume(GlobalVolume volume)
+        public async Task SaveGlobalVolume(GlobalVolume volume, CancellationToken cancellationToken)
         {
-            await _storage.SaveGlobalVolume(volume.Volume.Value);
+            await _storage.SaveGlobalVolume(volume.Volume.Value, cancellationToken);
         }
 
         public void Dispose()

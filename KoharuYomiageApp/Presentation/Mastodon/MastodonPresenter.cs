@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using KoharuYomiageApp.UseCase.AddMastodonAccount;
 using KoharuYomiageApp.UseCase.AddMastodonAccount.DataObjects;
@@ -23,19 +24,19 @@ namespace KoharuYomiageApp.Presentation.Mastodon
             _connection = connection;
         }
 
-        public async Task<AccessInfo> AuthorizeMastodonAccountWithCode(AuthorizationInfo authorizationInfo)
+        public async Task<AccessInfo> AuthorizeMastodonAccountWithCode(AuthorizationInfo authorizationInfo, CancellationToken cancellationToken)
         {
             var accessToken =
                 await _authorizeAccountWithCode.AuthorizeWithCode(authorizationInfo.Instance,
-                    authorizationInfo.ClientId, authorizationInfo.ClientSecret, authorizationInfo.AuthorizationCode);
+                    authorizationInfo.ClientId, authorizationInfo.ClientSecret, authorizationInfo.AuthorizationCode, cancellationToken);
             return new AccessInfo(authorizationInfo.Instance, accessToken);
         }
 
-        public async Task<AccountInfo> GetAccountInfo(AccessInfo accessInfo)
+        public async Task<AccountInfo> GetAccountInfo(AccessInfo accessInfo, CancellationToken cancellationToken)
         {
             var (instance, token) = accessInfo;
             var (username, iconUrl) =
-                await _getAccountInfo.GetAccountInfo(instance, token);
+                await _getAccountInfo.GetAccountInfo(instance, token, cancellationToken);
             return new AccountInfo(username, iconUrl);
         }
 
@@ -50,9 +51,9 @@ namespace KoharuYomiageApp.Presentation.Mastodon
             return _connection.MakeConnection(info.Username, info.Instance, info.AccessToken);
         }
 
-        public async Task<ClientInfo> RegisterClient(LoginInfo loginInfo)
+        public async Task<ClientInfo> RegisterClient(LoginInfo loginInfo, CancellationToken cancellationToken)
         {
-            var (id, secret) = await _registerClient.RegisterClient(loginInfo.Instance);
+            var (id, secret) = await _registerClient.RegisterClient(loginInfo.Instance, cancellationToken);
             return new ClientInfo(id, secret);
         }
     }

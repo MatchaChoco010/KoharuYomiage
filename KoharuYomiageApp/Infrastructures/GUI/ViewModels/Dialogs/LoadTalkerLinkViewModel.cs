@@ -8,7 +8,7 @@ using Reactive.Bindings.Extensions;
 
 namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels.Dialogs
 {
-    public class LoadTalkerLinkViewModel : BindableBase, IDialogAware
+    public class LoadTalkerLinkViewModel : BindableBase, IDialogAware, IDisposable
     {
         readonly CompositeDisposable _disposable = new();
 
@@ -38,6 +38,13 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels.Dialogs
         public void OnDialogClosed()
         {
             _disposable.Clear();
+        }
+
+        public void Dispose()
+        {
+            _disposable.Dispose();
+            OkCommand.Dispose();
+            LinkCommand.Dispose();
         }
     }
 }

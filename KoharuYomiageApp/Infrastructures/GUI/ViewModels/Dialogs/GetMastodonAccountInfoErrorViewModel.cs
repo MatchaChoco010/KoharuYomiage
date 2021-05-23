@@ -7,7 +7,7 @@ using Reactive.Bindings.Extensions;
 
 namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels.Dialogs
 {
-    public class GetMastodonAccountInfoErrorViewModel : BindableBase, IDialogAware
+    public class GetMastodonAccountInfoErrorViewModel : BindableBase, IDialogAware, IDisposable
     {
         readonly CompositeDisposable _disposable = new();
 
@@ -35,6 +35,12 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels.Dialogs
         public void OnDialogClosed()
         {
             _disposable.Clear();
+        }
+
+        public void Dispose()
+        {
+            _disposable.Dispose();
+            OkCommand.Dispose();
         }
     }
 }

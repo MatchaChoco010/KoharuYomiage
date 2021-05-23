@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using KoharuYomiageApp.Data.Repository.DataObjects;
 using KoharuYomiageApp.Domain.Account;
 using KoharuYomiageApp.Domain.Client.Mastodon;
@@ -15,9 +16,9 @@ namespace KoharuYomiageApp.Data.Repository
             _storage = storage;
         }
 
-        public async Task<MastodonClient?> FindMastodonClient(Instance instance)
+        public async Task<MastodonClient?> FindMastodonClient(Instance instance, CancellationToken cancellationToken)
         {
-            var data = await _storage.FindMastodonClientData(instance.Value);
+            var data = await _storage.FindMastodonClientData(instance.Value, cancellationToken);
             if (data is not null)
             {
                 return new MastodonClient(new Instance(data.Instance), new MastodonClientId(data.Id),
@@ -33,10 +34,10 @@ namespace KoharuYomiageApp.Data.Repository
             return new(instance, clientId, clientSecret);
         }
 
-        public async Task SaveMastodonClient(MastodonClient client)
+        public async Task SaveMastodonClient(MastodonClient client, CancellationToken cancellationToken)
         {
             await _storage.SaveMastodonClientData(new MastodonClientData(client.Instance.Value, client.ClientId.Value,
-                client.ClientSecret.Value));
+                client.ClientSecret.Value), cancellationToken);
         }
     }
 }

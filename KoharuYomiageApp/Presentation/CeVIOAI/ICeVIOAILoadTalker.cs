@@ -1,9 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 
 namespace KoharuYomiageApp.Presentation.CeVIOAI
 {
     public interface ICeVIOAILoadTalker
     {
-        Task LoadTalker();
+        Task LoadTalker(CancellationToken cancellationToken);
     }
 }

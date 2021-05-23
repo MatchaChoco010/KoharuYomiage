@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using KoharuYomiageApp.Domain.VoiceParameters;
 using KoharuYomiageApp.UseCase.Repository;
@@ -22,21 +23,21 @@ namespace KoharuYomiageApp.Data.Repository
             _voiceProfileRepository = voiceProfileRepository;
         }
 
-        public async ValueTask<VoiceParameterChangeNotifier> GetInstance()
+        public async ValueTask<VoiceParameterChangeNotifier> GetInstance(CancellationToken cancellationToken)
         {
             if (_instance is not null)
             {
                 return _instance;
             }
 
-            var mastodonAccounts = await _mastodonAccountRepository.GetAllMastodonAccounts();
+            var mastodonAccounts = await _mastodonAccountRepository.GetAllMastodonAccounts(cancellationToken);
             var mastodonAccount = mastodonAccounts.FirstOrDefault();
             if (mastodonAccount is not null)
             {
-                var globalVolume = await _globalVolumeRepository.GetGlobalVolume();
+                var globalVolume = await _globalVolumeRepository.GetGlobalVolume(cancellationToken);
                 var initialCurrentProfile =
                     await _voiceProfileRepository.GetVoiceProfile<VoiceProfile.MastodonStatusVoiceProfile>(
-                        mastodonAccount.AccountIdentifier);
+                        mastodonAccount.AccountIdentifier, cancellationToken);
                 _instance = new VoiceParameterChangeNotifier(initialCurrentProfile, globalVolume);
                 return _instance;
             }

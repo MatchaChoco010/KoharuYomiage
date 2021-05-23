@@ -1,9 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 
 namespace KoharuYomiageApp.UseCase.WindowLoaded
 {
     public interface ILoadTalker
     {
-        Task LoadTalker();
+        Task LoadTalker(CancellationToken cancellationToken);
     }
 }

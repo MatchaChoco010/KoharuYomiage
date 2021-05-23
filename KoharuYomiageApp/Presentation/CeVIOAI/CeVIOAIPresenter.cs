@@ -23,9 +23,9 @@ namespace KoharuYomiageApp.Presentation.CeVIOAI
             _updateVoiceParameter = updateVoiceParameter;
         }
 
-        public async Task LoadTalker()
+        public async Task LoadTalker(CancellationToken cancellationToken)
         {
-            await _loadTalker.LoadTalker();
+            await _loadTalker.LoadTalker(cancellationToken);
         }
 
         public async Task SpeakText(string text, CancellationToken cancellationToken)
@@ -41,8 +41,7 @@ namespace KoharuYomiageApp.Presentation.CeVIOAI
         public void Update(VoiceParameterData data)
         {
             _updateVoiceParameter.Update(new VoiceParameterOutputData(data.Volume, data.Speed, data.Tone, data.Alpha,
-                data.ToneScale,
-                data.ComponentNormal, data.ComponentHappy, data.ComponentAnger, data.ComponentSorrow,
+                data.ToneScale, data.ComponentNormal, data.ComponentHappy, data.ComponentAnger, data.ComponentSorrow,
                 data.ComponentCalmness));
         }
     }

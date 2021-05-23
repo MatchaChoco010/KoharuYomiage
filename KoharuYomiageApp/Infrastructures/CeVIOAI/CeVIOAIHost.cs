@@ -15,12 +15,12 @@ namespace KoharuYomiageApp.Infrastructures.CeVIOAI
 
         KoharuRikka? _rikka;
 
-        public async Task LoadTalker()
+        public async Task LoadTalker(CancellationToken cancellationToken)
         {
             await Task.Run(() =>
             {
                 _rikka = new KoharuRikka();
-            });
+            }, cancellationToken);
         }
 
         public async Task SpeakText(string text, CancellationToken cancellationToken)

@@ -11,7 +11,7 @@ using Reactive.Bindings.Extensions;
 
 namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
 {
-    public class MainControlViewModel : BindableBase, INavigationAware
+    public class MainControlViewModel : BindableBase, INavigationAware, IDisposable
     {
         readonly CompositeDisposable _disposable = new();
 
@@ -87,5 +87,15 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
         }
 
         public record TextItem(Guid Id, string Text);
+
+        public void Dispose()
+        {
+            _disposable.Dispose();
+            _mainControlController.Dispose();
+            VolumeButtonCommand.Dispose();
+            KoharuImage.Dispose();
+            VolumeIcon.Dispose();
+            Volume.Dispose();
+        }
     }
 }

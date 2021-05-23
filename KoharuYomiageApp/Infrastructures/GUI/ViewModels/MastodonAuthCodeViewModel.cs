@@ -12,7 +12,7 @@ using Reactive.Bindings.Extensions;
 
 namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
 {
-    public class MastodonAuthCodeViewModel : BindableBase, INavigationAware
+    public class MastodonAuthCodeViewModel : BindableBase, INavigationAware, IDisposable
     {
         readonly IDialogService _dialogService;
         readonly CompositeDisposable _disposable = new();
@@ -76,6 +76,17 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
         public void OnNavigatedFrom(NavigationContext navigationContext)
         {
             _disposable.Clear();
+        }
+
+        public void Dispose()
+        {
+            _disposable.Dispose();
+            _mastodonAuthCodeController.Dispose();
+            BackCommand.Dispose();
+            OpenBrowserCommand.Dispose();
+            AuthenticateCommand.Dispose();
+            AuthenticateEnabled.Dispose();
+            AuthenticationCode.Dispose();
         }
     }
 }

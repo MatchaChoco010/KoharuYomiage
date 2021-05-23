@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using KoharuYomiageApp.Domain.Account;
 using KoharuYomiageApp.Domain.Client.Mastodon;
 using KoharuYomiageApp.UseCase.AddMastodonAccount.DataObjects;
@@ -22,11 +23,11 @@ namespace KoharuYomiageApp.UseCase.AddMastodonAccount
             _showRegisterClientError = showRegisterClientError;
         }
 
-        public async Task Login(LoginInfo loginInfo)
+        public async Task Login(LoginInfo loginInfo,CancellationToken cancellationToken)
         {
             var instance = new Instance(loginInfo.Instance);
 
-            var mastodonClient = await _clientRepository.FindMastodonClient(instance);
+            var mastodonClient = await _clientRepository.FindMastodonClient(instance, cancellationToken);
             if (mastodonClient is null)
             {
                 MastodonClientId clientId;
@@ -34,7 +35,7 @@ namespace KoharuYomiageApp.UseCase.AddMastodonAccount
 
                 try
                 {
-                    var (id, secret) = await _registerClient.RegisterClient(loginInfo);
+                    var (id, secret) = await _registerClient.RegisterClient(loginInfo, cancellationToken);
                     clientId = new MastodonClientId(id);
                     clientSecret = new MastodonClientSecret(secret);
                 }
@@ -45,7 +46,7 @@ namespace KoharuYomiageApp.UseCase.AddMastodonAccount
                 }
 
                 mastodonClient = _clientRepository.CreateMastodonClient(instance, clientId, clientSecret);
-                await _clientRepository.SaveMastodonClient(mastodonClient);
+                await _clientRepository.SaveMastodonClient(mastodonClient, cancellationToken);
             }
 
             var authorizeUrl = await mastodonClient.GetAuthorizeUri();
