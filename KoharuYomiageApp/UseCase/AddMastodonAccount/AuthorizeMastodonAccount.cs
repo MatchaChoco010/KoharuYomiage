@@ -8,31 +8,34 @@ namespace KoharuYomiageApp.UseCase.AddMastodonAccount
 {
     public class AuthorizeMastodonAccount : IAuthorizeMastodonAccount
     {
-        readonly IAddMastodonAccountToReader _addMastodonAccountToReader;
         readonly IAuthorizeMastodonAccountWithCode _authorizeMastodonAccountWithCode;
+        readonly IConnectionManagerRepository _connectionManagerRepository;
         readonly IFinishAuthorizeMastodonAccount _finishAuthorizeMastodonAccount;
         readonly IGetAccountInfo _getAccountInfo;
+        readonly IMakeMastodonConnection _makeMastodonConnection;
         readonly IMastodonAccountRepository _mastodonAccountRepository;
         readonly IMastodonClientRepository _mastodonClientRepository;
         readonly IShowGetMastodonAccountInfoError _showGetMastodonAccountInfoError;
         readonly IShowMastodonAuthenticationError _showMastodonAuthenticationError;
 
-        public AuthorizeMastodonAccount(IMastodonClientRepository mastodonClientRepository,
+        public AuthorizeMastodonAccount(IConnectionManagerRepository connectionManagerRepository,
+            IMastodonClientRepository mastodonClientRepository,
             IMastodonAccountRepository mastodonAccountRepository,
             IAuthorizeMastodonAccountWithCode authorizeMastodonAccountWithCode,
             IShowMastodonAuthenticationError showMastodonAuthenticationError,
             IGetAccountInfo getAccountInfo,
             IShowGetMastodonAccountInfoError showGetMastodonAccountInfoError,
-            IAddMastodonAccountToReader addMastodonAccountToReader,
+            IMakeMastodonConnection makeMastodonConnection,
             IFinishAuthorizeMastodonAccount finishAuthorizeMastodonAccount)
         {
+            _connectionManagerRepository = connectionManagerRepository;
             _mastodonClientRepository = mastodonClientRepository;
             _mastodonAccountRepository = mastodonAccountRepository;
             _authorizeMastodonAccountWithCode = authorizeMastodonAccountWithCode;
             _showMastodonAuthenticationError = showMastodonAuthenticationError;
             _getAccountInfo = getAccountInfo;
             _showGetMastodonAccountInfoError = showGetMastodonAccountInfoError;
-            _addMastodonAccountToReader = addMastodonAccountToReader;
+            _makeMastodonConnection = makeMastodonConnection;
             _finishAuthorizeMastodonAccount = finishAuthorizeMastodonAccount;
         }
 
@@ -89,8 +92,11 @@ namespace KoharuYomiageApp.UseCase.AddMastodonAccount
 
             await _mastodonAccountRepository.SaveMastodonAccount(account);
 
-            _addMastodonAccountToReader.AddMastodonAccountToReader(new AddReaderInfo(account.AccountIdentifier.Value,
+            var connection = _makeMastodonConnection.MakeConnection(new AddReaderInfo(account.AccountIdentifier.Value,
                 account.Username.Value, account.Instance.Value, account.AccessToken.Token));
+
+            var connectionManager = _connectionManagerRepository.GetInstance();
+            connectionManager.AddConnection(account.AccountIdentifier, connection);
 
             _finishAuthorizeMastodonAccount.FinishAuthorizeMastodonAccount();
         }

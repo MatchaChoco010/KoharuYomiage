@@ -10,9 +10,9 @@ namespace KoharuYomiageApp.Domain.VoiceParameters
 
         double _alpha = 0.5;
 
-        double _componentCalmness;
-
         double _componentAnger;
+
+        double _componentCalmness;
 
         double _componentHappy;
 

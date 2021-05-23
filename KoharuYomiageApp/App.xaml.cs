@@ -57,7 +57,7 @@ namespace KoharuYomiageApp
                 typeof(CeVIOAIHost));
             //   MastodonApi
             containerRegistry.RegisterManySingleton<MastodonClient>(
-                typeof(IMastodonAddAccountToReader),
+                typeof(Presentation.Mastodon.IMakeMastodonConnection),
                 typeof(IMastodonAuthorizeAccountWithCode),
                 typeof(IMastodonGetAccountInfo),
                 typeof(IMastodonRegisterClient),
@@ -102,8 +102,8 @@ namespace KoharuYomiageApp
                 typeof(IRegisterClient),
                 typeof(IAuthorizeMastodonAccountWithCode),
                 typeof(IGetAccountInfo),
-                typeof(UseCase.AddMastodonAccount.IAddMastodonAccountToReader),
-                typeof(UseCase.WindowLoaded.IAddMastodonAccountToReader));
+                typeof(UseCase.AddMastodonAccount.IMakeMastodonConnection),
+                typeof(UseCase.WindowLoaded.IMakeMastodonConnection));
             containerRegistry.RegisterSingleton<MastodonController>();
 
             // Data
@@ -115,6 +115,10 @@ namespace KoharuYomiageApp
             containerRegistry
                 .RegisterSingleton<IVoiceParameterChangeNotifierRepository, VoiceParameterChangeNotifierRepository>();
             containerRegistry.RegisterSingleton<IVoiceProfileRepository, VoiceProfileRepository>();
+            containerRegistry.RegisterManySingleton<ConnectionManagerRepository>(
+                typeof(IDisposable),
+                typeof(IConnectionManagerRepository),
+                typeof(ConnectionManagerRepository));
             //   JsonStorage
             containerRegistry.RegisterManySingleton<JsonStorage>(
                 typeof(IMastodonAccountStorage),

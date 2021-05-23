@@ -1,39 +1,26 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using KoharuYomiageApp.UseCase.AddMastodonAccount;
 using KoharuYomiageApp.UseCase.AddMastodonAccount.DataObjects;
-using KoharuYomiageApp.UseCase.AddMastodonTimelineItem;
 
 namespace KoharuYomiageApp.Presentation.Mastodon
 {
     public class MastodonPresenter : IRegisterClient, IAuthorizeMastodonAccountWithCode, IGetAccountInfo,
-        IAddMastodonAccountToReader, UseCase.WindowLoaded.IAddMastodonAccountToReader
+        UseCase.AddMastodonAccount.IMakeMastodonConnection, UseCase.WindowLoaded.IMakeMastodonConnection
     {
-        readonly IMastodonAddAccountToReader _addAccountToReader;
         readonly IMastodonAuthorizeAccountWithCode _authorizeAccountWithCode;
+        readonly IMakeMastodonConnection _connection;
         readonly IMastodonGetAccountInfo _getAccountInfo;
         readonly IMastodonRegisterClient _registerClient;
 
         public MastodonPresenter(IMastodonRegisterClient registerClient,
             IMastodonAuthorizeAccountWithCode authorizeAccountWithCode, IMastodonGetAccountInfo getAccountInfo,
-            IMastodonAddAccountToReader addAccountToReader)
+            IMakeMastodonConnection connection)
         {
             _registerClient = registerClient;
             _authorizeAccountWithCode = authorizeAccountWithCode;
             _getAccountInfo = getAccountInfo;
-            _addAccountToReader = addAccountToReader;
-        }
-
-        void IAddMastodonAccountToReader.AddMastodonAccountToReader(AddReaderInfo info)
-        {
-            _addAccountToReader.AddAccountToReader(info.AccountIdentifier, info.Username, info.Instance,
-                info.AccessToken);
-        }
-
-        void UseCase.WindowLoaded.IAddMastodonAccountToReader.AddMastodonAccountToReader(
-            UseCase.WindowLoaded.DataObjects.AddReaderInfo info)
-        {
-            _addAccountToReader.AddAccountToReader(info.AccountIdentifier, info.Username, info.Instance,
-                info.AccessToken);
+            _connection = connection;
         }
 
         public async Task<AccessInfo> AuthorizeMastodonAccountWithCode(AuthorizationInfo authorizationInfo)
@@ -50,6 +37,17 @@ namespace KoharuYomiageApp.Presentation.Mastodon
             var (username, iconUrl) =
                 await _getAccountInfo.GetAccountInfo(instance, token);
             return new AccountInfo(username, iconUrl);
+        }
+
+        IDisposable UseCase.AddMastodonAccount.IMakeMastodonConnection.MakeConnection(AddReaderInfo info)
+        {
+            return _connection.MakeConnection(info.Username, info.Instance, info.AccessToken);
+        }
+
+        IDisposable UseCase.WindowLoaded.IMakeMastodonConnection.MakeConnection(
+            UseCase.WindowLoaded.DataObjects.AddReaderInfo info)
+        {
+            return _connection.MakeConnection(info.Username, info.Instance, info.AccessToken);
         }
 
         public async Task<ClientInfo> RegisterClient(LoginInfo loginInfo)

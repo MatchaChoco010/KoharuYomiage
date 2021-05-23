@@ -7,18 +7,20 @@ namespace KoharuYomiageApp.UseCase.WindowLoaded
 {
     public class AccountExistenceChecker : IPushStartButton
     {
-        readonly IAddMastodonAccountToReader _addMastodonAccountToReader;
+        readonly IConnectionManagerRepository _connectionManagerRepository;
+        readonly IMakeMastodonConnection _makeMastodonConnection;
         readonly IMastodonAccountRepository _mastodonAccountRepository;
         readonly IStartApp _startApp;
         readonly IStartRegisteringAccount _startRegisteringAccount;
 
-        public AccountExistenceChecker(IMastodonAccountRepository mastodonAccountRepository,
-            IStartRegisteringAccount startRegisteringAccount, IAddMastodonAccountToReader addMastodonAccountToReader,
-            IStartApp startApp)
+        public AccountExistenceChecker(IConnectionManagerRepository connectionManagerRepository,
+            IMastodonAccountRepository mastodonAccountRepository, IStartRegisteringAccount startRegisteringAccount,
+            IMakeMastodonConnection makeMastodonConnection, IStartApp startApp)
         {
+            _connectionManagerRepository = connectionManagerRepository;
             _mastodonAccountRepository = mastodonAccountRepository;
             _startRegisteringAccount = startRegisteringAccount;
-            _addMastodonAccountToReader = addMastodonAccountToReader;
+            _makeMastodonConnection = makeMastodonConnection;
             _startApp = startApp;
         }
 
@@ -32,11 +34,13 @@ namespace KoharuYomiageApp.UseCase.WindowLoaded
             }
             else
             {
+                var connectionManager = _connectionManagerRepository.GetInstance();
                 foreach (var account in mastodonAccounts)
                 {
-                    _addMastodonAccountToReader.AddMastodonAccountToReader(
+                    var connection = _makeMastodonConnection.MakeConnection(
                         new AddReaderInfo(account.AccountIdentifier.Value, account.Username.Value,
                             account.Instance.Value, account.AccessToken.Token));
+                    connectionManager.AddConnection(account.AccountIdentifier, connection);
                 }
 
                 _startApp.StartApp();
