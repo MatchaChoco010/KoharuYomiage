@@ -15,6 +15,7 @@
                   NoiseOpacity="0"
                   Height="450"
                   Width="800"
+                  Title="小春六花さんにTLを読み上げていただくアプリ"
                   fw:PointerTracker.Enabled="True">
     <b:Interaction.Triggers>
         <b:EventTrigger EventName="Loaded">

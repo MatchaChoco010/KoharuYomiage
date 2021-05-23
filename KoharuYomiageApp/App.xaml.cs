@@ -17,6 +17,7 @@ using KoharuYomiageApp.UseCase.ReadText;
 using KoharuYomiageApp.UseCase.Repository;
 using KoharuYomiageApp.UseCase.UpdateVoiceParameter;
 using KoharuYomiageApp.UseCase.WindowLoaded;
+using Microsoft.Windows.Sdk;
 using Prism.DryIoc;
 using Prism.Ioc;
 
@@ -176,9 +177,12 @@ namespace KoharuYomiageApp
             _mutex = new Mutex(false, "KoharuYomiageApp-{554C9FB9-3059-48C9-8606-055E26BFF3E5}");
             if (!_mutex.WaitOne(0, false))
             {
+                var window = PInvoke.FindWindow(null, "小春六花さんにTLを読み上げていただくアプリ");
+                PInvoke.ShowWindow(window, SHOW_WINDOW_CMD.SW_NORMAL);
+                PInvoke.SetForegroundWindow(window);
                 _mutex.Close();
                 _mutex = null;
-                this.Shutdown();
+                Shutdown();
                 return;
             }
 
