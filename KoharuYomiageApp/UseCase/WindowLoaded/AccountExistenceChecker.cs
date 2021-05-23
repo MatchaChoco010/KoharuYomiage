@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using KoharuYomiageApp.Domain.Connection;
 using KoharuYomiageApp.UseCase.Repository;
 using KoharuYomiageApp.UseCase.WindowLoaded.DataObjects;
 
@@ -7,17 +8,17 @@ namespace KoharuYomiageApp.UseCase.WindowLoaded
 {
     public class AccountExistenceChecker : IPushStartButton
     {
-        readonly IConnectionManagerRepository _connectionManagerRepository;
+        readonly IConnectionRepository _connectionRepository;
         readonly IMakeMastodonConnection _makeMastodonConnection;
         readonly IMastodonAccountRepository _mastodonAccountRepository;
         readonly IStartApp _startApp;
         readonly IStartRegisteringAccount _startRegisteringAccount;
 
-        public AccountExistenceChecker(IConnectionManagerRepository connectionManagerRepository,
+        public AccountExistenceChecker(IConnectionRepository connectionRepository,
             IMastodonAccountRepository mastodonAccountRepository, IStartRegisteringAccount startRegisteringAccount,
             IMakeMastodonConnection makeMastodonConnection, IStartApp startApp)
         {
-            _connectionManagerRepository = connectionManagerRepository;
+            _connectionRepository = connectionRepository;
             _mastodonAccountRepository = mastodonAccountRepository;
             _startRegisteringAccount = startRegisteringAccount;
             _makeMastodonConnection = makeMastodonConnection;
@@ -34,13 +35,12 @@ namespace KoharuYomiageApp.UseCase.WindowLoaded
             }
             else
             {
-                var connectionManager = _connectionManagerRepository.GetInstance();
                 foreach (var account in mastodonAccounts)
                 {
                     var connection = _makeMastodonConnection.MakeConnection(
                         new AddReaderInfo(account.AccountIdentifier.Value, account.Username.Value,
                             account.Instance.Value, account.AccessToken.Token));
-                    connectionManager.AddConnection(account.AccountIdentifier, connection);
+                    _connectionRepository.AddConnection(new Connection(account.AccountIdentifier, connection));
                 }
 
                 _startApp.StartApp();

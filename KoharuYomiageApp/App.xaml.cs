@@ -115,10 +115,10 @@ namespace KoharuYomiageApp
             containerRegistry
                 .RegisterSingleton<IVoiceParameterChangeNotifierRepository, VoiceParameterChangeNotifierRepository>();
             containerRegistry.RegisterSingleton<IVoiceProfileRepository, VoiceProfileRepository>();
-            containerRegistry.RegisterManySingleton<ConnectionManagerRepository>(
+            containerRegistry.RegisterManySingleton<ConnectionRepository>(
                 typeof(IDisposable),
-                typeof(IConnectionManagerRepository),
-                typeof(ConnectionManagerRepository));
+                typeof(IConnectionRepository),
+                typeof(ConnectionRepository));
             //   JsonStorage
             containerRegistry.RegisterManySingleton<JsonStorage>(
                 typeof(IMastodonAccountStorage),

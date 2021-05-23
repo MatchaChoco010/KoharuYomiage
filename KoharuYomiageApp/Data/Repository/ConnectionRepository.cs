@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using KoharuYomiageApp.Domain.Account;
+using KoharuYomiageApp.Domain.Connection;
+using KoharuYomiageApp.UseCase.Repository;
 
-namespace KoharuYomiageApp.Domain.Connection
+namespace KoharuYomiageApp.Data.Repository
 {
-    public class ConnectionManager : IDisposable
+    public class ConnectionRepository : IDisposable, IConnectionRepository
     {
-        readonly Dictionary<AccountIdentifier, IDisposable> _connections = new();
+        readonly Dictionary<AccountIdentifier, Connection> _connections = new();
 
         public void Dispose()
         {
@@ -16,9 +18,9 @@ namespace KoharuYomiageApp.Domain.Connection
             }
         }
 
-        public void AddConnection(AccountIdentifier accountId, IDisposable connection)
+        public void AddConnection(Connection connection)
         {
-            _connections.Add(accountId, connection);
+            _connections.Add(connection.AccountIdentifier, connection);
         }
 
         public void StopConnection(AccountIdentifier accountId)

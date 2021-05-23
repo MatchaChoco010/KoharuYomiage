@@ -8,26 +8,6 @@ namespace KoharuYomiageApp.Domain.VoiceParameters
     {
         readonly Subject<VoiceProfile> _onUpdate = new();
 
-        double _alpha = 0.5;
-
-        double _componentAnger;
-
-        double _componentCalmness;
-
-        double _componentHappy;
-
-        double _componentNormal = 1;
-
-        double _componentSorrow;
-
-        double _speed = 0.5;
-
-        double _tone = 0.5;
-
-        double _toneScale = 0.5;
-
-        double _volume = 0.5;
-
         VoiceProfile(AccountIdentifier accountIdentifier)
         {
             AccountIdentifier = accountIdentifier;
@@ -35,155 +15,16 @@ namespace KoharuYomiageApp.Domain.VoiceParameters
 
         public AccountIdentifier AccountIdentifier { get; }
 
-        public double Volume
-        {
-            get => _volume;
-            private set
-            {
-                if (value is <0.0 or >1.0)
-                {
-                    throw new ArgumentException();
-                }
-
-                _volume = value;
-                _onUpdate.OnNext(this);
-            }
-        }
-
-        public double Speed
-        {
-            get => _speed;
-            private set
-            {
-                if (value is <0.0 or >1.0)
-                {
-                    throw new ArgumentException();
-                }
-
-                _speed = value;
-                _onUpdate.OnNext(this);
-            }
-        }
-
-        public double Tone
-        {
-            get => _tone;
-            private set
-            {
-                if (value is <0.0 or >1.0)
-                {
-                    throw new ArgumentException();
-                }
-
-                _tone = value;
-                _onUpdate.OnNext(this);
-            }
-        }
-
-        public double Alpha
-        {
-            get => _alpha;
-            private set
-            {
-                if (value is <0.0 or >1.0)
-                {
-                    throw new ArgumentException();
-                }
-
-                _alpha = value;
-                _onUpdate.OnNext(this);
-            }
-        }
-
-        public double ToneScale
-        {
-            get => _toneScale;
-            private set
-            {
-                if (value is <0.0 or >1.0)
-                {
-                    throw new ArgumentException();
-                }
-
-                _toneScale = value;
-                _onUpdate.OnNext(this);
-            }
-        }
-
-        public double ComponentNormal
-        {
-            get => _componentNormal;
-            private set
-            {
-                if (value is <0.0 or >1.0)
-                {
-                    throw new ArgumentException();
-                }
-
-                _componentNormal = value;
-                _onUpdate.OnNext(this);
-            }
-        }
-
-        public double ComponentHappy
-        {
-            get => _componentHappy;
-            private set
-            {
-                if (value is <0.0 or >1.0)
-                {
-                    throw new ArgumentException();
-                }
-
-                _componentHappy = value;
-                _onUpdate.OnNext(this);
-            }
-        }
-
-        public double ComponentAnger
-        {
-            get => _componentAnger;
-            private set
-            {
-                if (value is <0.0 or >1.0)
-                {
-                    throw new ArgumentException();
-                }
-
-                _componentAnger = value;
-                _onUpdate.OnNext(this);
-            }
-        }
-
-        public double ComponentSorrow
-        {
-            get => _componentSorrow;
-            private set
-            {
-                if (value is <0.0 or >1.0)
-                {
-                    throw new ArgumentException();
-                }
-
-                _componentSorrow = value;
-                _onUpdate.OnNext(this);
-            }
-        }
-
-        public double ComponentCalmness
-        {
-            get => _componentCalmness;
-            private set
-            {
-                if (value is <0.0 or >1.0)
-                {
-                    throw new ArgumentException();
-                }
-
-                _componentCalmness = value;
-                _onUpdate.OnNext(this);
-            }
-        }
+        public double Volume { get; private set; } = 0.5;
+        public double Speed { get; private set; } = 0.5;
+        public double Tone { get; private set; } = 0.5;
+        public double Alpha { get; private set; } = 0.5;
+        public double ToneScale { get; private set; } = 0.5;
+        public double ComponentNormal { get; private set; } = 1.0;
+        public double ComponentHappy { get; private set; }
+        public double ComponentAnger { get; private set; }
+        public double ComponentSorrow { get; private set; }
+        public double ComponentCalmness { get; private set; }
 
         public IObservable<VoiceProfile> OnUpdate => _onUpdate;
 
@@ -191,6 +32,20 @@ namespace KoharuYomiageApp.Domain.VoiceParameters
             double componentNormal,
             double componentHappy, double componentAnger, double componentSorrow, double componentCalmness)
         {
+            if (volume is <0.0 or >1.0 ||
+                speed is <0.0 or >1.0 ||
+                tone is <0.0 or >1.0 ||
+                alpha is <0.0 or >1.0 ||
+                toneScale is <0.0 or >1.0 ||
+                componentNormal is <0.0 or >1.0 ||
+                componentHappy is <0.0 or >1.0 ||
+                componentAnger is <0.0 or >1.0 ||
+                componentSorrow is <0.0 or >1.0 ||
+                componentCalmness is <0.0 or >1.0)
+            {
+                throw new AggregateException();
+            }
+
             Volume = volume;
             Speed = speed;
             Tone = tone;
@@ -201,6 +56,8 @@ namespace KoharuYomiageApp.Domain.VoiceParameters
             ComponentAnger = componentAnger;
             ComponentSorrow = componentSorrow;
             ComponentCalmness = componentCalmness;
+
+            _onUpdate.OnNext(this);
         }
 
         public class MastodonStatusVoiceProfile : VoiceProfile

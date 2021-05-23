@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using KoharuYomiageApp.Domain.Account;
 using KoharuYomiageApp.Domain.Account.Mastodon;
+using KoharuYomiageApp.Domain.Connection;
 using KoharuYomiageApp.UseCase.AddMastodonAccount.DataObjects;
 using KoharuYomiageApp.UseCase.Repository;
 
@@ -9,7 +10,7 @@ namespace KoharuYomiageApp.UseCase.AddMastodonAccount
     public class AuthorizeMastodonAccount : IAuthorizeMastodonAccount
     {
         readonly IAuthorizeMastodonAccountWithCode _authorizeMastodonAccountWithCode;
-        readonly IConnectionManagerRepository _connectionManagerRepository;
+        readonly IConnectionRepository _connectionRepository;
         readonly IFinishAuthorizeMastodonAccount _finishAuthorizeMastodonAccount;
         readonly IGetAccountInfo _getAccountInfo;
         readonly IMakeMastodonConnection _makeMastodonConnection;
@@ -18,7 +19,7 @@ namespace KoharuYomiageApp.UseCase.AddMastodonAccount
         readonly IShowGetMastodonAccountInfoError _showGetMastodonAccountInfoError;
         readonly IShowMastodonAuthenticationError _showMastodonAuthenticationError;
 
-        public AuthorizeMastodonAccount(IConnectionManagerRepository connectionManagerRepository,
+        public AuthorizeMastodonAccount(IConnectionRepository connectionRepository,
             IMastodonClientRepository mastodonClientRepository,
             IMastodonAccountRepository mastodonAccountRepository,
             IAuthorizeMastodonAccountWithCode authorizeMastodonAccountWithCode,
@@ -28,7 +29,7 @@ namespace KoharuYomiageApp.UseCase.AddMastodonAccount
             IMakeMastodonConnection makeMastodonConnection,
             IFinishAuthorizeMastodonAccount finishAuthorizeMastodonAccount)
         {
-            _connectionManagerRepository = connectionManagerRepository;
+            _connectionRepository = connectionRepository;
             _mastodonClientRepository = mastodonClientRepository;
             _mastodonAccountRepository = mastodonAccountRepository;
             _authorizeMastodonAccountWithCode = authorizeMastodonAccountWithCode;
@@ -95,8 +96,7 @@ namespace KoharuYomiageApp.UseCase.AddMastodonAccount
             var connection = _makeMastodonConnection.MakeConnection(new AddReaderInfo(account.AccountIdentifier.Value,
                 account.Username.Value, account.Instance.Value, account.AccessToken.Token));
 
-            var connectionManager = _connectionManagerRepository.GetInstance();
-            connectionManager.AddConnection(account.AccountIdentifier, connection);
+            _connectionRepository.AddConnection(new Connection(account.AccountIdentifier, connection));
 
             _finishAuthorizeMastodonAccount.FinishAuthorizeMastodonAccount();
         }
