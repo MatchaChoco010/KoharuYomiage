@@ -6,21 +6,18 @@ using System.Reactive.Subjects;
 using System.Text.RegularExpressions;
 using KoharuYomiageApp.UseCase.ReadText;
 using KoharuYomiageApp.UseCase.UpdateTextList;
-using KoharuYomiageApp.UseCase.UpdateVoiceParameter;
 
 namespace KoharuYomiageApp.Presentation.GUI
 {
-    public class MainControlPresenter : IInitializeGlobalVolumeView, IChangeImage, IUpdateTextListView
+    public class MainControlPresenter : IChangeImage, IUpdateTextListView
     {
         readonly Subject<(Guid, string)> _onAddTextListItem = new();
         readonly Subject<Unit> _onCloseMouth = new();
         readonly Subject<(Guid, string)> _onDeleteTextListItem = new();
-        readonly BehaviorSubject<double> _onInitializeGlobalVolumeView = new(0);
         readonly Subject<Unit> _onOpenMouth = new();
 
         List<(Guid, string)> _prevTextList = new();
 
-        public IObservable<double> OnInitializeGlobalVolumeView => _onInitializeGlobalVolumeView;
         public IObservable<Unit> OnOpenMouth => _onOpenMouth;
         public IObservable<Unit> OnCloseMouth => _onCloseMouth;
         public IObservable<(Guid, string)> OnDeleteTextListItem => _onDeleteTextListItem;
@@ -34,12 +31,6 @@ namespace KoharuYomiageApp.Presentation.GUI
         public void CloseMouth()
         {
             _onCloseMouth.OnNext(Unit.Default);
-        }
-
-        public void Initialize(double volume)
-        {
-            _onInitializeGlobalVolumeView.OnNext(volume);
-            _onInitializeGlobalVolumeView.OnCompleted();
         }
 
         public void UpdateTextList(IEnumerable<(Guid, string)> list)

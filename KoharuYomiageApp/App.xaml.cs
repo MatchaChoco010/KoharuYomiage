@@ -14,6 +14,7 @@ using KoharuYomiageApp.Presentation.GUI;
 using KoharuYomiageApp.Presentation.Mastodon;
 using KoharuYomiageApp.UseCase.AddMastodonAccount;
 using KoharuYomiageApp.UseCase.AddMastodonTimelineItem;
+using KoharuYomiageApp.UseCase.GetGlobalVolume;
 using KoharuYomiageApp.UseCase.ReadText;
 using KoharuYomiageApp.UseCase.Repository;
 using KoharuYomiageApp.UseCase.UpdateTextList;
@@ -99,7 +100,6 @@ namespace KoharuYomiageApp
                 typeof(IDisposable));
             containerRegistry.RegisterManySingleton<MainControlPresenter>(
                 typeof(MainControlPresenter),
-                typeof(IInitializeGlobalVolumeView),
                 typeof(IChangeImage),
                 typeof(IUpdateTextListView));
             containerRegistry.RegisterManySingleton<MainControlController>(
@@ -159,6 +159,8 @@ namespace KoharuYomiageApp
             containerRegistry.RegisterSingleton<IMastodonBoostedStatusReceiver, MastodonBoostedStatusReceiver>();
             containerRegistry
                 .RegisterSingleton<IMastodonBoostedSensitiveStatusReceiver, MastodonBoostedSensitiveStatusReceiver>();
+            //   GetGlobalVolume
+            containerRegistry.RegisterSingleton<IGetGlobalVolume, GlobalVolumeProvider>();
             //   ReadText
             containerRegistry.RegisterSingleton<IStartReading, TextReader>();
             //   UpdateTextList

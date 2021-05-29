@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Reactive.Disposables;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using KoharuYomiageApp.Infrastructures.GUI.Views;
@@ -55,12 +56,8 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
         {
             _cancellationTokenSource = new CancellationTokenSource();
             _ = _mainControlController.StartReading(_cancellationTokenSource.Token);
-
-            _mainControlPresenter.OnInitializeGlobalVolumeView.Subscribe(volume =>
-            {
-                _prevVolume = volume;
-                Volume.Value = volume;
-            });
+            _ = _mainControlController.GetVolume(_cancellationTokenSource.Token)
+                .ContinueWith(t => Volume.Value = t.Result, _cancellationTokenSource.Token);
 
             _mainControlPresenter.OnDeleteTextListItem
                 .Subscribe(item => TextList.Remove(new TextItem(item.Item1, item.Item2)))
