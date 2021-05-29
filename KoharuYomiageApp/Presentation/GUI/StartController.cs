@@ -24,11 +24,12 @@ namespace KoharuYomiageApp.Presentation.GUI
             _pushStartButton = pushStartButton;
             _startUpdatingTextList = startUpdatingTextList;
             _startUpdatingVoiceParameter = startUpdatingVoiceParameter;
+
+            _compositeDisposable.Add(_cancellationTokenSource);
         }
 
         public void Dispose()
         {
-            _cancellationTokenSource.Dispose();
             _compositeDisposable.Dispose();
         }
 
