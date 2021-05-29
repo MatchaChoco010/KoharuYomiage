@@ -13,9 +13,9 @@ namespace KoharuYomiageApp.Presentation.GUI
         readonly CancellationTokenSource _cancellationTokenSource = new();
         readonly CompositeDisposable _compositeDisposable = new();
         readonly IPushStartButton _pushStartButton;
-        readonly IWindowLoaded _windowLoaded;
         readonly IStartUpdatingTextList _startUpdatingTextList;
         readonly IStartUpdatingVoiceParameter _startUpdatingVoiceParameter;
+        readonly IWindowLoaded _windowLoaded;
 
         public StartController(IWindowLoaded windowLoaded, IPushStartButton pushStartButton,
             IStartUpdatingTextList startUpdatingTextList, IStartUpdatingVoiceParameter startUpdatingVoiceParameter)

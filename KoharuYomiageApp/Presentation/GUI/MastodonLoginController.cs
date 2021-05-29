@@ -17,6 +17,7 @@ namespace KoharuYomiageApp.Presentation.GUI
 
         public void Dispose()
         {
+            _cancellationTokenSource.Cancel(true);
             _cancellationTokenSource.Dispose();
         }
 

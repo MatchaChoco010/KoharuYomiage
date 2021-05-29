@@ -9,7 +9,8 @@ namespace KoharuYomiageApp.UseCase.UpdateTextList
         readonly IReadingTextContainerRepository _containerRepository;
         readonly IUpdateTextListView _updateTextListView;
 
-        public TextListUpdater(IReadingTextContainerRepository containerRepository, IUpdateTextListView updateTextListView)
+        public TextListUpdater(IReadingTextContainerRepository containerRepository,
+            IUpdateTextListView updateTextListView)
         {
             _containerRepository = containerRepository;
             _updateTextListView = updateTextListView;

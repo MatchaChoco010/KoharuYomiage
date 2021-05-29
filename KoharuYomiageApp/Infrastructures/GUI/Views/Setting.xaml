@@ -42,7 +42,7 @@
                                        Height="48"
                                        Margin="46,10,40,10"
                                        HorizontalAlignment="Left"
-                                       CustomBrushes="{Binding IconBrushes.Value, Mode=TwoWay}"/>
+                                       CustomBrushes="{Binding IconBrushes.Value, Mode=TwoWay}" />
                         <StackPanel HorizontalAlignment="Left"
                                     Margin="100,10,20,10">
                             <TextBlock Margin="8,0"
@@ -75,8 +75,8 @@
                                    HorizontalAlignment="Left">
                             &#xE77B;
                         </TextBlock>
-                        <StackPanel  HorizontalAlignment="Left"
-                                     Margin="100,10,20,10">
+                        <StackPanel HorizontalAlignment="Left"
+                                    Margin="100,10,20,10">
                             <TextBlock Margin="8,0"
                                        FontSize="16"
                                        VerticalAlignment="Center"
@@ -88,7 +88,7 @@
                                        Foreground="{DynamicResource SystemBaseMediumLowColorBrush}"
                                        VerticalAlignment="Center"
                                        TextAlignment="Left">
-                                アカウント追加・削除<LineBreak/>アカウント設定
+                                アカウント追加・削除<LineBreak />アカウント設定
                             </TextBlock>
                         </StackPanel>
                     </Grid>
@@ -113,7 +113,7 @@
                 <TextBox HorizontalAlignment="Right"
                          Width="100"
                          Style="{StaticResource TextBoxRevealStyle}"
-                         Text="{Binding BufferSize.Value}"/>
+                         Text="{Binding BufferSize.Value}" />
             </Grid>
         </StackPanel>
     </Grid>

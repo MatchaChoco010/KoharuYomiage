@@ -23,6 +23,7 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
 
         readonly MainControlPresenter _mainControlPresenter;
 
+        CancellationTokenSource? _cancellationTokenSource = null;
         bool _isMute;
         double _prevVolume = 0.65;
 
@@ -44,7 +45,6 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
         public void Dispose()
         {
             _disposable.Dispose();
-            _mainControlController.Dispose();
             VolumeButtonCommand.Dispose();
             KoharuImage.Dispose();
             VolumeIcon.Dispose();
@@ -53,9 +53,8 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
 
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
-            var cancellationTokenSource = new CancellationTokenSource();
-            _disposable.Add(cancellationTokenSource);
-            _ = _mainControlController.StartReading(cancellationTokenSource.Token);
+            _cancellationTokenSource = new CancellationTokenSource();
+            _ = _mainControlController.StartReading(_cancellationTokenSource.Token);
 
             _mainControlPresenter.OnInitializeGlobalVolumeView.Subscribe(volume =>
             {
@@ -94,12 +93,14 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
 
         public bool IsNavigationTarget(NavigationContext navigationContext)
         {
-            return false;
+            return true;
         }
 
         public void OnNavigatedFrom(NavigationContext navigationContext)
         {
             _disposable.Clear();
+            _cancellationTokenSource?.Cancel(true);
+            _cancellationTokenSource?.Dispose();
         }
 
         public record TextItem(Guid Id, string Text);

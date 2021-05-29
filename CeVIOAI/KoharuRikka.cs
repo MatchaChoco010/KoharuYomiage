@@ -194,7 +194,7 @@ namespace CeVIOAI
             // マルチスレッドでCeVIO AIが死ぬので、内部でCeVIO AIのAPIを叩くのは同時に1スレッドまでに制限している。
             // 発話中に次の発話リクエストが来た場合はキャンセルを飛ばしてから次の発話を実行している。
 
-            _nowSpeakingTaskCancellationTokenSource?.Cancel();
+            _nowSpeakingTaskCancellationTokenSource?.Cancel(true);
             _nowSpeakingTaskCancellationTokenSource =
                 CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
             var token = _nowSpeakingTaskCancellationTokenSource.Token;

@@ -73,7 +73,7 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
 
         public bool IsNavigationTarget(NavigationContext navigationContext)
         {
-            return false;
+            return true;
         }
 
         public void OnNavigatedFrom(NavigationContext navigationContext)

@@ -70,22 +70,25 @@ namespace KoharuYomiageApp.Domain.ReadingText
             }
         }
 
-        public ValueTask<ReadingTextItem> GetAsync(CancellationToken cancellationToken)
+        public Task<ReadingTextItem> PeekAsync(CancellationToken cancellationToken)
         {
             lock (_syncObject)
             {
+                cancellationToken.ThrowIfCancellationRequested();
+
                 ClearWeakList();
 
                 if (_list.Count is >0)
                 {
                     var item = _list[0];
-                    return new ValueTask<ReadingTextItem>(item);
+                    return Task.FromResult(item);
                 }
 
-                var tcs = new TaskCompletionSource<ReadingTextItem>(cancellationToken);
+                var tcs = new TaskCompletionSource<ReadingTextItem>();
                 _listForTakeAsync.Add(tcs);
+                cancellationToken.Register(() => tcs.TrySetCanceled());
 
-                return new ValueTask<ReadingTextItem>(tcs.Task);
+                return tcs.Task;
             }
         }
 
@@ -104,6 +107,8 @@ namespace KoharuYomiageApp.Domain.ReadingText
         {
             lock (_syncObject)
             {
+                cancellationToken.ThrowIfCancellationRequested();
+
                 ClearWeakList();
 
                 if (_list.Count >= MaxCount)
@@ -111,8 +116,9 @@ namespace KoharuYomiageApp.Domain.ReadingText
                     return Task.CompletedTask;
                 }
 
-                var tcs = new TaskCompletionSource<bool>(cancellationToken);
+                var tcs = new TaskCompletionSource<bool>();
                 _listForOverflow.Add(tcs);
+                cancellationToken.Register(() => tcs.TrySetCanceled());
 
                 return tcs.Task;
             }

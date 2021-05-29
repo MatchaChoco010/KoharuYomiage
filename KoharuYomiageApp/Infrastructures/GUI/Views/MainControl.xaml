@@ -74,7 +74,7 @@
                     VerticalAlignment="Bottom"
                     HorizontalAlignment="Left"
                     Margin="16,0,0,16"
-                    Command="{Binding SettingButtonCommand}"/>
+                    Command="{Binding SettingButtonCommand}" />
         </Grid>
 
         <Grid Grid.Column="1">

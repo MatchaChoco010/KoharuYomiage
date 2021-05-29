@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using KoharuYomiageApp.UseCase.Repository;
 
@@ -12,7 +10,8 @@ namespace KoharuYomiageApp.UseCase.ReadText
         readonly IReadingTextContainerRepository _containerRepository;
         readonly ISpeakText _speakText;
 
-        public TextReader(IReadingTextContainerRepository containerRepository, ISpeakText speakText, IChangeImage changeImage)
+        public TextReader(IReadingTextContainerRepository containerRepository, ISpeakText speakText,
+            IChangeImage changeImage)
         {
             _containerRepository = containerRepository;
             _speakText = speakText;
@@ -23,19 +22,23 @@ namespace KoharuYomiageApp.UseCase.ReadText
         {
             var container = _containerRepository.GetContainer();
 
-            while (true)
+            while (!cancellationToken.IsCancellationRequested)
             {
-                var item = await container.GetAsync(cancellationToken);
+                var item = await container.PeekAsync(cancellationToken);
 
-                _changeImage.OpenMouth();
-
-                var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
-                await Task.WhenAny(_speakText.SpeakText(item.Text, cts.Token), container.Overflow(cts.Token));
-                cts.Cancel();
-
-                _changeImage.CloseMouth();
-
-                container.RemoveFirstItem();
+                try
+                {
+                    _changeImage.OpenMouth();
+                    var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+                    await Task.WhenAny(_speakText.SpeakText(item.Text, cts.Token), container.Overflow(cts.Token));
+                    cts.Cancel(true);
+                    cts.Dispose();
+                }
+                finally
+                {
+                    _changeImage.CloseMouth();
+                    container.RemoveFirstItem();
+                }
             }
         }
     }

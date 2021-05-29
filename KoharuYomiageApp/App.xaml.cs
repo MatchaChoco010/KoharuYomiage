@@ -161,6 +161,8 @@ namespace KoharuYomiageApp
                 .RegisterSingleton<IMastodonBoostedSensitiveStatusReceiver, MastodonBoostedSensitiveStatusReceiver>();
             //   ReadText
             containerRegistry.RegisterSingleton<IStartReading, TextReader>();
+            //   UpdateTextList
+            containerRegistry.RegisterSingleton<IStartUpdatingTextList, TextListUpdater>();
             //   UpdateVoiceParameter
             containerRegistry.RegisterSingleton<IUpdateGlobalVolume, GlobalVolumeUpdater>();
             containerRegistry.RegisterSingleton<IStartUpdatingVoiceParameter, VoiceParameterUpdater>();

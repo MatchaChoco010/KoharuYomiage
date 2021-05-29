@@ -2,7 +2,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using KoharuYomiageApp.UseCase.ReadText;
-using KoharuYomiageApp.UseCase.UpdateTextList;
 using KoharuYomiageApp.UseCase.UpdateVoiceParameter;
 
 namespace KoharuYomiageApp.Presentation.GUI
@@ -21,6 +20,7 @@ namespace KoharuYomiageApp.Presentation.GUI
 
         public void Dispose()
         {
+            _cancellationTokenSource.Cancel(true);
             _cancellationTokenSource.Dispose();
         }
 
@@ -29,9 +29,9 @@ namespace KoharuYomiageApp.Presentation.GUI
             _ = _updateGlobalVolume.Update(volume, _cancellationTokenSource.Token);
         }
 
-        public Task StartReading(CancellationToken cancellationToken)
+        public async Task StartReading(CancellationToken cancellationToken)
         {
-            return _startReading.StartReading(cancellationToken);
+            await _startReading.StartReading(cancellationToken);
         }
     }
 }

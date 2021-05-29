@@ -19,7 +19,7 @@ namespace MastodonApi.Stream
 
         void IDisposable.Dispose()
         {
-            _cancellationTokenSource.Cancel();
+            _cancellationTokenSource.Cancel(true);
             _ = _socket?.CloseAsync(WebSocketCloseStatus.NormalClosure, "Ok", CancellationToken.None);
             _socket?.Dispose();
         }
