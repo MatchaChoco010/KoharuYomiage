@@ -10,9 +10,11 @@ using Reactive.Bindings.Extensions;
 
 namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
 {
-    public class SettingViewModel : BindableBase, INavigationAware, IDisposable
+    public class SettingViewModel : BindableBase, INavigationAware,  IRegionMemberLifetime, IDisposable
     {
         readonly CompositeDisposable _disposable = new();
+
+        public bool KeepAlive => false;
 
         public ReactiveCommand LicenseButtonCommand { get; } = new();
         public ReactiveCommand AccountListButtonCommand { get; } = new();

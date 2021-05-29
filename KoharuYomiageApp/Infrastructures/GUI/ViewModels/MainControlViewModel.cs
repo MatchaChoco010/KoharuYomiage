@@ -14,7 +14,7 @@ using Reactive.Bindings.Extensions;
 
 namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
 {
-    public class MainControlViewModel : BindableBase, INavigationAware, IDisposable
+    public class MainControlViewModel : BindableBase, INavigationAware, IRegionMemberLifetime, IDisposable
     {
         readonly CompositeDisposable _disposable = new();
 
@@ -35,6 +35,8 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
             _mainControlController = mainControlController;
             KoharuImage.Value = _koharuImage0;
         }
+
+        public bool KeepAlive => false;
 
         public ObservableCollection<TextItem> TextList { get; } = new();
         public ReactiveCommand VolumeButtonCommand { get; } = new();

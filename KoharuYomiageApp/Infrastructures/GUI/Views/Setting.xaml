@@ -34,8 +34,8 @@
                         Height="80"
                         Margin="20"
                         HorizontalContentAlignment="Stretch"
-                        xf:Animations.Primary="{xf:Animate BasedOn={StaticResource FadeIn}, Duration=2000, Delay=300}"
-                        Command="{Binding LicenceButtonCommand}">
+                        xf:Animations.Primary="{xf:Animate BasedOn={StaticResource FadeIn}, Duration=1500, Delay=300}"
+                        Command="{Binding LicenseButtonCommand}">
                     <Grid VerticalAlignment="Center">
                         <svg1:SVGImage Source="/Resources/license-logo.svg"
                                        Width="48"
@@ -66,7 +66,7 @@
                         Height="80"
                         Margin="20"
                         HorizontalContentAlignment="Stretch"
-                        xf:Animations.Primary="{xf:Animate BasedOn={StaticResource FadeIn}, Duration=2000, Delay=500}"
+                        xf:Animations.Primary="{xf:Animate BasedOn={StaticResource FadeIn}, Duration=1500, Delay=500}"
                         Command="{Binding AccountListButtonCommand}">
                     <Grid VerticalAlignment="Center">
                         <TextBlock FontFamily="Segoe MDL2 Assets"
