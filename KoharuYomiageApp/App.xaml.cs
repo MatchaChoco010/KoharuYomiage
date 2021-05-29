@@ -54,6 +54,7 @@ namespace KoharuYomiageApp
             containerRegistry.RegisterForNavigation<MastodonLogin>();
             containerRegistry.RegisterForNavigation<MastodonAuthCode>();
             containerRegistry.RegisterForNavigation<MainControl>();
+            containerRegistry.RegisterForNavigation<Setting>();
             //   CeVIOAI
             containerRegistry.RegisterManySingleton<CeVIOAIHost>(
                 typeof(IDisposable),

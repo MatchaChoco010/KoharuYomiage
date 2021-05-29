@@ -73,7 +73,8 @@
                     Content="&#xE713;"
                     VerticalAlignment="Bottom"
                     HorizontalAlignment="Left"
-                    Margin="16,0,0,16" />
+                    Margin="16,0,0,16"
+                    Command="{Binding SettingButtonCommand}"/>
         </Grid>
 
         <Grid Grid.Column="1">

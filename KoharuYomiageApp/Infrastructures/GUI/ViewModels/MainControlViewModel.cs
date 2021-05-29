@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Reactive.Disposables;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using KoharuYomiageApp.Infrastructures.GUI.Views;
 using KoharuYomiageApp.Presentation.GUI;
 using Prism.Mvvm;
 using Prism.Regions;
@@ -37,6 +38,7 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
         public ReactivePropertySlim<ImageSource> KoharuImage { get; } = new();
         public ReactivePropertySlim<char> VolumeIcon { get; } = new('\uE767');
         public ReactivePropertySlim<double> Volume { get; } = new(0.65, ReactivePropertyMode.DistinctUntilChanged);
+        public ReactiveCommand SettingButtonCommand { get; } = new();
 
         public void Dispose()
         {
@@ -84,6 +86,8 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
                     Volume.Value = _prevVolume;
                 }
             }).AddTo(_disposable);
+            SettingButtonCommand.Subscribe(_ => navigationContext.NavigationService.RequestNavigate(nameof(Setting)))
+                .AddTo(_disposable);
         }
 
         public bool IsNavigationTarget(NavigationContext navigationContext)

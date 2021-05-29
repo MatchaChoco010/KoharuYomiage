@@ -1,0 +1,120 @@
+﻿<UserControl x:Class="KoharuYomiageApp.Infrastructures.GUI.Views.Setting"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:xf="clr-namespace:XamlFlair;assembly=XamlFlair.WPF"
+             xmlns:prism="http://prismlibrary.com/"
+             xmlns:svg1="clr-namespace:SVGImage.SVG;assembly=DotNetProjects.SVGImage"
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             mc:Ignorable="d"
+             d:DesignHeight="600" d:DesignWidth="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="3*" />
+        </Grid.ColumnDefinitions>
+        <Button Grid.Column="0"
+                Style="{StaticResource ButtonRevealStyle}"
+                Background="Transparent"
+                FontFamily="Segoe MDL2 Assets"
+                FontSize="20"
+                Width="64"
+                Height="48"
+                Margin="16,32"
+                VerticalAlignment="Top"
+                HorizontalAlignment="Left"
+                Command="{Binding BackCommand}">
+            &#xE72B;
+        </Button>
+        <Grid Grid.Column="0">
+            <StackPanel Margin="20,100,20,20">
+                <Button Style="{StaticResource ButtonRevealStyle}"
+                        Background="Transparent"
+                        Height="80"
+                        Margin="20"
+                        HorizontalContentAlignment="Stretch"
+                        xf:Animations.Primary="{xf:Animate BasedOn={StaticResource FadeIn}, Duration=2000, Delay=300}"
+                        Command="{Binding LicenceButtonCommand}">
+                    <Grid VerticalAlignment="Center">
+                        <svg1:SVGImage Source="/Resources/license-logo.svg"
+                                       Width="48"
+                                       Height="48"
+                                       Margin="46,10,40,10"
+                                       HorizontalAlignment="Left"
+                                       CustomBrushes="{Binding IconBrushes.Value, Mode=TwoWay}"/>
+                        <StackPanel HorizontalAlignment="Left"
+                                    Margin="100,10,20,10">
+                            <TextBlock Margin="8,0"
+                                       FontSize="16"
+                                       VerticalAlignment="Center"
+                                       TextAlignment="Left">
+                                Licences
+                            </TextBlock>
+                            <TextBlock Margin="8,4"
+                                       FontSize="10"
+                                       Foreground="{DynamicResource SystemBaseMediumLowColorBrush}"
+                                       VerticalAlignment="Center"
+                                       TextAlignment="Left">
+                                OSS ライセンス一覧
+                            </TextBlock>
+                        </StackPanel>
+                    </Grid>
+                </Button>
+                <Button Style="{StaticResource ButtonRevealStyle}"
+                        Background="Transparent"
+                        Height="80"
+                        Margin="20"
+                        HorizontalContentAlignment="Stretch"
+                        xf:Animations.Primary="{xf:Animate BasedOn={StaticResource FadeIn}, Duration=2000, Delay=500}"
+                        Command="{Binding AccountListButtonCommand}">
+                    <Grid VerticalAlignment="Center">
+                        <TextBlock FontFamily="Segoe MDL2 Assets"
+                                   FontSize="48"
+                                   Margin="40,10"
+                                   HorizontalAlignment="Left">
+                            &#xE77B;
+                        </TextBlock>
+                        <StackPanel  HorizontalAlignment="Left"
+                                     Margin="100,10,20,10">
+                            <TextBlock Margin="8,0"
+                                       FontSize="16"
+                                       VerticalAlignment="Center"
+                                       TextAlignment="Left">
+                                アカウント
+                            </TextBlock>
+                            <TextBlock Margin="8,4"
+                                       FontSize="10"
+                                       Foreground="{DynamicResource SystemBaseMediumLowColorBrush}"
+                                       VerticalAlignment="Center"
+                                       TextAlignment="Left">
+                                アカウント追加・削除<LineBreak/>アカウント設定
+                            </TextBlock>
+                        </StackPanel>
+                    </Grid>
+                </Button>
+            </StackPanel>
+        </Grid>
+        <StackPanel Grid.Column="1"
+                    xf:Animations.Primary="{xf:Animate BasedOn={StaticResource FadeInAndSlideFromRight}, Duration=1000}">
+            <TextBlock Margin="20,40,20,10"
+                       Style="{StaticResource TitleTextBlockStyle}"
+                       Foreground="{DynamicResource SystemBaseHighColorBrush}">
+                設定
+            </TextBlock>
+            <Grid Margin="20,0,80,20">
+                <TextBlock HorizontalAlignment="Left"
+                           Margin="20,0"
+                           FontSize="16"
+                           Foreground="{DynamicResource SystemBaseMediumHighColorBrush}"
+                           VerticalAlignment="Center">
+                    投稿バッファサイズ
+                </TextBlock>
+                <TextBox HorizontalAlignment="Right"
+                         Width="100"
+                         Style="{StaticResource TextBoxRevealStyle}"
+                         Text="{Binding BufferSize.Value}"/>
+            </Grid>
+        </StackPanel>
+    </Grid>
+</UserControl>
