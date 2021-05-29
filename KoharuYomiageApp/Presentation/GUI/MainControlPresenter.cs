@@ -5,6 +5,7 @@ using System.Reactive;
 using System.Reactive.Subjects;
 using System.Text.RegularExpressions;
 using KoharuYomiageApp.UseCase.ReadText;
+using KoharuYomiageApp.UseCase.UpdateTextList;
 using KoharuYomiageApp.UseCase.UpdateVoiceParameter;
 
 namespace KoharuYomiageApp.Presentation.GUI

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Reactive.Disposables;
+using System.Threading;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using KoharuYomiageApp.Infrastructures.GUI.Views;
@@ -52,8 +53,9 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
 
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
-            _mainControlController.StartReading();
-            _mainControlController.StartUpdatingVoiceParameter();
+            var cancellationTokenSource = new CancellationTokenSource();
+            _disposable.Add(cancellationTokenSource);
+            _ = _mainControlController.StartReading(cancellationTokenSource.Token);
 
             _mainControlPresenter.OnInitializeGlobalVolumeView.Subscribe(volume =>
             {

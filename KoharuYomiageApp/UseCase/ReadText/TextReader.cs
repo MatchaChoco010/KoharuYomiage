@@ -11,25 +11,17 @@ namespace KoharuYomiageApp.UseCase.ReadText
         readonly IChangeImage _changeImage;
         readonly IReadingTextContainerRepository _containerRepository;
         readonly ISpeakText _speakText;
-        readonly IUpdateTextListView _updateTextListView;
 
-        public TextReader(IReadingTextContainerRepository containerRepository, ISpeakText speakText,
-            IUpdateTextListView updateTextListView, IChangeImage changeImage)
+        public TextReader(IReadingTextContainerRepository containerRepository, ISpeakText speakText, IChangeImage changeImage)
         {
             _containerRepository = containerRepository;
             _speakText = speakText;
-            _updateTextListView = updateTextListView;
             _changeImage = changeImage;
         }
 
         public async Task StartReading(CancellationToken cancellationToken)
         {
             var container = _containerRepository.GetContainer();
-
-            var disposable = container.OnItemsChange.Subscribe(items =>
-                _updateTextListView.UpdateTextList(items.Select(i => (i.Id, i.Text))));
-
-            cancellationToken.Register(() => disposable.Dispose());
 
             while (true)
             {

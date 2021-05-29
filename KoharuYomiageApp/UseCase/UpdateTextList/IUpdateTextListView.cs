@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace KoharuYomiageApp.UseCase.ReadText
+namespace KoharuYomiageApp.UseCase.UpdateTextList
 {
     public interface IUpdateTextListView
     {

@@ -18,7 +18,6 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
         readonly IDialogService _dialogService;
         readonly CompositeDisposable _disposable = new();
         readonly StartController _startController;
-
         readonly StartPresenter _startPresenter;
 
         public StartViewModel(StartPresenter startPresenter, StartController startController,
@@ -53,7 +52,12 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
             LoadedCommand.Subscribe(_ => _startController.WindowLoaded()).AddTo(_disposable);
-            NavigateCommand.Subscribe(_ => _startController.PushStartButton()).AddTo(_disposable);
+            NavigateCommand.Subscribe(_ =>
+            {
+                _startController.StartUpdatingTextList();
+                _startController.StartUpdatingVoiceParameter();
+                _startController.PushStartButton();
+            }).AddTo(_disposable);
 
             _startPresenter.OnFinishLoadTalker.Subscribe(_ =>
                 {

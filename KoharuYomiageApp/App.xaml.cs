@@ -16,6 +16,7 @@ using KoharuYomiageApp.UseCase.AddMastodonAccount;
 using KoharuYomiageApp.UseCase.AddMastodonTimelineItem;
 using KoharuYomiageApp.UseCase.ReadText;
 using KoharuYomiageApp.UseCase.Repository;
+using KoharuYomiageApp.UseCase.UpdateTextList;
 using KoharuYomiageApp.UseCase.UpdateVoiceParameter;
 using KoharuYomiageApp.UseCase.WindowLoaded;
 using Microsoft.Windows.Sdk;
