@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reactive.Disposables;
 using System.Threading;
+using KoharuYomiageApp.UseCase.ReadingTextContainerSize;
 using KoharuYomiageApp.UseCase.UpdateTextList;
 using KoharuYomiageApp.UseCase.UpdateVoiceParameter;
 using KoharuYomiageApp.UseCase.WindowLoaded;
@@ -16,20 +17,23 @@ namespace KoharuYomiageApp.Presentation.GUI
         readonly IStartUpdatingTextList _startUpdatingTextList;
         readonly IStartUpdatingVoiceParameter _startUpdatingVoiceParameter;
         readonly IWindowLoaded _windowLoaded;
+        readonly IInitializeReadingTextContainerSize _initializeReadingTextContainerSize;
 
         public StartController(IWindowLoaded windowLoaded, IPushStartButton pushStartButton,
-            IStartUpdatingTextList startUpdatingTextList, IStartUpdatingVoiceParameter startUpdatingVoiceParameter)
+            IStartUpdatingTextList startUpdatingTextList, IStartUpdatingVoiceParameter startUpdatingVoiceParameter,
+            IInitializeReadingTextContainerSize initializeReadingTextContainerSize)
         {
             _windowLoaded = windowLoaded;
             _pushStartButton = pushStartButton;
             _startUpdatingTextList = startUpdatingTextList;
             _startUpdatingVoiceParameter = startUpdatingVoiceParameter;
-
-            _compositeDisposable.Add(_cancellationTokenSource);
+            _initializeReadingTextContainerSize = initializeReadingTextContainerSize;
         }
 
         public void Dispose()
         {
+            _cancellationTokenSource.Cancel(true);
+            _cancellationTokenSource.Dispose();
             _compositeDisposable.Dispose();
         }
 
@@ -51,6 +55,11 @@ namespace KoharuYomiageApp.Presentation.GUI
         public void StartUpdatingTextList()
         {
             _startUpdatingTextList.StartUpdatingTextList().AddTo(_compositeDisposable);
+        }
+
+        public void InitializeReadingTextContainerSize()
+        {
+            _ = _initializeReadingTextContainerSize.InitializeReadingTextContainerSize(_cancellationTokenSource.Token);
         }
     }
 }

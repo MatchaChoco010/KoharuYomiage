@@ -9,5 +9,6 @@ namespace KoharuYomiageApp.Data.JsonStorage
         public List<MastodonClientData> MastodonClientData { get; set; } = new();
         public List<VoiceProfileData> VoiceProfileData { get; set; } = new();
         public double? GlobalVolume { get; set; }
+        public int? ReadingTextContainerSize { get; set; }
     }
 }

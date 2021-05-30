@@ -15,6 +15,7 @@ using KoharuYomiageApp.Presentation.Mastodon;
 using KoharuYomiageApp.UseCase.AddMastodonAccount;
 using KoharuYomiageApp.UseCase.AddMastodonTimelineItem;
 using KoharuYomiageApp.UseCase.GetGlobalVolume;
+using KoharuYomiageApp.UseCase.ReadingTextContainerSize;
 using KoharuYomiageApp.UseCase.ReadText;
 using KoharuYomiageApp.UseCase.Repository;
 using KoharuYomiageApp.UseCase.UpdateTextList;
@@ -105,6 +106,7 @@ namespace KoharuYomiageApp
             containerRegistry.RegisterManySingleton<MainControlController>(
                 typeof(MainControlController),
                 typeof(IDisposable));
+            containerRegistry.RegisterSingleton<SettingController>();
             //   CeVIOAI
             containerRegistry.RegisterManySingleton<CeVIOAIPresenter>(
                 typeof(ILoadTalker),
@@ -144,6 +146,7 @@ namespace KoharuYomiageApp
                 typeof(IMastodonClientStorage),
                 typeof(IGlobalVolumeStorage),
                 typeof(IVoiceProfileStorage),
+                typeof(IReadingTextContainerStorage),
                 typeof(JsonStorage));
 
             // UseCase
@@ -161,6 +164,10 @@ namespace KoharuYomiageApp
                 .RegisterSingleton<IMastodonBoostedSensitiveStatusReceiver, MastodonBoostedSensitiveStatusReceiver>();
             //   GetGlobalVolume
             containerRegistry.RegisterSingleton<IGetGlobalVolume, GlobalVolumeProvider>();
+            //   ReadingTextContainerSize
+            containerRegistry.RegisterSingleton<IChangeReadingTextContainerSize, ReadingTextContainerSizeChanger>();
+            containerRegistry.RegisterSingleton<IGetReadingTextContainerSize, ReadingTextContainerSizeProvider>();
+            containerRegistry.RegisterSingleton<IInitializeReadingTextContainerSize, ReadingTextContainerSizeInitializer>();
             //   ReadText
             containerRegistry.RegisterSingleton<IStartReading, TextReader>();
             //   UpdateTextList

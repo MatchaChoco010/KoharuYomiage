@@ -15,9 +15,9 @@ namespace KoharuYomiageApp.Domain.ReadingText
 
         List<TaskCompletionSource<bool>> _listForOverflow = new();
         List<TaskCompletionSource<ReadingTextItem>> _listForTakeAsync = new();
-        uint _maxCount = 3;
+        ReadingTextContainerSize _maxCount = new(3);
 
-        public uint MaxCount
+        public ReadingTextContainerSize MaxCount
         {
             get => _maxCount;
             set
@@ -25,6 +25,14 @@ namespace KoharuYomiageApp.Domain.ReadingText
                 lock (_syncObject)
                 {
                     _maxCount = value;
+
+                    if (_list.Count > _maxCount.Value)
+                    {
+                        foreach (var tcs in _listForOverflow)
+                        {
+                            tcs.SetResult(true);
+                        }
+                    }
                 }
             }
         }
@@ -60,7 +68,7 @@ namespace KoharuYomiageApp.Domain.ReadingText
                     }
                 }
 
-                if (listCount > MaxCount)
+                if (listCount > MaxCount.Value)
                 {
                     foreach (var tcs in _listForOverflow)
                     {
@@ -111,7 +119,7 @@ namespace KoharuYomiageApp.Domain.ReadingText
 
                 ClearWeakList();
 
-                if (_list.Count >= MaxCount)
+                if (_list.Count >= MaxCount.Value)
                 {
                     return Task.CompletedTask;
                 }

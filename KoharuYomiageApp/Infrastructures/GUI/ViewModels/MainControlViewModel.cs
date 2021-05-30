@@ -48,6 +48,8 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
 
         public void Dispose()
         {
+            _cancellationTokenSource?.Cancel(true);
+            _cancellationTokenSource?.Dispose();
             _disposable.Dispose();
             VolumeButtonCommand.Dispose();
             KoharuImage.Dispose();
@@ -99,9 +101,10 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
 
         public void OnNavigatedFrom(NavigationContext navigationContext)
         {
-            _disposable.Clear();
             _cancellationTokenSource?.Cancel(true);
             _cancellationTokenSource?.Dispose();
+            _cancellationTokenSource = null;
+            _disposable.Clear();
         }
 
         public record TextItem(Guid Id, string Text);

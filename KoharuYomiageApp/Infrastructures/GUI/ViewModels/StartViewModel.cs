@@ -51,7 +51,11 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
 
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
-            LoadedCommand.Subscribe(_ => _startController.WindowLoaded()).AddTo(_disposable);
+            LoadedCommand.Subscribe(_ =>
+            {
+                _startController.InitializeReadingTextContainerSize();
+                _startController.WindowLoaded();
+            }).AddTo(_disposable);
             NavigateCommand.Subscribe(_ =>
             {
                 _startController.StartUpdatingTextList();

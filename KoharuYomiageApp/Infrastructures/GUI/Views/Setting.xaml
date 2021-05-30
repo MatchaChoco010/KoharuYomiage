@@ -113,7 +113,7 @@
                 <TextBox HorizontalAlignment="Right"
                          Width="100"
                          Style="{StaticResource TextBoxRevealStyle}"
-                         Text="{Binding BufferSize.Value}" />
+                         Text="{Binding BufferSize.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             </Grid>
         </StackPanel>
     </Grid>
