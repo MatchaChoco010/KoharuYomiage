@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Threading;
@@ -36,7 +36,7 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
             KoharuImage.Value = _koharuImage0;
         }
 
-        public ObservableCollection<TextItem> TextList { get; } = new();
+        public ReactivePropertySlim<List<TextItem>> TextList { get; } = new();
         public ReactiveCommand VolumeButtonCommand { get; } = new();
         public ReactivePropertySlim<ImageSource> KoharuImage { get; } = new();
         public ReactivePropertySlim<char> VolumeIcon { get; } = new('\uE767');
@@ -61,14 +61,9 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
             _ = _mainControlController.GetVolume(_cancellationTokenSource.Token)
                 .ContinueWith(t => Volume.Value = t.Result, _cancellationTokenSource.Token);
 
-            TextList.AddRange(
-                _mainControlPresenter.CurrentTextList.Select(item => new TextItem(item.Item1, item.Item2)));
-            _mainControlPresenter.OnDeleteTextListItem
-                .Subscribe(item => TextList.Remove(new TextItem(item.Item1, item.Item2)))
-                .AddTo(_disposable);
-            _mainControlPresenter.OnAddTextListItem
-                .Subscribe(item => TextList.Add(new TextItem(item.Item1, item.Item2)))
-                .AddTo(_disposable);
+            _mainControlPresenter.TextListAsObservable.Subscribe(list =>
+                TextList.Value = list.Select(item => new TextItem(item.Item1, item.Item2)).ToList()).AddTo(_disposable);
+
             _mainControlPresenter.OnOpenMouth.Subscribe(_ => KoharuImage.Value = _koharuImage1).AddTo(_disposable);
             _mainControlPresenter.OnCloseMouth.Subscribe(_ => KoharuImage.Value = _koharuImage0).AddTo(_disposable);
 

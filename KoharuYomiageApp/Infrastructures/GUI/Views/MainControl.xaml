@@ -6,7 +6,6 @@
              xmlns:prism="http://prismlibrary.com/"
              xmlns:fw="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
              xmlns:xf="clr-namespace:XamlFlair;assembly=XamlFlair.WPF"
-             xmlns:xfc="clr-namespace:XamlFlair.Controls;assembly=XamlFlair.WPF"
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
@@ -54,21 +53,21 @@
                     <Setter Property="FontFamily" Value="Segoe MDL2 Assets" />
                 </Style>
             </Grid.Resources>
-            <xfc:AnimatedListView ItemsSource="{Binding TextList}"
-                                  Background="Transparent"
-                                  BorderBrush="Transparent"
-                                  Padding="72,0,0,0"
-                                  ItemContainerStyle="{StaticResource ContainerStyle}"
-                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                  ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                  VirtualizingPanel.ScrollUnit="Pixel"
-                                  xf:Animations.Items="{xf:Animate BasedOn={StaticResource FadeInAndSlideFromBottom}, Duration=2400}">
-                <xfc:AnimatedListView.ItemTemplate>
+            <ListView ItemsSource="{Binding TextList.Value}"
+                      Background="Transparent"
+                      BorderBrush="Transparent"
+                      Padding="72,0,0,0"
+                      ItemContainerStyle="{StaticResource ContainerStyle}"
+                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                      ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                      VirtualizingPanel.ScrollUnit="Pixel">
+                <ListView.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding Text}" Style="{StaticResource ItemText}" />
+                        <TextBlock Text="{Binding Text}"
+                                   Style="{StaticResource ItemText}" />
                     </DataTemplate>
-                </xfc:AnimatedListView.ItemTemplate>
-            </xfc:AnimatedListView>
+                </ListView.ItemTemplate>
+            </ListView>
             <Button Style="{StaticResource SettingsButtonStyle}"
                     Content="&#xE713;"
                     VerticalAlignment="Bottom"

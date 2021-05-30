@@ -11,18 +11,13 @@ namespace KoharuYomiageApp.Presentation.GUI
 {
     public class MainControlPresenter : IChangeImage, IUpdateTextListView
     {
-        readonly Subject<(Guid, string)> _onAddTextListItem = new();
         readonly Subject<Unit> _onCloseMouth = new();
-        readonly Subject<(Guid, string)> _onDeleteTextListItem = new();
         readonly Subject<Unit> _onOpenMouth = new();
-
-        List<(Guid, string)> _currentTextList = new();
+        readonly BehaviorSubject<List<(Guid, string)>> _textListSubject = new(new List<(Guid, string)>());
 
         public IObservable<Unit> OnOpenMouth => _onOpenMouth;
         public IObservable<Unit> OnCloseMouth => _onCloseMouth;
-        public IObservable<(Guid, string)> OnDeleteTextListItem => _onDeleteTextListItem;
-        public IObservable<(Guid, string)> OnAddTextListItem => _onAddTextListItem;
-        public IEnumerable<(Guid, string)> CurrentTextList => _currentTextList;
+        public IObservable<List<(Guid, string)>> TextListAsObservable => _textListSubject;
 
         public void OpenMouth()
         {
@@ -36,29 +31,14 @@ namespace KoharuYomiageApp.Presentation.GUI
 
         public void UpdateTextList(IEnumerable<(Guid, string)> list)
         {
-            var newItemList = list.ToList();
-
-            var deleteList = _currentTextList.Where(item => !newItemList.Contains(item));
-            foreach (var (id, text) in deleteList)
+            _textListSubject.OnNext(list.Select(t =>
             {
-                string filteredText = text;
-                filteredText = Regex.Replace(filteredText, "<br[^>]*?>", "\n");
-                filteredText = Regex.Replace(filteredText, "</p>", "</p>\n\n");
-                filteredText = Regex.Replace(filteredText, "<[^>]*?>", "");
-                _onDeleteTextListItem.OnNext((id, filteredText));
-            }
-
-            var addList = newItemList.Where(item => !_currentTextList.Contains(item));
-            foreach (var (id, text) in addList)
-            {
-                string filteredText = text;
-                filteredText = Regex.Replace(filteredText, "<br[^>]*?>", "\n");
-                filteredText = Regex.Replace(filteredText, "</p>", "</p>\n\n");
-                filteredText = Regex.Replace(filteredText, "<[^>]*?>", "");
-                _onAddTextListItem.OnNext((id, filteredText));
-            }
-
-            _currentTextList = newItemList;
+                var (id, text) = t;
+                text = Regex.Replace(text, "<br[^>]*?>", "\n");
+                text = Regex.Replace(text, "</p>", "</p>\n\n");
+                text = Regex.Replace(text, "<[^>]*?>", "");
+                return (id, text);
+            }).ToList());
         }
     }
 }

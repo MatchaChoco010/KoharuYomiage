@@ -128,7 +128,7 @@ namespace KoharuYomiageApp.Domain.ReadingText
 
                     return Task.CompletedTask;
                 }
-                else
+
                 {
                     var tcs = new TaskCompletionSource<bool>();
                     _listForOverflow.Add(tcs);
