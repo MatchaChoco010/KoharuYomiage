@@ -19,6 +19,7 @@ using KoharuYomiageApp.UseCase.GetGlobalVolume;
 using KoharuYomiageApp.UseCase.ReadingTextContainerSize;
 using KoharuYomiageApp.UseCase.ReadText;
 using KoharuYomiageApp.UseCase.Repository;
+using KoharuYomiageApp.UseCase.SwitchAccountConnection;
 using KoharuYomiageApp.UseCase.UpdateTextList;
 using KoharuYomiageApp.UseCase.UpdateVoiceParameter;
 using KoharuYomiageApp.UseCase.WindowLoaded;
@@ -120,8 +121,7 @@ namespace KoharuYomiageApp
                 typeof(IRegisterClient),
                 typeof(IAuthorizeMastodonAccountWithCode),
                 typeof(IGetAccountInfo),
-                typeof(UseCase.AddMastodonAccount.IMakeMastodonConnection),
-                typeof(UseCase.WindowLoaded.IMakeMastodonConnection));
+                typeof(UseCase.Utils.IMakeMastodonConnection));
             containerRegistry.RegisterSingleton<MastodonController>();
 
             // Data
@@ -181,6 +181,8 @@ namespace KoharuYomiageApp
             containerRegistry.RegisterSingleton<IStartUpdatingVoiceParameter, VoiceParameterUpdater>();
             //   GetAllAcounts
             containerRegistry.RegisterSingleton<IGetAllAccounts, AllAccountsProvider>();
+            //   SwitchAccountConnection
+            containerRegistry.RegisterSingleton<ISwitchAccountConnection, AccountConnectionSwitcher>();
 
             // Instantiate Infrastructure Instance
             Container.Resolve<CeVIOAIHost>();

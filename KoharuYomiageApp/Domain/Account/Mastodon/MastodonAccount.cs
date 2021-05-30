@@ -3,8 +3,8 @@
     public record MastodonAccount : Account
     {
         public MastodonAccount(Username username, Instance instance, MastodonAccessToken accessToken,
-            MastodonAccountIconUrl iconUrl)
-            : base(username, instance)
+            MastodonAccountIconUrl iconUrl, IsReadingPostsFromThisAccount isReadingPostsFromThisAccount)
+            : base(username, instance, isReadingPostsFromThisAccount)
         {
             AccessToken = accessToken;
             IconUrl = iconUrl;

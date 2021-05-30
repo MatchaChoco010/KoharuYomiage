@@ -16,7 +16,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type RepeatButton}">
-                        <Border Background="Transparent"/>
+                        <Border Background="Transparent" />
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
@@ -25,16 +25,17 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Thumb}">
-                        <Border CornerRadius="0"  Background="{StaticResource ScrollBarColorBrush}" BorderBrush="{StaticResource ScrollBarBorderBrush}" BorderThickness="1" />
+                        <Border CornerRadius="0" Background="{StaticResource ScrollBarColorBrush}"
+                                BorderBrush="{StaticResource ScrollBarBorderBrush}" BorderThickness="1" />
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
         <Style x:Key="CustomScrollBarStyle" TargetType="{x:Type ScrollBar}">
-            <Setter Property="OverridesDefaultStyle" Value="true"/>
+            <Setter Property="OverridesDefaultStyle" Value="true" />
             <Style.Triggers>
                 <Trigger Property="Orientation" Value="Vertical">
-                    <Setter Property="Width" Value="12"/>
+                    <Setter Property="Width" Value="12" />
                     <Setter Property="Height" Value="Auto" />
                     <Setter Property="Margin">
                         <Setter.Value>
@@ -46,13 +47,15 @@
                             <ControlTemplate>
                                 <Track x:Name="PART_Track" IsDirectionReversed="true">
                                     <Track.DecreaseRepeatButton>
-                                        <RepeatButton Style="{StaticResource ScrollBarTrackStyle}"  Command="ScrollBar.PageUpCommand" />
+                                        <RepeatButton Style="{StaticResource ScrollBarTrackStyle}"
+                                                      Command="ScrollBar.PageUpCommand" />
                                     </Track.DecreaseRepeatButton>
                                     <Track.Thumb>
-                                        <Thumb Style="{StaticResource ScrollBarThumbStyle}"  Margin="0,1,0,1"/>
+                                        <Thumb Style="{StaticResource ScrollBarThumbStyle}" Margin="0,1,0,1" />
                                     </Track.Thumb>
                                     <Track.IncreaseRepeatButton>
-                                        <RepeatButton Style="{StaticResource ScrollBarTrackStyle}" Command="ScrollBar.PageDownCommand" />
+                                        <RepeatButton Style="{StaticResource ScrollBarTrackStyle}"
+                                                      Command="ScrollBar.PageDownCommand" />
                                     </Track.IncreaseRepeatButton>
                                 </Track>
                             </ControlTemplate>
@@ -67,19 +70,24 @@
                     <ControlTemplate TargetType="{x:Type ScrollViewer}">
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition/>
-                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
-                                <RowDefinition/>
-                                <RowDefinition Height="Auto"/>
+                                <RowDefinition />
+                                <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
                             <ScrollContentPresenter Grid.Column="0" Grid.Row="0">
                                 <ScrollContentPresenter.Margin>
                                     <Thickness Left="5" Top="5" Right="5" Bottom="5" />
                                 </ScrollContentPresenter.Margin>
                             </ScrollContentPresenter>
-                            <ScrollBar x:Name="PART_VerticalScrollBar" Grid.Column="1" Grid.Row="0" Orientation="Vertical" Value="{TemplateBinding VerticalOffset}" Maximum="{TemplateBinding ScrollableHeight}" ViewportSize="{TemplateBinding ViewportHeight}" Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}" Style="{StaticResource CustomScrollBarStyle}"/>
+                            <ScrollBar x:Name="PART_VerticalScrollBar" Grid.Column="1" Grid.Row="0"
+                                       Orientation="Vertical" Value="{TemplateBinding VerticalOffset}"
+                                       Maximum="{TemplateBinding ScrollableHeight}"
+                                       ViewportSize="{TemplateBinding ViewportHeight}"
+                                       Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
+                                       Style="{StaticResource CustomScrollBarStyle}" />
                         </Grid>
                     </ControlTemplate>
                 </Setter.Value>
@@ -154,9 +162,10 @@
                             Orientation="Horizontal"
                             HorizontalAlignment="Right"
                             Margin="16">
-                    <Button Style="{StaticResource RoundButtonStyle}">
-                        読上げ停止中
-                    </Button>
+                    <Button Style="{StaticResource RoundButtonStyle}"
+                            Command="{Binding SwitchReadingCommand}"
+                            Background="{Binding SwitchButtonBackground.Value}"
+                            Content="{Binding SwitchReadingButtonText.Value}" />
                     <Button Style="{StaticResource CircleButtonStyle}">
                         &#xE74D;
                     </Button>
@@ -175,8 +184,8 @@
         </Grid.ColumnDefinitions>
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <ScrollViewer Grid.Row="0"
                           Style="{StaticResource CustomScrollViewerStyle}"

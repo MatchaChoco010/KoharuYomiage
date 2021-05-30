@@ -20,7 +20,8 @@ namespace KoharuYomiageApp.UseCase.GetAllAccounts
         {
             var data = await _mastodonAccountRepository.GetAllMastodonAccounts(cancellationToken);
             return data.Select(d =>
-                    new AccountData(d.AccountIdentifier.Value, d.Username.Value, d.Instance.Value, d.IconUrl.IconUrl))
+                    new AccountData(d.AccountIdentifier.Value, d.Username.Value, d.Instance.Value, d.IconUrl.IconUrl,
+                        d.IsReadingPostsFromThisAccount.Value))
                 .ToList();
         }
     }

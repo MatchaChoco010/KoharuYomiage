@@ -7,7 +7,7 @@ using KoharuYomiageApp.UseCase.AddMastodonAccount.DataObjects;
 namespace KoharuYomiageApp.Presentation.Mastodon
 {
     public class MastodonPresenter : IRegisterClient, IAuthorizeMastodonAccountWithCode, IGetAccountInfo,
-        UseCase.AddMastodonAccount.IMakeMastodonConnection, UseCase.WindowLoaded.IMakeMastodonConnection
+        UseCase.Utils.IMakeMastodonConnection
     {
         readonly IMastodonAuthorizeAccountWithCode _authorizeAccountWithCode;
         readonly IMakeMastodonConnection _connection;
@@ -42,21 +42,15 @@ namespace KoharuYomiageApp.Presentation.Mastodon
             return new AccountInfo(username, iconUrl);
         }
 
-        IDisposable UseCase.AddMastodonAccount.IMakeMastodonConnection.MakeConnection(AddReaderInfo info)
-        {
-            return _connection.MakeConnection(info.Username, info.Instance, info.AccessToken);
-        }
-
-        IDisposable UseCase.WindowLoaded.IMakeMastodonConnection.MakeConnection(
-            UseCase.WindowLoaded.DataObjects.AddReaderInfo info)
-        {
-            return _connection.MakeConnection(info.Username, info.Instance, info.AccessToken);
-        }
-
         public async Task<ClientInfo> RegisterClient(LoginInfo loginInfo, CancellationToken cancellationToken)
         {
             var (id, secret) = await _registerClient.RegisterClient(loginInfo.Instance, cancellationToken);
             return new ClientInfo(id, secret);
+        }
+
+        public IDisposable MakeConnection(string username, string instance, string accessToken)
+        {
+            return _connection.MakeConnection(username, instance, accessToken);
         }
     }
 }

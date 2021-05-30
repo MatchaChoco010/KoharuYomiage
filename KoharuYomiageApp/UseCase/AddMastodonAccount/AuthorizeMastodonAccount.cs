@@ -5,6 +5,7 @@ using KoharuYomiageApp.Domain.Account.Mastodon;
 using KoharuYomiageApp.Domain.Connection;
 using KoharuYomiageApp.UseCase.AddMastodonAccount.DataObjects;
 using KoharuYomiageApp.UseCase.Repository;
+using KoharuYomiageApp.UseCase.Utils;
 
 namespace KoharuYomiageApp.UseCase.AddMastodonAccount
 {
@@ -97,9 +98,8 @@ namespace KoharuYomiageApp.UseCase.AddMastodonAccount
 
             await _mastodonAccountRepository.SaveMastodonAccount(account, cancellationToken);
 
-            var connection = _makeMastodonConnection.MakeConnection(new AddReaderInfo(account.AccountIdentifier.Value,
-                account.Username.Value, account.Instance.Value, account.AccessToken.Token));
-
+            var connection = _makeMastodonConnection.MakeConnection(account.Username.Value, account.Instance.Value,
+                account.AccessToken.Token);
             _connectionRepository.AddConnection(new Connection(account.AccountIdentifier, connection));
 
             _finishAuthorizeMastodonAccount.FinishAuthorizeMastodonAccount();

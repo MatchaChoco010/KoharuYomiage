@@ -25,7 +25,8 @@ namespace KoharuYomiageApp.Data.Repository
             if (data is not null)
             {
                 return new MastodonAccount(new Username(data.Username), new Instance(data.Instance),
-                    new MastodonAccessToken(data.AccessToken), new MastodonAccountIconUrl(data.IconUrl));
+                    new MastodonAccessToken(data.AccessToken), new MastodonAccountIconUrl(data.IconUrl),
+                    new IsReadingPostsFromThisAccount(data.IsReadingPostsFromThisAccount));
             }
 
             return null;
@@ -34,21 +35,22 @@ namespace KoharuYomiageApp.Data.Repository
         public MastodonAccount CreateMastodonAccount(Username username, Instance instance,
             MastodonAccessToken accessToken, MastodonAccountIconUrl iconUrl)
         {
-            return new(username, instance, accessToken, iconUrl);
+            return new(username, instance, accessToken, iconUrl, new IsReadingPostsFromThisAccount(true));
         }
 
         public async Task SaveMastodonAccount(MastodonAccount accountData, CancellationToken cancellationToken)
         {
             await _storage.SaveMastodonAccountData(new MastodonAccountData(accountData.Username.Value,
-                    accountData.Instance.Value, accountData.AccessToken.Token, accountData.IconUrl.IconUrl),
-                cancellationToken);
+                accountData.Instance.Value, accountData.AccessToken.Token, accountData.IconUrl.IconUrl,
+                accountData.IsReadingPostsFromThisAccount.Value), cancellationToken);
         }
 
         public async Task<IEnumerable<MastodonAccount>> GetAllMastodonAccounts(CancellationToken cancellationToken)
         {
             var data = await _storage.GetMastodonAccountData(cancellationToken);
             return data.Select(d => new MastodonAccount(new Username(d.Username), new Instance(d.Instance),
-                new MastodonAccessToken(d.AccessToken), new MastodonAccountIconUrl(d.IconUrl)));
+                new MastodonAccessToken(d.AccessToken), new MastodonAccountIconUrl(d.IconUrl),
+                new IsReadingPostsFromThisAccount(d.IsReadingPostsFromThisAccount)));
         }
     }
 }

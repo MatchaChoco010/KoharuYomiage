@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using KoharuYomiageApp.Domain.Connection;
 using KoharuYomiageApp.UseCase.Repository;
-using KoharuYomiageApp.UseCase.WindowLoaded.DataObjects;
+using KoharuYomiageApp.UseCase.Utils;
 
 namespace KoharuYomiageApp.UseCase.WindowLoaded
 {
@@ -39,9 +39,13 @@ namespace KoharuYomiageApp.UseCase.WindowLoaded
             {
                 foreach (var account in mastodonAccounts)
                 {
-                    var connection = _makeMastodonConnection.MakeConnection(
-                        new AddReaderInfo(account.AccountIdentifier.Value, account.Username.Value,
-                            account.Instance.Value, account.AccessToken.Token));
+                    if (!account.IsReadingPostsFromThisAccount.Value)
+                    {
+                        continue;
+                    }
+
+                    var connection = _makeMastodonConnection.MakeConnection(account.Username.Value,
+                            account.Instance.Value, account.AccessToken.Token);
                     _connectionRepository.AddConnection(new Connection(account.AccountIdentifier, connection));
                 }
 

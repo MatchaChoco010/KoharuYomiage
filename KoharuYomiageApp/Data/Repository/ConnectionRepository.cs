@@ -12,6 +12,9 @@ namespace KoharuYomiageApp.Data.Repository
 
         public void AddConnection(Connection connection)
         {
+            _connections.TryGetValue(connection.AccountIdentifier, out var con);
+            con?.Dispose();
+
             _connections.Add(connection.AccountIdentifier, connection);
         }
 
