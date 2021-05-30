@@ -39,7 +39,6 @@ namespace KoharuYomiageApp.Data.Repository
         {
             _cancellationTokenSource.Cancel(true);
             _cancellationTokenSource.Dispose();
-            _instance.AsValueTask().AsTask().Wait();
         }
 
         public async ValueTask<VoiceParameterChangeNotifier> GetInstance(CancellationToken cancellationToken)

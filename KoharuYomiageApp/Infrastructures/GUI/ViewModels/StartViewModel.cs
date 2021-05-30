@@ -39,7 +39,6 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
         public void Dispose()
         {
             _disposable.Dispose();
-            _startController.Dispose();
             LoadedCommand.Dispose();
             NavigateCommand.Dispose();
             Close.Dispose();

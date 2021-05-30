@@ -36,7 +36,6 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
         public void Dispose()
         {
             _disposable.Dispose();
-            _mastodonAuthCodeController.Dispose();
             BackCommand.Dispose();
             OpenBrowserCommand.Dispose();
             AuthenticateCommand.Dispose();

@@ -25,7 +25,8 @@ namespace KoharuYomiageApp.Data.Repository
 
         public void Dispose()
         {
-            _globalVolume.AsValueTask().AsTask().Wait();
+            _cancellationTokenSource.Cancel(true);
+            _cancellationTokenSource.Dispose();
         }
 
         public async Task<GlobalVolume> GetGlobalVolume(CancellationToken cancellationToken)
