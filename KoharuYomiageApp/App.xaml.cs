@@ -4,7 +4,6 @@ using System.Windows;
 using KoharuYomiageApp.Data.JsonStorage;
 using KoharuYomiageApp.Data.Repository;
 using KoharuYomiageApp.Infrastructures.CeVIOAI;
-using KoharuYomiageApp.Infrastructures.GUI.ViewModels;
 using KoharuYomiageApp.Infrastructures.GUI.Views;
 using KoharuYomiageApp.Infrastructures.GUI.Views.AttachedBehavior;
 using KoharuYomiageApp.Infrastructures.GUI.Views.Dialogs;
@@ -56,7 +55,6 @@ namespace KoharuYomiageApp
             containerRegistry.RegisterForNavigation<ViewA>();
             containerRegistry.RegisterForNavigation<ViewB>();
             containerRegistry.RegisterForNavigation<Start>();
-            containerRegistry.Register<StartViewModel>();
             containerRegistry.RegisterForNavigation<SelectSNS>();
             containerRegistry.RegisterForNavigation<MastodonLogin>();
             containerRegistry.RegisterForNavigation<MastodonAuthCode>();
