@@ -37,7 +37,7 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
                 .Subscribe(_ => navigationContext.NavigationService.RequestNavigate(nameof(MastodonLogin),
                     new NavigationParameters {{"FirstLogin", isFirstLogin}}))
                 .AddTo(_disposable);
-            BackCommand.Subscribe(_ => { })
+            BackCommand.Subscribe(_ => navigationContext.NavigationService.RequestNavigate(nameof(AccountList)))
                 .AddTo(_disposable);
         }
 

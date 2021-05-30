@@ -51,6 +51,9 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
 
             BackCommand.Subscribe(_ => navigationContext.NavigationService.RequestNavigate(nameof(MainControl)))
                 .AddTo(_disposable);
+            AccountListButtonCommand
+                .Subscribe(_ => navigationContext.NavigationService.RequestNavigate(nameof(AccountList)))
+                .AddTo(_disposable);
             BufferSize.Subscribe(v =>
             {
                 if (v <= 0)
