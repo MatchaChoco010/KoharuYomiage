@@ -166,7 +166,8 @@
                             Command="{Binding SwitchReadingCommand}"
                             Background="{Binding SwitchButtonBackground.Value}"
                             Content="{Binding SwitchReadingButtonText.Value}" />
-                    <Button Style="{StaticResource CircleButtonStyle}">
+                    <Button Style="{StaticResource CircleButtonStyle}"
+                            Command="{Binding DeleteAccountCommand}">
                         &#xE74D;
                     </Button>
                     <Button Style="{StaticResource CircleButtonStyle}">
@@ -200,7 +201,6 @@
                                       BorderBrush="Transparent"
                                       VerticalAlignment="Stretch"
                                       PreviewMouseWheel="HandlePreviewMouseWheel"
-                                      ScrollViewer.CanContentScroll="False"
                                       ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                       ScrollViewer.VerticalScrollBarVisibility="Disabled" />
             </ScrollViewer>

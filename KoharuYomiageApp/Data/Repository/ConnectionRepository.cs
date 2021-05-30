@@ -20,8 +20,12 @@ namespace KoharuYomiageApp.Data.Repository
 
         public void StopConnection(AccountIdentifier accountId)
         {
-            _connections[accountId].Dispose();
-            _connections.Remove(accountId);
+            _connections.TryGetValue(accountId, out var connection);
+            if (connection is not null)
+            {
+                connection.Dispose();
+                _connections.Remove(accountId);
+            }
         }
 
         public void Dispose()

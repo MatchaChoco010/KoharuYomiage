@@ -63,6 +63,19 @@ namespace KoharuYomiageApp.Data.JsonStorage
             await SaveSettings(storage, cancellationToken);
         }
 
+        public async Task DeleteMastodonAccountData(string identifier, CancellationToken cancellationToken)
+        {
+            var storage = await GetOrCreateSettings(cancellationToken);
+
+            var index = storage.MastodonAccountData.FindIndex(data => data.Username + "@" +  data.Instance == identifier);
+            if (index is not -1)
+            {
+                storage.MastodonAccountData.RemoveAt(index);
+            }
+
+            await SaveSettings(storage, cancellationToken);
+        }
+
         public async Task<IEnumerable<MastodonAccountData>> GetMastodonAccountData(CancellationToken cancellationToken)
         {
             var storage = await GetOrCreateSettings(cancellationToken);

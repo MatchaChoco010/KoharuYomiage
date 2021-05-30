@@ -9,6 +9,7 @@ namespace KoharuYomiageApp.Data.Repository
     {
         Task<MastodonAccountData?> FindMastodonAccountData(string identifier, CancellationToken cancellationToken);
         Task SaveMastodonAccountData(MastodonAccountData accountSaveData, CancellationToken cancellationToken);
+        Task DeleteMastodonAccountData(string identifier, CancellationToken cancellationToken);
         Task<IEnumerable<MastodonAccountData>> GetMastodonAccountData(CancellationToken cancellationToken);
     }
 }

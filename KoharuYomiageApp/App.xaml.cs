@@ -14,6 +14,7 @@ using KoharuYomiageApp.Presentation.GUI;
 using KoharuYomiageApp.Presentation.Mastodon;
 using KoharuYomiageApp.UseCase.AddMastodonAccount;
 using KoharuYomiageApp.UseCase.AddMastodonTimelineItem;
+using KoharuYomiageApp.UseCase.DeleteAccount;
 using KoharuYomiageApp.UseCase.GetAllAccounts;
 using KoharuYomiageApp.UseCase.GetGlobalVolume;
 using KoharuYomiageApp.UseCase.ReadingTextContainerSize;
@@ -50,6 +51,7 @@ namespace KoharuYomiageApp
             containerRegistry.RegisterDialog<RegisterClientError>();
             containerRegistry.RegisterDialog<GetMastodonAccountInfoError>();
             containerRegistry.RegisterDialog<MastodonAuthenticationError>();
+            containerRegistry.RegisterDialog<AccountDeletionConfirmation>();
             //     Views
             containerRegistry.RegisterForNavigation<ViewA>();
             containerRegistry.RegisterForNavigation<ViewB>();
@@ -183,6 +185,8 @@ namespace KoharuYomiageApp
             containerRegistry.RegisterSingleton<IGetAllAccounts, AllAccountsProvider>();
             //   SwitchAccountConnection
             containerRegistry.RegisterSingleton<ISwitchAccountConnection, AccountConnectionSwitcher>();
+            //   DeleteAccount
+            containerRegistry.RegisterSingleton<IDeleteAccount, AccountDeleter>();
 
             // Instantiate Infrastructure Instance
             Container.Resolve<CeVIOAIHost>();

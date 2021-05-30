@@ -45,6 +45,11 @@ namespace KoharuYomiageApp.Data.Repository
                 accountData.IsReadingPostsFromThisAccount.Value), cancellationToken);
         }
 
+        public async Task DeleteMastodonAccount(AccountIdentifier identifier, CancellationToken cancellationToken)
+        {
+            await _storage.DeleteMastodonAccountData(identifier.Value, cancellationToken);
+        }
+
         public async Task<IEnumerable<MastodonAccount>> GetAllMastodonAccounts(CancellationToken cancellationToken)
         {
             var data = await _storage.GetMastodonAccountData(cancellationToken);
