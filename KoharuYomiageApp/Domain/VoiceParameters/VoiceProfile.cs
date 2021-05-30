@@ -34,8 +34,8 @@ namespace KoharuYomiageApp.Domain.VoiceParameters
         }
 
         public void Update(double volume, double speed, double tone, double alpha, double toneScale,
-            double componentNormal,
-            double componentHappy, double componentAnger, double componentSorrow, double componentCalmness)
+            double componentNormal, double componentHappy, double componentAnger, double componentSorrow,
+            double componentCalmness)
         {
             if (volume is <0.0 or >1.0 ||
                 speed is <0.0 or >1.0 ||
