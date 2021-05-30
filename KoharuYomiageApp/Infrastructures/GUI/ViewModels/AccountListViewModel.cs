@@ -57,13 +57,6 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
                 .AddTo(_disposable);
             BackCommand.Subscribe(_ => navigationContext.NavigationService.RequestNavigate(nameof(Setting)))
                 .AddTo(_disposable);
-            AccountList.Value = new List<AccountItem>
-            {
-                new("MatchaChoco010", "@social.orito-itsuki.net", new Uri(
-                    "https://media.social.orito-itsuki.net/accounts/avatars/000/002/550/original/77be352262b9b405.png")),
-                new("MatchaChoco010", "@social.orito-itsuki.net", new Uri(
-                    "https://media.social.orito-itsuki.net/accounts/avatars/000/002/550/original/77be352262b9b405.png")),
-            };
         }
 
         public bool IsNavigationTarget(NavigationContext navigationContext)

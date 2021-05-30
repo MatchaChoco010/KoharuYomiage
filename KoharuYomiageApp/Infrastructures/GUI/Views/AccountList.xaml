@@ -136,6 +136,7 @@
                 </Grid.ColumnDefinitions>
                 <Image Grid.Column="0"
                        Source="{Binding IconUrl}"
+                       RenderOptions.BitmapScalingMode="Fant"
                        Width="48"
                        Height="48"
                        Margin="16" />
