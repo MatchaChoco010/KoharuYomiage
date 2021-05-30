@@ -125,7 +125,7 @@ namespace KoharuYomiageApp.Domain.ReadingText
                     {
                         tcs.SetResult(true);
                     }
-                    
+
                     return Task.CompletedTask;
                 }
                 else

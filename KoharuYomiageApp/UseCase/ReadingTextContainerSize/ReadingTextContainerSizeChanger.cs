@@ -17,6 +17,8 @@ namespace KoharuYomiageApp.UseCase.ReadingTextContainerSize
         {
             var containerSize = _readingTextContainerRepository.CreateContainerSize(size);
             await _readingTextContainerRepository.SaveContainerSize(containerSize, cancellationToken);
+            var container = _readingTextContainerRepository.GetContainer();
+            container.MaxCount = containerSize;
         }
     }
 }
