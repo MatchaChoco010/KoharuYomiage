@@ -119,16 +119,23 @@ namespace KoharuYomiageApp.Domain.ReadingText
 
                 ClearWeakList();
 
-                if (_list.Count >= MaxCount.Value)
+                if (_list.Count > MaxCount.Value)
                 {
+                    foreach (var tcs in _listForOverflow)
+                    {
+                        tcs.SetResult(true);
+                    }
+                    
                     return Task.CompletedTask;
                 }
+                else
+                {
+                    var tcs = new TaskCompletionSource<bool>();
+                    _listForOverflow.Add(tcs);
+                    cancellationToken.Register(() => tcs.TrySetCanceled());
 
-                var tcs = new TaskCompletionSource<bool>();
-                _listForOverflow.Add(tcs);
-                cancellationToken.Register(() => tcs.TrySetCanceled());
-
-                return tcs.Task;
+                    return tcs.Task;
+                }
             }
         }
     }
