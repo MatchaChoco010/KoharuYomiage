@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Reactive.Disposables;
 using System.Threading;
 using System.Threading.Tasks;
@@ -61,6 +62,7 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
             _ = _mainControlController.GetVolume(_cancellationTokenSource.Token)
                 .ContinueWith(t => Volume.Value = t.Result, _cancellationTokenSource.Token);
 
+            TextList.AddRange(_mainControlPresenter.CurrentTextList.Select(item => new TextItem(item.Item1, item.Item2)));
             _mainControlPresenter.OnDeleteTextListItem
                 .Subscribe(item => TextList.Remove(new TextItem(item.Item1, item.Item2)))
                 .AddTo(_disposable);

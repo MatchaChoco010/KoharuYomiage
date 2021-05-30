@@ -16,12 +16,13 @@ namespace KoharuYomiageApp.Presentation.GUI
         readonly Subject<(Guid, string)> _onDeleteTextListItem = new();
         readonly Subject<Unit> _onOpenMouth = new();
 
-        List<(Guid, string)> _prevTextList = new();
+        List<(Guid, string)> _currentTextList = new();
 
         public IObservable<Unit> OnOpenMouth => _onOpenMouth;
         public IObservable<Unit> OnCloseMouth => _onCloseMouth;
         public IObservable<(Guid, string)> OnDeleteTextListItem => _onDeleteTextListItem;
         public IObservable<(Guid, string)> OnAddTextListItem => _onAddTextListItem;
+        public IEnumerable<(Guid, string)> CurrentTextList => _currentTextList;
 
         public void OpenMouth()
         {
@@ -35,9 +36,9 @@ namespace KoharuYomiageApp.Presentation.GUI
 
         public void UpdateTextList(IEnumerable<(Guid, string)> list)
         {
-            var itemList = list.ToList();
+            var newItemList = list.ToList();
 
-            var deleteList = _prevTextList.Where(item => !itemList.Contains(item));
+            var deleteList = _currentTextList.Where(item => !newItemList.Contains(item));
             foreach (var (id, text) in deleteList)
             {
                 string filteredText = text;
@@ -47,7 +48,7 @@ namespace KoharuYomiageApp.Presentation.GUI
                 _onDeleteTextListItem.OnNext((id, filteredText));
             }
 
-            var addList = itemList.Where(item => !_prevTextList.Contains(item));
+            var addList = newItemList.Where(item => !_currentTextList.Contains(item));
             foreach (var (id, text) in addList)
             {
                 string filteredText = text;
@@ -57,7 +58,7 @@ namespace KoharuYomiageApp.Presentation.GUI
                 _onAddTextListItem.OnNext((id, filteredText));
             }
 
-            _prevTextList = itemList;
+            _currentTextList = newItemList;
         }
     }
 }
