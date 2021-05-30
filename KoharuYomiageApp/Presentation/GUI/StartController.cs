@@ -13,11 +13,11 @@ namespace KoharuYomiageApp.Presentation.GUI
     {
         readonly CancellationTokenSource _cancellationTokenSource = new();
         readonly CompositeDisposable _compositeDisposable = new();
+        readonly IInitializeReadingTextContainerSize _initializeReadingTextContainerSize;
         readonly IPushStartButton _pushStartButton;
         readonly IStartUpdatingTextList _startUpdatingTextList;
         readonly IStartUpdatingVoiceParameter _startUpdatingVoiceParameter;
         readonly IWindowLoaded _windowLoaded;
-        readonly IInitializeReadingTextContainerSize _initializeReadingTextContainerSize;
 
         public StartController(IWindowLoaded windowLoaded, IPushStartButton pushStartButton,
             IStartUpdatingTextList startUpdatingTextList, IStartUpdatingVoiceParameter startUpdatingVoiceParameter,

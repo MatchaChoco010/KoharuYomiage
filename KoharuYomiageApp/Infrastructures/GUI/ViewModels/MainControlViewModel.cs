@@ -24,7 +24,7 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
 
         readonly MainControlPresenter _mainControlPresenter;
 
-        CancellationTokenSource? _cancellationTokenSource = null;
+        CancellationTokenSource? _cancellationTokenSource;
         bool _isMute;
         double _prevVolume = 0.65;
 
@@ -35,8 +35,6 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
             _mainControlController = mainControlController;
             KoharuImage.Value = _koharuImage0;
         }
-
-        public bool KeepAlive => false;
 
         public ObservableCollection<TextItem> TextList { get; } = new();
         public ReactiveCommand VolumeButtonCommand { get; } = new();
@@ -63,7 +61,8 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
             _ = _mainControlController.GetVolume(_cancellationTokenSource.Token)
                 .ContinueWith(t => Volume.Value = t.Result, _cancellationTokenSource.Token);
 
-            TextList.AddRange(_mainControlPresenter.CurrentTextList.Select(item => new TextItem(item.Item1, item.Item2)));
+            TextList.AddRange(
+                _mainControlPresenter.CurrentTextList.Select(item => new TextItem(item.Item1, item.Item2)));
             _mainControlPresenter.OnDeleteTextListItem
                 .Subscribe(item => TextList.Remove(new TextItem(item.Item1, item.Item2)))
                 .AddTo(_disposable);
@@ -105,6 +104,8 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
             _cancellationTokenSource = null;
             _disposable.Clear();
         }
+
+        public bool KeepAlive => false;
 
         public record TextItem(Guid Id, string Text);
     }

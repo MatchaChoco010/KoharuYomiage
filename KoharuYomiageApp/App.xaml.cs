@@ -167,7 +167,8 @@ namespace KoharuYomiageApp
             //   ReadingTextContainerSize
             containerRegistry.RegisterSingleton<IChangeReadingTextContainerSize, ReadingTextContainerSizeChanger>();
             containerRegistry.RegisterSingleton<IGetReadingTextContainerSize, ReadingTextContainerSizeProvider>();
-            containerRegistry.RegisterSingleton<IInitializeReadingTextContainerSize, ReadingTextContainerSizeInitializer>();
+            containerRegistry
+                .RegisterSingleton<IInitializeReadingTextContainerSize, ReadingTextContainerSizeInitializer>();
             //   ReadText
             containerRegistry.RegisterSingleton<IStartReading, TextReader>();
             //   UpdateTextList

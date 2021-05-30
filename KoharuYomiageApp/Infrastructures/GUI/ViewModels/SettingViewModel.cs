@@ -12,19 +12,11 @@ using Reactive.Bindings.Extensions;
 
 namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
 {
-    public class SettingViewModel : BindableBase, INavigationAware,  IRegionMemberLifetime, IDisposable
+    public class SettingViewModel : BindableBase, INavigationAware, IRegionMemberLifetime, IDisposable
     {
         readonly CompositeDisposable _disposable = new();
 
         readonly SettingController _settingController;
-
-        public bool KeepAlive => false;
-
-        public ReactiveCommand LicenseButtonCommand { get; } = new();
-        public ReactiveCommand AccountListButtonCommand { get; } = new();
-        public ReactiveCommand BackCommand { get; } = new();
-        public ReactivePropertySlim<int> BufferSize { get; } = new(-1, ReactivePropertyMode.DistinctUntilChanged);
-        public ReactivePropertySlim<Dictionary<string, Brush>> IconBrushes { get; } = new();
 
         CancellationTokenSource? _cancellationTokenSource;
 
@@ -32,6 +24,12 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
         {
             _settingController = settingController;
         }
+
+        public ReactiveCommand LicenseButtonCommand { get; } = new();
+        public ReactiveCommand AccountListButtonCommand { get; } = new();
+        public ReactiveCommand BackCommand { get; } = new();
+        public ReactivePropertySlim<int> BufferSize { get; } = new(-1, ReactivePropertyMode.DistinctUntilChanged);
+        public ReactivePropertySlim<Dictionary<string, Brush>> IconBrushes { get; } = new();
 
         public void Dispose()
         {
@@ -78,5 +76,7 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
             _cancellationTokenSource = null;
             _disposable.Clear();
         }
+
+        public bool KeepAlive => false;
     }
 }

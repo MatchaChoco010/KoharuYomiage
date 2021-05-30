@@ -93,6 +93,19 @@ namespace KoharuYomiageApp.Data.JsonStorage
             await SaveSettings(storage, cancellationToken);
         }
 
+        public async Task<int?> FindReadingTextContainerSize(CancellationToken cancellationToken)
+        {
+            var storage = await GetOrCreateSettings(cancellationToken);
+            return storage.ReadingTextContainerSize;
+        }
+
+        public async Task SaveReadingTextContainerSize(int size, CancellationToken cancellationToken)
+        {
+            var storage = await GetOrCreateSettings(cancellationToken);
+            storage.ReadingTextContainerSize = size;
+            await SaveSettings(storage, cancellationToken);
+        }
+
         public async Task<VoiceProfileData?> FindVoiceProfile(string accountIdentifier, string type,
             CancellationToken cancellationToken)
         {
@@ -122,19 +135,6 @@ namespace KoharuYomiageApp.Data.JsonStorage
                 storage.VoiceProfileData.Add(data);
             }
 
-            await SaveSettings(storage, cancellationToken);
-        }
-
-        public async Task<int?> FindReadingTextContainerSize(CancellationToken cancellationToken)
-        {
-            var storage = await GetOrCreateSettings(cancellationToken);
-            return storage.ReadingTextContainerSize;
-        }
-
-        public async Task SaveReadingTextContainerSize(int size, CancellationToken cancellationToken)
-        {
-            var storage = await GetOrCreateSettings(cancellationToken);
-            storage.ReadingTextContainerSize = size;
             await SaveSettings(storage, cancellationToken);
         }
 

@@ -10,11 +10,12 @@ namespace KoharuYomiageApp.Presentation.GUI
     public class MainControlController : IDisposable
     {
         readonly CancellationTokenSource _cancellationTokenSource = new();
+        readonly IGetGlobalVolume _getGlobalVolume;
         readonly IStartReading _startReading;
         readonly IUpdateGlobalVolume _updateGlobalVolume;
-        readonly IGetGlobalVolume _getGlobalVolume;
 
-        public MainControlController(IUpdateGlobalVolume updateGlobalVolume, IStartReading startReading, IGetGlobalVolume getGlobalVolume)
+        public MainControlController(IUpdateGlobalVolume updateGlobalVolume, IStartReading startReading,
+            IGetGlobalVolume getGlobalVolume)
         {
             _updateGlobalVolume = updateGlobalVolume;
             _startReading = startReading;
