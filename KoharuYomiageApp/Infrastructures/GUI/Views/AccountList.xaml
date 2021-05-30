@@ -140,7 +140,7 @@
                        Height="48"
                        Margin="16" />
                 <StackPanel Grid.Column="1">
-                    <TextBlock Text="{Binding DisplayName}"
+                    <TextBlock Text="{Binding Username}"
                                Foreground="{DynamicResource SystemBaseHighColorBrush}"
                                FontSize="16"
                                Margin="0, 16,16,2" />
