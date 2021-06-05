@@ -4,6 +4,7 @@ using KoharuYomiageApp.Domain.Account;
 using KoharuYomiageApp.Domain.ReadingText;
 using KoharuYomiageApp.Domain.VoiceParameters;
 using KoharuYomiageApp.UseCase.Repository;
+using KoharuYomiageApp.UseCase.Utils;
 
 namespace KoharuYomiageApp.UseCase.ReadText
 {

@@ -183,9 +183,8 @@
             <TextBlock Grid.Row="0"
                        Style="{StaticResource TitleTextBlockStyle}"
                        Foreground="{DynamicResource SystemBaseHighColorBrush}"
-                       Margin="4,16,4,0">
-                投稿
-            </TextBlock>
+                       Margin="4,16,4,0"
+                       Text="{Binding Title.Value}"/>
             <Border Grid.Row="1"
                     BorderThickness="2"
                     BorderBrush="{DynamicResource SystemBaseMediumColorBrush}"
@@ -194,11 +193,8 @@
                     Padding="8">
                 <ScrollViewer Style="{StaticResource CustomScrollViewerStyle}">
                     <TextBlock Style="{StaticResource BaseTextBlockStyle}"
-                               Foreground="{DynamicResource SystemBaseMediumColorBrush}">
-                        投稿サンプルさんの投稿<LineBreak />
-                        投稿サンプルです！<LineBreak />
-                        画像にDescriptionが付いている場合、それも読み上げます。
-                    </TextBlock>
+                               Foreground="{DynamicResource SystemBaseMediumColorBrush}"
+                               Text="{Binding SampleText.Value}"/>
                 </ScrollViewer>
             </Border>
             <Grid Grid.Row="2">

@@ -5,6 +5,7 @@ using KoharuYomiageApp.Presentation.CeVIOAI.DataObjects;
 using KoharuYomiageApp.UseCase.ReadText;
 using KoharuYomiageApp.UseCase.UpdateVoiceParameter;
 using KoharuYomiageApp.UseCase.UpdateVoiceParameter.DataObjects;
+using KoharuYomiageApp.UseCase.Utils;
 using KoharuYomiageApp.UseCase.WindowLoaded;
 
 namespace KoharuYomiageApp.Presentation.CeVIOAI

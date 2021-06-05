@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using ImTools;
 using KoharuYomiageApp.Infrastructures.GUI.Views;
 using KoharuYomiageApp.Presentation.GUI;
 using Prism.Mvvm;
@@ -33,6 +33,8 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
 
         public ReactivePropertySlim<string> Username { get; } = new();
         public ReactivePropertySlim<string> Instance { get; } = new();
+        public ReactivePropertySlim<string> Title { get; } = new();
+        public ReactivePropertySlim<string> SampleText { get; } = new();
 
         public MastodonAccountSettingViewModel(MastodonAccountSettingController controller)
         {
@@ -66,14 +68,44 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
 
             SelectedIndex.Select(i => Observable.StartAsync(async cancellationToken =>
             {
-                var type = i switch
+                MastodonAccountSettingController.MastodonVoiceProfileType type;
+                switch (i)
                 {
-                    0 => MastodonAccountSettingController.MastodonVoiceProfileType.Status,
-                    1 => MastodonAccountSettingController.MastodonVoiceProfileType.SensitiveStatus,
-                    2 => MastodonAccountSettingController.MastodonVoiceProfileType.BoostedStatus,
-                    3 => MastodonAccountSettingController.MastodonVoiceProfileType.BoostedSensitiveStatus,
-                    _ => throw new InvalidProgramException(),
-                };
+                    case 0:
+                        type = MastodonAccountSettingController.MastodonVoiceProfileType.Status;
+                        Title.Value = "投稿";
+                        SampleText.Value = @"投稿サンプルさんの投稿
+投稿のサンプルです！
+画像にDescriptionが付いている場合、それも読み上げます。";
+                        break;
+                    case 1:
+                        type = MastodonAccountSettingController.MastodonVoiceProfileType.SensitiveStatus;
+                        Title.Value = "NSFWな投稿";
+                        SampleText.Value = @"投稿サンプルさんの投稿
+スポイラーテキスト。
+NSFWな投稿のサンプルです！
+画像にDescriptionが付いている場合、それも読み上げます。";
+                        break;
+                    case 2:
+                        type = MastodonAccountSettingController.MastodonVoiceProfileType.BoostedStatus;
+                        Title.Value = "Boostされた投稿";
+                        SampleText.Value = @"Boost投稿サンプルさんがブースト
+投稿サンプルさんの投稿
+ブーストされた投稿のサンプルです！
+画像にDescriptionが付いている場合、それも読み上げます。";
+                        break;
+                    case 3:
+                        type = MastodonAccountSettingController.MastodonVoiceProfileType.BoostedSensitiveStatus;
+                        Title.Value = "NSFWなBoostされた投稿";
+                        SampleText.Value = @"Boost投稿サンプルさんがブースト
+投稿サンプルさんの投稿
+スポイラーテキスト。
+ブーストされたNSFWな投稿のサンプルです！
+画像にDescriptionが付いている場合、それも読み上げます。";
+                        break;
+                    default:
+                        throw new InvalidProgramException();
+                }
                 var data = await _controller.GetVoiceProfile(Username.Value, Instance.Value, type, cancellationToken);
                 Volume.Value = data.Volume;
                 Speed.Value = data.Speed;
@@ -98,10 +130,21 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
             ComponentSorrow.Select(_ => SetVoiceProfile(SelectedIndex.Value)).Switch().Subscribe().AddTo(_disposable);
             ComponentCalmness.Select(_ => SetVoiceProfile(SelectedIndex.Value)).Switch().Subscribe().AddTo(_disposable);
 
-            PlayButtonCommand.Subscribe(_ =>
+            PlayButtonCommand.Select(_ => Observable.StartAsync(async cancellationToken =>
                 {
-                    //
-                })
+                    var type = SelectedIndex.Value switch
+                    {
+                        0 => MastodonAccountSettingController.MastodonVoiceProfileType.Status,
+                        1 => MastodonAccountSettingController.MastodonVoiceProfileType.SensitiveStatus,
+                        2 => MastodonAccountSettingController.MastodonVoiceProfileType.BoostedStatus,
+                        3 => MastodonAccountSettingController.MastodonVoiceProfileType.BoostedSensitiveStatus,
+                        _ => throw new InvalidProgramException(),
+                    };
+                    await _controller.PlaySampleVoice(Username.Value, Instance.Value, type, SampleText.Value,
+                        cancellationToken);
+                }))
+                .Switch()
+                .Subscribe()
                 .AddTo(_disposable);
             BackCommand.Subscribe(_ => navigationContext.NavigationService.RequestNavigate(nameof(AccountList)))
                 .AddTo(_disposable);
@@ -119,7 +162,7 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
 
         public bool KeepAlive => false;
 
-        IObservable<Unit> SetVoiceProfile(int index) => Observable.StartAsync(async cancellationToken =>
+        IObservable<System.Reactive.Unit> SetVoiceProfile(int index) => Observable.StartAsync(async cancellationToken =>
         {
             var type = index switch
             {

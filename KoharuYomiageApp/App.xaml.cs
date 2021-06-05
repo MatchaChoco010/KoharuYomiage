@@ -23,6 +23,7 @@ using KoharuYomiageApp.UseCase.Repository;
 using KoharuYomiageApp.UseCase.SwitchAccountConnection;
 using KoharuYomiageApp.UseCase.UpdateTextList;
 using KoharuYomiageApp.UseCase.UpdateVoiceParameter;
+using KoharuYomiageApp.UseCase.Utils;
 using KoharuYomiageApp.UseCase.WindowLoaded;
 using Microsoft.Windows.Sdk;
 using Prism.DryIoc;

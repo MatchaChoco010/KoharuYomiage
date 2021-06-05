@@ -8,5 +8,6 @@ namespace KoharuYomiageApp.UseCase.EditVoiceProfile
     {
         Task SetVoiceProfile(string username, string instance, VoiceProfileType type, VoiceProfileData data, CancellationToken cancellationToken);
         Task<VoiceProfileData> GetVoiceProfile(string username, string instance, VoiceProfileType type, CancellationToken cancellationToken);
+        Task PlaySampleVoice(string username, string instance, VoiceProfileType type, string sampleText, CancellationToken cancellationToken);
     }
 }

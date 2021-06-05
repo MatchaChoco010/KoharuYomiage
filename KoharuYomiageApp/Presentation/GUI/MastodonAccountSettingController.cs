@@ -47,6 +47,20 @@ namespace KoharuYomiageApp.Presentation.GUI
                 data.ComponentCalmness);
         }
 
+        public async Task PlaySampleVoice(string username, string instance, MastodonVoiceProfileType type,
+            string sampleText, CancellationToken cancellationToken)
+        {
+            var ty = type switch
+            {
+                MastodonVoiceProfileType.Status => VoiceProfileType.MastodonStatus,
+                MastodonVoiceProfileType.SensitiveStatus => VoiceProfileType.MastodonSensitiveStatus,
+                MastodonVoiceProfileType.BoostedStatus => VoiceProfileType.MastodonBoostedStatus,
+                MastodonVoiceProfileType.BoostedSensitiveStatus => VoiceProfileType.MastodonBoostedSensitiveStatus,
+                _ => throw new InvalidProgramException(),
+            };
+            await _updater.PlaySampleVoice(username, instance, ty, sampleText, cancellationToken);
+        }
+
         public enum MastodonVoiceProfileType
         {
             Status,
