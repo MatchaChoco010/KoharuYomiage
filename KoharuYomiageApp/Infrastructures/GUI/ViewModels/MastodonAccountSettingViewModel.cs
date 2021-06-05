@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Reactive;
 using System.Reactive.Disposables;
+using System.Reactive.Linq;
 using KoharuYomiageApp.Infrastructures.GUI.Views;
+using KoharuYomiageApp.Presentation.GUI;
 using Prism.Mvvm;
 using Prism.Regions;
 using Reactive.Bindings;
@@ -11,6 +14,7 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
     public class MastodonAccountSettingViewModel : BindableBase, INavigationAware, IRegionMemberLifetime, IDisposable
     {
         readonly CompositeDisposable _disposable = new();
+        readonly MastodonAccountSettingController _controller;
 
         public ReactiveCommand PlayButtonCommand { get; } = new();
         public ReactiveCommand BackCommand { get; } = new();
@@ -29,6 +33,11 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
 
         public ReactivePropertySlim<string> Username { get; } = new();
         public ReactivePropertySlim<string> Instance { get; } = new();
+
+        public MastodonAccountSettingViewModel(MastodonAccountSettingController controller)
+        {
+            _controller = controller;
+        }
 
         public void Dispose()
         {
@@ -55,6 +64,40 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
             Username.Value = navigationContext.Parameters["Username"] as string ?? "";
             Instance.Value = navigationContext.Parameters["Instance"] as string ?? "";
 
+            SelectedIndex.Select(i => Observable.StartAsync(async cancellationToken =>
+            {
+                var type = i switch
+                {
+                    0 => MastodonAccountSettingController.MastodonVoiceProfileType.Status,
+                    1 => MastodonAccountSettingController.MastodonVoiceProfileType.SensitiveStatus,
+                    2 => MastodonAccountSettingController.MastodonVoiceProfileType.BoostedStatus,
+                    3 => MastodonAccountSettingController.MastodonVoiceProfileType.BoostedSensitiveStatus,
+                    _ => throw new InvalidProgramException(),
+                };
+                var data = await _controller.GetVoiceProfile(Username.Value, Instance.Value, type, cancellationToken);
+                Volume.Value = data.Volume;
+                Speed.Value = data.Speed;
+                Tone.Value = data.Tone;
+                Alpha.Value = data.Alpha;
+                ToneScale.Value = data.ToneScale;
+                ComponentNormal.Value = data.ComponentNormal;
+                ComponentHappy.Value = data.ComponentHappy;
+                ComponentAnger.Value = data.ComponentAnger;
+                ComponentSorrow.Value = data.ComponentSorrow;
+                ComponentCalmness.Value = data.ComponentCalmness;
+            })).Switch().Subscribe().AddTo(_disposable);
+
+            Volume.Select(_ => SetVoiceProfile(SelectedIndex.Value)).Switch().Subscribe().AddTo(_disposable);
+            Speed.Select(_ => SetVoiceProfile(SelectedIndex.Value)).Switch().Subscribe().AddTo(_disposable);
+            Tone.Select(_ => SetVoiceProfile(SelectedIndex.Value)).Switch().Subscribe().AddTo(_disposable);
+            Alpha.Select(_ => SetVoiceProfile(SelectedIndex.Value)).Switch().Subscribe().AddTo(_disposable);
+            ToneScale.Select(_ => SetVoiceProfile(SelectedIndex.Value)).Switch().Subscribe().AddTo(_disposable);
+            ComponentNormal.Select(_ => SetVoiceProfile(SelectedIndex.Value)).Switch().Subscribe().AddTo(_disposable);
+            ComponentHappy.Select(_ => SetVoiceProfile(SelectedIndex.Value)).Switch().Subscribe().AddTo(_disposable);
+            ComponentAnger.Select(_ => SetVoiceProfile(SelectedIndex.Value)).Switch().Subscribe().AddTo(_disposable);
+            ComponentSorrow.Select(_ => SetVoiceProfile(SelectedIndex.Value)).Switch().Subscribe().AddTo(_disposable);
+            ComponentCalmness.Select(_ => SetVoiceProfile(SelectedIndex.Value)).Switch().Subscribe().AddTo(_disposable);
+
             PlayButtonCommand.Subscribe(_ =>
                 {
                     //
@@ -75,5 +118,21 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
         }
 
         public bool KeepAlive => false;
+
+        IObservable<Unit> SetVoiceProfile(int index) => Observable.StartAsync(async cancellationToken =>
+        {
+            var type = index switch
+            {
+                0 => MastodonAccountSettingController.MastodonVoiceProfileType.Status,
+                1 => MastodonAccountSettingController.MastodonVoiceProfileType.SensitiveStatus,
+                2 => MastodonAccountSettingController.MastodonVoiceProfileType.BoostedStatus,
+                3 => MastodonAccountSettingController.MastodonVoiceProfileType.BoostedSensitiveStatus,
+                _ => throw new InvalidProgramException(),
+            };
+            var data = new MastodonAccountSettingController.MastodonVoiceProfileData(Volume.Value, Speed.Value,
+                Tone.Value, Alpha.Value, ToneScale.Value, ComponentNormal.Value, ComponentHappy.Value,
+                ComponentAnger.Value, ComponentSorrow.Value, ComponentCalmness.Value);
+            await _controller.SetVoiceProfile(Username.Value, Instance.Value, type, data, cancellationToken);
+        });
     }
 }

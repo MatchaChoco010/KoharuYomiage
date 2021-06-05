@@ -14,6 +14,7 @@ using KoharuYomiageApp.Presentation.Mastodon;
 using KoharuYomiageApp.UseCase.AddMastodonAccount;
 using KoharuYomiageApp.UseCase.AddMastodonTimelineItem;
 using KoharuYomiageApp.UseCase.DeleteAccount;
+using KoharuYomiageApp.UseCase.EditVoiceProfile;
 using KoharuYomiageApp.UseCase.GetAllAccounts;
 using KoharuYomiageApp.UseCase.GetGlobalVolume;
 using KoharuYomiageApp.UseCase.ReadingTextContainerSize;
@@ -112,6 +113,7 @@ namespace KoharuYomiageApp
                 typeof(IDisposable));
             containerRegistry.RegisterSingleton<SettingController>();
             containerRegistry.RegisterSingleton<AccountListController>();
+            containerRegistry.RegisterSingleton<MastodonAccountSettingController>();
             //   CeVIOAI
             containerRegistry.RegisterManySingleton<CeVIOAIPresenter>(
                 typeof(ILoadTalker),
@@ -186,6 +188,8 @@ namespace KoharuYomiageApp
             containerRegistry.RegisterSingleton<ISwitchAccountConnection, AccountConnectionSwitcher>();
             //   DeleteAccount
             containerRegistry.RegisterSingleton<IDeleteAccount, AccountDeleter>();
+            //   EditVoiceProfile
+            containerRegistry.RegisterSingleton<IVoiceProfileUpdater, VoiceProfileUpdater>();
 
             // Instantiate Infrastructure Instance
             Container.Resolve<CeVIOAIHost>();

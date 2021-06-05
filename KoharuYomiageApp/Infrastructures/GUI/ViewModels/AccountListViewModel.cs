@@ -130,20 +130,20 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
                 Instance = instance;
                 IconUrl = iconUrl;
 
-                SwitchReadingCommand.SelectMany(_ => Observable.StartAsync(async cancellationToken =>
+                SwitchReadingCommand.Select(_ => Observable.StartAsync(async cancellationToken =>
                 {
                     isReadingFlag = !isReadingFlag;
                     SwitchReadingButtonText.Value = isReadingFlag ? "読上げ中" : "読上げ停止中";
                     SwitchButtonBackground.Value =
                         isReadingFlag ? AccentColors.ImmersiveSystemAccentBrush : Brushes.Gray;
                     await controller.SwitchConnection(Username, Instance, isReadingFlag, cancellationToken);
-                })).Subscribe().AddTo(_disposable);
+                })).Switch().Subscribe().AddTo(_disposable);
                 AccountSettingCommand.Subscribe(_ =>
                 {
                     navigationContext.NavigationService.RequestNavigate(nameof(MastodonAccountSetting),
                         new NavigationParameters { { "Username", Username }, { "Instance", Instance } });
                 }).AddTo(_disposable);
-                DeleteAccountCommand.SelectMany(_ => Observable.StartAsync(async cancellationToken =>
+                DeleteAccountCommand.Select(_ => Observable.StartAsync(async cancellationToken =>
                 {
                     TaskCompletionSource<IDialogResult> tcs = new();
                     cancellationToken.Register(() => tcs.TrySetCanceled());
@@ -159,7 +159,7 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
                         await controller.DeleteAccount(Username, Instance, cancellationToken);
                         refreshAllAccountListSubject.OnNext(Unit.Default);
                     }
-                })).Subscribe().AddTo(_disposable);
+                })).Switch().Subscribe().AddTo(_disposable);
             }
 
             public string AccountIdentifier { get; }

@@ -127,19 +127,28 @@ namespace KoharuYomiageApp.Data.Repository
 
         public async Task SaveVoiceProfile(VoiceProfile profile, CancellationToken cancellationToken)
         {
-            var type = profile switch
+            try
             {
-                VoiceProfile.MastodonStatusVoiceProfile => "MastodonStatus",
-                VoiceProfile.MastodonSensitiveStatusVoiceProfile => "MastodonSensitiveStatus",
-                VoiceProfile.MastodonBoostedStatusVoiceProfile => "MastodonBoostedStatus",
-                VoiceProfile.MastodonBoostedSensitiveStatusVoiceProfile => "MastodonBoostedSensitiveStatus",
-                _ => throw new ArgumentException()
-            };
+                await _semaphore.WaitAsync(cancellationToken);
 
-            var data = new VoiceProfileData(profile.AccountIdentifier.Value, type, profile.Volume, profile.Speed,
-                profile.Tone, profile.Alpha, profile.ToneScale, profile.ComponentNormal, profile.ComponentHappy,
-                profile.ComponentAnger, profile.ComponentSorrow, profile.ComponentCalmness);
-            await _storage.SaveVoiceProfile(data, cancellationToken);
+                var type = profile switch
+                {
+                    VoiceProfile.MastodonStatusVoiceProfile => "MastodonStatus",
+                    VoiceProfile.MastodonSensitiveStatusVoiceProfile => "MastodonSensitiveStatus",
+                    VoiceProfile.MastodonBoostedStatusVoiceProfile => "MastodonBoostedStatus",
+                    VoiceProfile.MastodonBoostedSensitiveStatusVoiceProfile => "MastodonBoostedSensitiveStatus",
+                    _ => throw new ArgumentException()
+                };
+
+                var data = new VoiceProfileData(profile.AccountIdentifier.Value, type, profile.Volume, profile.Speed,
+                    profile.Tone, profile.Alpha, profile.ToneScale, profile.ComponentNormal, profile.ComponentHappy,
+                    profile.ComponentAnger, profile.ComponentSorrow, profile.ComponentCalmness);
+                await _storage.SaveVoiceProfile(data, cancellationToken);
+            }
+            finally
+            {
+                _semaphore.Release();
+            }
         }
     }
 }
