@@ -61,6 +61,7 @@ namespace KoharuYomiageApp
             containerRegistry.RegisterForNavigation<MainControl>();
             containerRegistry.RegisterForNavigation<Setting>();
             containerRegistry.RegisterForNavigation<AccountList>();
+            containerRegistry.RegisterForNavigation<MastodonAccountSetting>();
             //   CeVIOAI
             containerRegistry.RegisterManySingleton<CeVIOAIHost>(
                 typeof(IDisposable),
@@ -179,7 +180,7 @@ namespace KoharuYomiageApp
             //   UpdateVoiceParameter
             containerRegistry.RegisterSingleton<IUpdateGlobalVolume, GlobalVolumeUpdater>();
             containerRegistry.RegisterSingleton<IStartUpdatingVoiceParameter, VoiceParameterUpdater>();
-            //   GetAllAcounts
+            //   GetAllAccounts
             containerRegistry.RegisterSingleton<IGetAllAccounts, AllAccountsProvider>();
             //   SwitchAccountConnection
             containerRegistry.RegisterSingleton<ISwitchAccountConnection, AccountConnectionSwitcher>();

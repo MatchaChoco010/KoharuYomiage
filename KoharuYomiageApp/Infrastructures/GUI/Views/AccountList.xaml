@@ -170,7 +170,8 @@
                             Command="{Binding DeleteAccountCommand}">
                         &#xE74D;
                     </Button>
-                    <Button Style="{StaticResource CircleButtonStyle}">
+                    <Button Style="{StaticResource CircleButtonStyle}"
+                            Command="{Binding AccountSettingCommand}">
                         &#xE713;
                     </Button>
                 </StackPanel>

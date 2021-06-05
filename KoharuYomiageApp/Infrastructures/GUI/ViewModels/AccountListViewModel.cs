@@ -57,11 +57,11 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
             _cancellationTokenSource = new CancellationTokenSource();
-            _ = ShowAllAccounts(_cancellationTokenSource.Token);
+            _ = ShowAllAccounts(navigationContext, _cancellationTokenSource.Token);
 
             _refreshAccountListSubject.SelectMany(_ => Observable.StartAsync(async cancellationToken =>
             {
-                await ShowAllAccounts(cancellationToken);
+                await ShowAllAccounts(navigationContext, cancellationToken);
             })).Subscribe().AddTo(_disposable);
 
             AddAccountCommand.Subscribe(_ => navigationContext.NavigationService.RequestNavigate(nameof(SelectSNS)))
@@ -92,7 +92,7 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
 
         public bool KeepAlive => false;
 
-        async Task ShowAllAccounts(CancellationToken cancellationToken)
+        async Task ShowAllAccounts(NavigationContext navigationContext, CancellationToken cancellationToken)
         {
             foreach (var account in AccountList.Value)
             {
@@ -103,8 +103,8 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
             AccountList.Value = accounts.Select(tuple =>
             {
                 var (id, username, instance, iconUrl, isReadingPostFromThisAccount) = tuple;
-                return new AccountItem(_accountListController, _dialogService, id, username, instance, iconUrl,
-                    isReadingPostFromThisAccount, _refreshAccountListSubject);
+                return new AccountItem(_accountListController, navigationContext, _dialogService, id, username,
+                    instance, iconUrl, isReadingPostFromThisAccount, _refreshAccountListSubject);
             }).ToList();
         }
 
@@ -112,9 +112,9 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
         {
             readonly CompositeDisposable _disposable = new();
 
-            public AccountItem(AccountListController controller, IDialogService dialogService, string accountIdentifier,
-                string username, string instance, Uri iconUrl, bool isReadingPostsFromThisAccount,
-                Subject<Unit> refreshAllAccountListSubject)
+            public AccountItem(AccountListController controller, NavigationContext navigationContext,
+                IDialogService dialogService, string accountIdentifier, string username, string instance, Uri iconUrl,
+                bool isReadingPostsFromThisAccount, Subject<Unit> refreshAllAccountListSubject)
             {
                 var isReadingFlag = isReadingPostsFromThisAccount;
 
@@ -138,6 +138,11 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
                         isReadingFlag ? AccentColors.ImmersiveSystemAccentBrush : Brushes.Gray;
                     await controller.SwitchConnection(Username, Instance, isReadingFlag, cancellationToken);
                 })).Subscribe().AddTo(_disposable);
+                AccountSettingCommand.Subscribe(_ =>
+                {
+                    navigationContext.NavigationService.RequestNavigate(nameof(MastodonAccountSetting),
+                        new NavigationParameters { { "Username", Username }, { "Instance", Instance } });
+                }).AddTo(_disposable);
                 DeleteAccountCommand.SelectMany(_ => Observable.StartAsync(async cancellationToken =>
                 {
                     TaskCompletionSource<IDialogResult> tcs = new();
@@ -162,6 +167,7 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
             public string Instance { get; }
             public Uri IconUrl { get; }
             public ReactiveCommand SwitchReadingCommand { get; } = new();
+            public ReactiveCommand AccountSettingCommand { get; } = new();
             public ReactiveCommand DeleteAccountCommand { get; } = new();
             public ReactivePropertySlim<string> SwitchReadingButtonText { get; }
             public ReactivePropertySlim<Brush> SwitchButtonBackground { get; }
@@ -171,6 +177,7 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
                 _disposable.Dispose();
                 SwitchReadingButtonText.Dispose();
                 SwitchReadingCommand.Dispose();
+                AccountSettingCommand.Dispose();
                 DeleteAccountCommand.Dispose();
             }
         }
