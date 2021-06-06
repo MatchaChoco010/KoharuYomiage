@@ -103,16 +103,30 @@
                 設定
             </TextBlock>
             <Grid Margin="20,0,80,20">
-                <TextBlock HorizontalAlignment="Left"
-                           Margin="20,0"
-                           FontSize="16"
-                           Foreground="{DynamicResource SystemBaseMediumHighColorBrush}"
-                           VerticalAlignment="Center">
-                    投稿バッファサイズ
-                </TextBlock>
-                <TextBox HorizontalAlignment="Right"
-                         Width="100"
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="60" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Margin="20,0">
+                    <TextBlock FontSize="16"
+                               Foreground="{DynamicResource SystemBaseMediumHighColorBrush}">
+                        投稿バッファサイズ
+                    </TextBlock>
+                    <TextBlock FontSize="10"
+                               TextWrapping="Wrap"
+                               Foreground="{DynamicResource SystemBaseMediumLowColorBrush}">
+                        読み上げ中に投稿が届いた場合にストックする数です。<LineBreak />
+                        この数を超えて投稿が届いた場合は読み上げをキャンセルして次の投稿を読み上げ始めます。
+                    </TextBlock>
+                </StackPanel>
+                <TextBox Grid.Column="1"
                          Style="{StaticResource TextBoxRevealStyle}"
+                         TextAlignment="Right"
+                         VerticalAlignment="Center"
+                         FontSize="22"
                          Text="{Binding BufferSize.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             </Grid>
         </StackPanel>
