@@ -41,9 +41,9 @@ namespace KoharuYomiageApp.Presentation.CeVIOAI
 
         public void Update(VoiceParameterData data)
         {
-            _updateVoiceParameter.Update(new VoiceParameterOutputData(data.Volume, data.Speed, data.Tone, data.Alpha,
-                data.ToneScale, data.ComponentNormal, data.ComponentHappy, data.ComponentAnger, data.ComponentSorrow,
-                data.ComponentCalmness));
+            _updateVoiceParameter.Update(new VoiceParameterOutputData(data.GlobalVolume, data.Volume, data.Speed,
+                data.Tone, data.Alpha, data.ToneScale, data.ComponentNormal, data.ComponentHappy, data.ComponentAnger,
+                data.ComponentSorrow, data.ComponentCalmness));
         }
     }
 }

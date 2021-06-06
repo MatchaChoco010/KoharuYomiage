@@ -16,10 +16,5 @@ namespace KoharuYomiageApp.Domain.VoiceParameters
         {
             Volume.Dispose();
         }
-
-        public double GetMultiplier()
-        {
-            return Volume.Value / 0.65;
-        }
     }
 }

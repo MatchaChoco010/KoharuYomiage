@@ -48,7 +48,9 @@ namespace KoharuYomiageApp.Domain.VoiceParameters
 
         VoiceParameter ConvertVoiceParameter()
         {
-            var volume = (uint)((_currentVoiceProfile?.Volume ?? 0.5) * _globalVolume.GetMultiplier() * 100.0);
+            var globalVolume = (float) _globalVolume.Volume.Value;
+
+            var volume = (uint)((_currentVoiceProfile?.Volume ?? 0.5) * 100.0);
             var speed = (uint)((_currentVoiceProfile?.Speed ?? 0.5) * 100.0);
             var tone = (uint)((_currentVoiceProfile?.Tone ?? 0.5) * 100.0);
             var alpha = (uint)((_currentVoiceProfile?.Alpha ?? 0.5) * 100.0);
@@ -70,8 +72,8 @@ namespace KoharuYomiageApp.Domain.VoiceParameters
             componentSorrow = componentSorrow is >100 ? 100 : componentSorrow;
             componentCalmness = componentCalmness is >100 ? 100 : componentCalmness;
 
-            return new VoiceParameter(volume, speed, tone, alpha, toneScale, componentNormal, componentHappy,
-                componentAnger, componentSorrow, componentCalmness);
+            return new VoiceParameter(globalVolume, volume, speed, tone, alpha, toneScale, componentNormal,
+                componentHappy, componentAnger, componentSorrow, componentCalmness);
         }
     }
 }

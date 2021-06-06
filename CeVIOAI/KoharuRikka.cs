@@ -1,9 +1,11 @@
 ﻿using System;
 using System.IO;
+using System.Media;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using CeVIOAI.Exceptions;
+using NAudio.Wave;
 using NMeCab.Specialized;
 
 namespace CeVIOAI
@@ -18,6 +20,16 @@ namespace CeVIOAI
         readonly dynamic _talker;
 
         CancellationTokenSource? _nowSpeakingTaskCancellationTokenSource;
+
+        static string WavDirectoryPath
+        {
+            get
+            {
+                var exePath = Assembly.GetEntryAssembly()?.Location ?? "";
+                var wavDirectoryPath = Path.Combine(Path.GetDirectoryName(exePath) ?? "", "audio");
+                return wavDirectoryPath;
+            }
+        }
 
         /// <summary>
         ///     CeVIO AIを立ち上げ、小春六花にキャストを設定する
@@ -59,7 +71,14 @@ namespace CeVIOAI
             _talker = talker2Constructor.Invoke(new object[] {CastName});
 
             _tagger = MeCabIpaDicTagger.Create();
+
+            Directory.CreateDirectory(WavDirectoryPath);
         }
+
+        /// <summary>
+        /// ボリューム  1.0f = 100%
+        /// </summary>
+        public float GlobalVolume { get; set; } = 1.0f;
 
         /// <summary>
         ///     声量 0~100
@@ -158,29 +177,41 @@ namespace CeVIOAI
             closeHostMethod.Invoke(null, new object[] {0});
             _tagger.Dispose();
             _semaphore.Dispose();
+            Directory.Delete(WavDirectoryPath, true);
         }
 
         async Task RawSpeak(string text, CancellationToken cancellationToken)
         {
-            await Task.Run(() =>
+            var wavFileName = $"{Guid.NewGuid()}.wav";
+            var wavFilePath = Path.Combine(WavDirectoryPath, wavFileName);
+
+            try
             {
-                try
+                _talker.OutputWaveToFile(text, wavFilePath);
+
+                using (var audioFile = new AudioFileReader(wavFilePath))
+                using (var outputDevice = new WaveOutEvent())
                 {
-                    dynamic state = _talker.Speak(text);
-                    // 現状では読み上げテキストが空白や絵文字などで読み上げられない場合、終了を検知する方法がない
-                    // Waitするとキャンセル処理が正しく働かない気がするが、次のSpeakでこの発話についてはキャンセルされるので多分大丈夫
-                    // while (!state.IsCompleted)
-                    // {
-                    //     await Task.Delay(50, cancellationToken);
-                    // }
-                    state.Wait();
+                    try
+                    {
+                        outputDevice.Init(audioFile);
+                        outputDevice.Volume = GlobalVolume;
+                        outputDevice.Play();
+                        while (outputDevice.PlaybackState == PlaybackState.Playing)
+                        {
+                            await Task.Delay(50, cancellationToken);
+                        }
+                    }
+                    catch(OperationCanceledException)
+                    {
+                        outputDevice.Stop();
+                    }
                 }
-                catch (OperationCanceledException)
-                {
-                    _talker.Stop();
-                    throw;
-                }
-            }, cancellationToken);
+            }
+            finally
+            {
+                File.Delete(wavFilePath);
+            }
         }
 
         /// <summary>

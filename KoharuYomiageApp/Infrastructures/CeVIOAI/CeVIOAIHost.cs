@@ -40,6 +40,7 @@ namespace KoharuYomiageApp.Infrastructures.CeVIOAI
                 return;
             }
 
+            _rikka.GlobalVolume = data.GlobalVolume;
             _rikka.Volume = data.Volume;
             _rikka.Speed = data.Speed;
             _rikka.Tone = data.Tone;

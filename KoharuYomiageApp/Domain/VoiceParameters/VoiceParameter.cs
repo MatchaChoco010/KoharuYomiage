@@ -4,10 +4,12 @@ namespace KoharuYomiageApp.Domain.VoiceParameters
 {
     public record VoiceParameter
     {
-        public VoiceParameter(uint volume, uint speed, uint tone, uint alpha, uint toneScale, uint componentNormal,
-            uint componentHappy, uint componentAnger, uint componentSorrow, uint componentCalmness)
+        public VoiceParameter(float globalVolume, uint volume, uint speed, uint tone, uint alpha, uint toneScale,
+            uint componentNormal, uint componentHappy, uint componentAnger, uint componentSorrow,
+            uint componentCalmness)
         {
-            if (volume is >100 ||
+            if (globalVolume is < 0f ||
+                volume is >100 ||
                 speed is >100 ||
                 tone is >100 ||
                 alpha is >100 ||
@@ -21,6 +23,7 @@ namespace KoharuYomiageApp.Domain.VoiceParameters
                 throw new AggregateException();
             }
 
+            GlobalVolume = globalVolume;
             Volume = volume;
             Speed = speed;
             Tone = tone;
@@ -33,6 +36,7 @@ namespace KoharuYomiageApp.Domain.VoiceParameters
             ComponentCalmness = componentCalmness;
         }
 
+        public float GlobalVolume { get; }
         public uint Volume { get; }
         public uint Speed { get; }
         public uint Tone { get; }
