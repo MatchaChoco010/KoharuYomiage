@@ -2,9 +2,10 @@
 {
     public record MastodonAccount : Account
     {
-        public MastodonAccount(Username username, Instance instance, MastodonAccessToken accessToken,
-            MastodonAccountIconUrl iconUrl, IsReadingPostsFromThisAccount isReadingPostsFromThisAccount)
-            : base(username, instance, isReadingPostsFromThisAccount)
+        public MastodonAccount(Username username, Instance instance, DisplayName displayName,
+            MastodonAccessToken accessToken, MastodonAccountIconUrl iconUrl,
+            IsReadingPostsFromThisAccount isReadingPostsFromThisAccount)
+            : base(username, instance, displayName, isReadingPostsFromThisAccount)
         {
             AccessToken = accessToken;
             IconUrl = iconUrl;

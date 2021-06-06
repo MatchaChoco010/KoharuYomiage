@@ -6,5 +6,13 @@
         MastodonSensitiveStatus,
         MastodonBoostedStatus,
         MastodonBoostedSensitiveStatus,
+        MastodonFollowNotification,
+        MastodonFollowRequestNotification,
+        MastodonMentionNotification,
+        MastodonSensitiveMentionNotification,
+        MastodonReblogNotification,
+        MastodonSensitiveReblogNotification,
+        MastodonFavoriteNotification,
+        MastodonSensitiveFavoriteNotification,
     }
 }

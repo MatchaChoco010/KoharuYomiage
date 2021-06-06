@@ -103,6 +103,67 @@ NSFWな投稿のサンプルです！
 ブーストされたNSFWな投稿のサンプルです！
 画像にDescriptionが付いている場合、それも読み上げます。";
                         break;
+                    case 4:
+                        type = MastodonAccountSettingController.MastodonVoiceProfileType.FollowNotification;
+                        Title.Value = "フォロー通知";
+                        SampleText.Value = @"フォロー通知サンプルさんからフォローされたよ！";
+                        break;
+                    case 5:
+                        type = MastodonAccountSettingController.MastodonVoiceProfileType.FollowRequestNotification;
+                        Title.Value = "フォローリクエスト通知";
+                        SampleText.Value = @"フォローリクエスト通知サンプルさんからフォローリクエストされたよ！";
+                        break;
+                    case 6:
+                        type = MastodonAccountSettingController.MastodonVoiceProfileType.MentionNotification;
+                        Title.Value = "メンションの通知";
+                        SampleText.Value = @"メンションの通知サンプルさんからメンションだよ！
+投稿サンプルさんの投稿
+メンションされた投稿のサンプルです！
+画像にDescriptionが付いている場合、それも読み上げます。";
+                        break;
+                    case 7:
+                        type = MastodonAccountSettingController.MastodonVoiceProfileType.SensitiveMentionNotification;
+                        Title.Value = "NSFWなメンションの通知";
+                        SampleText.Value = @"メンションの通知サンプルさんからメンションだよ！
+投稿サンプルさんの投稿
+スポイラーテキスト。
+メンションされたNSFWな投稿のサンプルです！
+画像にDescriptionが付いている場合、それも読み上げます。";
+                        break;
+                    case 8:
+                        type = MastodonAccountSettingController.MastodonVoiceProfileType.ReblogNotification;
+                        Title.Value = "ブーストの通知";
+                        SampleText.Value = @"ブーストの通知サンプルさんからのブーストだよ！
+投稿サンプルさんの投稿
+ブーストされた投稿のサンプルです！
+画像にDescriptionが付いている場合、それも読み上げます。";
+                        break;
+                    case 9:
+                        type = MastodonAccountSettingController.MastodonVoiceProfileType.SensitiveReblogNotification;
+                        Title.Value = "NSFWなブーストの通知";
+                        SampleText.Value = @"ブーストの通知サンプルさんからのブーストだよ！
+投稿サンプルさんの投稿
+スポイラーテキスト。
+ブーストされたNSFWな投稿のサンプルです！
+画像にDescriptionが付いている場合、それも読み上げます。";
+                        break;
+                    case 10:
+                        type = MastodonAccountSettingController.MastodonVoiceProfileType.FavoriteNotification;
+                        Title.Value = "投稿のファボ通知";
+                        SampleText.Value = @"投稿のファボ通知サンプルさんからのファボだよ！
+投稿サンプルさんの投稿
+ファボされた投稿のサンプルです！
+画像にDescriptionが付いている場合、それも読み上げます。";
+                        break;
+                    case 11:
+                        type = MastodonAccountSettingController.MastodonVoiceProfileType.SensitiveFavoriteNotification;
+                        Title.Value = "NSFWな投稿のファボ通知";
+                        SampleText.Value = @"投稿のファボ通知サンプルさんからのファボだよ！
+投稿サンプルさんの投稿
+スポイラーテキスト。
+ファボされたNSFWな投稿のサンプルです！
+画像にDescriptionが付いている場合、それも読み上げます。";
+                        break;
                     default:
                         throw new InvalidProgramException();
                 }
@@ -119,16 +180,16 @@ NSFWな投稿のサンプルです！
                 ComponentCalmness.Value = data.ComponentCalmness;
             })).Switch().Subscribe().AddTo(_disposable);
 
-            Volume.Select(_ => SetVoiceProfile(SelectedIndex.Value)).Switch().Subscribe().AddTo(_disposable);
-            Speed.Select(_ => SetVoiceProfile(SelectedIndex.Value)).Switch().Subscribe().AddTo(_disposable);
-            Tone.Select(_ => SetVoiceProfile(SelectedIndex.Value)).Switch().Subscribe().AddTo(_disposable);
-            Alpha.Select(_ => SetVoiceProfile(SelectedIndex.Value)).Switch().Subscribe().AddTo(_disposable);
-            ToneScale.Select(_ => SetVoiceProfile(SelectedIndex.Value)).Switch().Subscribe().AddTo(_disposable);
-            ComponentNormal.Select(_ => SetVoiceProfile(SelectedIndex.Value)).Switch().Subscribe().AddTo(_disposable);
-            ComponentHappy.Select(_ => SetVoiceProfile(SelectedIndex.Value)).Switch().Subscribe().AddTo(_disposable);
-            ComponentAnger.Select(_ => SetVoiceProfile(SelectedIndex.Value)).Switch().Subscribe().AddTo(_disposable);
-            ComponentSorrow.Select(_ => SetVoiceProfile(SelectedIndex.Value)).Switch().Subscribe().AddTo(_disposable);
-            ComponentCalmness.Select(_ => SetVoiceProfile(SelectedIndex.Value)).Switch().Subscribe().AddTo(_disposable);
+            Volume.SelectMany(_ => SetVoiceProfile(SelectedIndex.Value)).Subscribe().AddTo(_disposable);
+            Speed.SelectMany(_ => SetVoiceProfile(SelectedIndex.Value)).Subscribe().AddTo(_disposable);
+            Tone.SelectMany(_ => SetVoiceProfile(SelectedIndex.Value)).Subscribe().AddTo(_disposable);
+            Alpha.SelectMany(_ => SetVoiceProfile(SelectedIndex.Value)).Subscribe().AddTo(_disposable);
+            ToneScale.SelectMany(_ => SetVoiceProfile(SelectedIndex.Value)).Subscribe().AddTo(_disposable);
+            ComponentNormal.SelectMany(_ => SetVoiceProfile(SelectedIndex.Value)).Subscribe().AddTo(_disposable);
+            ComponentHappy.SelectMany(_ => SetVoiceProfile(SelectedIndex.Value)).Subscribe().AddTo(_disposable);
+            ComponentAnger.SelectMany(_ => SetVoiceProfile(SelectedIndex.Value)).Subscribe().AddTo(_disposable);
+            ComponentSorrow.SelectMany(_ => SetVoiceProfile(SelectedIndex.Value)).Subscribe().AddTo(_disposable);
+            ComponentCalmness.SelectMany(_ => SetVoiceProfile(SelectedIndex.Value)).Subscribe().AddTo(_disposable);
 
             PlayButtonCommand.Select(_ => Observable.StartAsync(async cancellationToken =>
                 {
@@ -138,6 +199,14 @@ NSFWな投稿のサンプルです！
                         1 => MastodonAccountSettingController.MastodonVoiceProfileType.SensitiveStatus,
                         2 => MastodonAccountSettingController.MastodonVoiceProfileType.BoostedStatus,
                         3 => MastodonAccountSettingController.MastodonVoiceProfileType.BoostedSensitiveStatus,
+                        4 => MastodonAccountSettingController.MastodonVoiceProfileType.FollowNotification,
+                        5 => MastodonAccountSettingController.MastodonVoiceProfileType.FollowRequestNotification,
+                        6 => MastodonAccountSettingController.MastodonVoiceProfileType.MentionNotification,
+                        7 => MastodonAccountSettingController.MastodonVoiceProfileType.SensitiveMentionNotification,
+                        8 => MastodonAccountSettingController.MastodonVoiceProfileType.ReblogNotification,
+                        9 => MastodonAccountSettingController.MastodonVoiceProfileType.SensitiveReblogNotification,
+                        10 => MastodonAccountSettingController.MastodonVoiceProfileType.FavoriteNotification,
+                        11 => MastodonAccountSettingController.MastodonVoiceProfileType.SensitiveFavoriteNotification,
                         _ => throw new InvalidProgramException(),
                     };
                     await _controller.PlaySampleVoice(Username.Value, Instance.Value, type, SampleText.Value,
@@ -170,6 +239,14 @@ NSFWな投稿のサンプルです！
                 1 => MastodonAccountSettingController.MastodonVoiceProfileType.SensitiveStatus,
                 2 => MastodonAccountSettingController.MastodonVoiceProfileType.BoostedStatus,
                 3 => MastodonAccountSettingController.MastodonVoiceProfileType.BoostedSensitiveStatus,
+                4 => MastodonAccountSettingController.MastodonVoiceProfileType.FollowNotification,
+                5 => MastodonAccountSettingController.MastodonVoiceProfileType.FollowRequestNotification,
+                6 => MastodonAccountSettingController.MastodonVoiceProfileType.MentionNotification,
+                7 => MastodonAccountSettingController.MastodonVoiceProfileType.SensitiveMentionNotification,
+                8 => MastodonAccountSettingController.MastodonVoiceProfileType.ReblogNotification,
+                9 => MastodonAccountSettingController.MastodonVoiceProfileType.SensitiveReblogNotification,
+                10 => MastodonAccountSettingController.MastodonVoiceProfileType.FavoriteNotification,
+                11 => MastodonAccountSettingController.MastodonVoiceProfileType.SensitiveFavoriteNotification,
                 _ => throw new InvalidProgramException(),
             };
             var data = new MastodonAccountSettingController.MastodonVoiceProfileData(Volume.Value, Speed.Value,

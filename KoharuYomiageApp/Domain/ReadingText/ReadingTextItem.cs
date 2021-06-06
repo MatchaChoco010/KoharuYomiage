@@ -24,7 +24,31 @@ namespace KoharuYomiageApp.Domain.ReadingText
         public record MastodonBoostedStatusReadingTextItem(AccountIdentifier AccountIdentifier, string Text)
             : ReadingTextItem(AccountIdentifier, Text);
 
+        public record MastodonFollowNotificationReadingTextItem(AccountIdentifier AccountIdentifier, string Text)
+            : ReadingTextItem(AccountIdentifier, Text);
+
         public record MastodonBoostedSensitiveStatusReadingTextItem(AccountIdentifier AccountIdentifier, string Text)
+            : ReadingTextItem(AccountIdentifier, Text);
+
+        public record MastodonFollowRequestNotificationReadingTextItem(AccountIdentifier AccountIdentifier, string Text)
+            : ReadingTextItem(AccountIdentifier, Text);
+
+        public record MastodonMentionNotificationReadingTextItem(AccountIdentifier AccountIdentifier, string Text)
+            : ReadingTextItem(AccountIdentifier, Text);
+
+        public record MastodonSensitiveMentionNotificationReadingTextItem(AccountIdentifier AccountIdentifier, string Text)
+            : ReadingTextItem(AccountIdentifier, Text);
+
+        public record MastodonReblogNotificationReadingTextItem(AccountIdentifier AccountIdentifier, string Text)
+            : ReadingTextItem(AccountIdentifier, Text);
+
+        public record MastodonSensitiveReblogNotificationReadingTextItem(AccountIdentifier AccountIdentifier, string Text)
+            : ReadingTextItem(AccountIdentifier, Text);
+
+        public record MastodonFavoriteNotificationReadingTextItem(AccountIdentifier AccountIdentifier, string Text)
+            : ReadingTextItem(AccountIdentifier, Text);
+
+        public record MastodonSensitiveFavoriteNotificationReadingTextItem(AccountIdentifier AccountIdentifier, string Text)
             : ReadingTextItem(AccountIdentifier, Text);
     }
 }

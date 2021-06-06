@@ -37,9 +37,9 @@ namespace KoharuYomiageApp.Presentation.Mastodon
         public async Task<AccountInfo> GetAccountInfo(AccessInfo accessInfo, CancellationToken cancellationToken)
         {
             var (instance, token) = accessInfo;
-            var (username, iconUrl) =
+            var (username, displayName, iconUrl) =
                 await _getAccountInfo.GetAccountInfo(instance, token, cancellationToken);
-            return new AccountInfo(username, iconUrl);
+            return new AccountInfo(username, displayName, iconUrl);
         }
 
         public async Task<ClientInfo> RegisterClient(LoginInfo loginInfo, CancellationToken cancellationToken)

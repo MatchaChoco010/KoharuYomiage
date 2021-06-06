@@ -93,5 +93,69 @@ namespace KoharuYomiageApp.Domain.VoiceParameters
             {
             }
         }
+
+        public class MastodonFollowNotificationVoiceProfile : VoiceProfile
+        {
+            public MastodonFollowNotificationVoiceProfile(AccountIdentifier accountIdentifier) : base(
+                accountIdentifier)
+            {
+            }
+        }
+
+        public class MastodonFollowRequestNotificationVoiceProfile : VoiceProfile
+        {
+            public MastodonFollowRequestNotificationVoiceProfile(AccountIdentifier accountIdentifier) : base(
+                accountIdentifier)
+            {
+            }
+        }
+
+        public class MastodonMentionNotificationVoiceProfile : VoiceProfile
+        {
+            public MastodonMentionNotificationVoiceProfile(AccountIdentifier accountIdentifier) : base(
+                accountIdentifier)
+            {
+            }
+        }
+
+        public class MastodonSensitiveMentionNotificationVoiceProfile : VoiceProfile
+        {
+            public MastodonSensitiveMentionNotificationVoiceProfile(AccountIdentifier accountIdentifier) : base(
+                accountIdentifier)
+            {
+            }
+        }
+
+        public class MastodonReblogNotificationVoiceProfile : VoiceProfile
+        {
+            public MastodonReblogNotificationVoiceProfile(AccountIdentifier accountIdentifier) : base(
+                accountIdentifier)
+            {
+            }
+        }
+
+        public class MastodonSensitiveReblogNotificationVoiceProfile : VoiceProfile
+        {
+            public MastodonSensitiveReblogNotificationVoiceProfile(AccountIdentifier accountIdentifier) : base(
+                accountIdentifier)
+            {
+            }
+        }
+
+        public class MastodonFavoriteNotificationVoiceProfile : VoiceProfile
+        {
+            public MastodonFavoriteNotificationVoiceProfile(AccountIdentifier accountIdentifier) : base(
+                accountIdentifier)
+            {
+            }
+        }
+
+        public class MastodonSensitiveFavoriteNotificationVoiceProfile : VoiceProfile
+        {
+            public MastodonSensitiveFavoriteNotificationVoiceProfile(AccountIdentifier accountIdentifier) : base(
+                accountIdentifier)
+            {
+            }
+        }
     }
 }

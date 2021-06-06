@@ -47,6 +47,22 @@ namespace KoharuYomiageApp.Data.Repository
                     var c when c == typeof(VoiceProfile.MastodonBoostedStatusVoiceProfile) => "MastodonBoostedStatus",
                     var c when c == typeof(VoiceProfile.MastodonBoostedSensitiveStatusVoiceProfile) =>
                         "MastodonBoostedSensitiveStatus",
+                    var c when c == typeof(VoiceProfile.MastodonFollowNotificationVoiceProfile) =>
+                        "MastodonFollowNotificationVoiceProfile",
+                    var c when c == typeof(VoiceProfile.MastodonFollowRequestNotificationVoiceProfile) =>
+                        "MastodonFollowRequestNotificationVoiceProfile",
+                    var c when c == typeof(VoiceProfile.MastodonMentionNotificationVoiceProfile) =>
+                        "MastodonMentionNotificationVoiceProfile",
+                    var c when c == typeof(VoiceProfile.MastodonSensitiveMentionNotificationVoiceProfile) =>
+                        "MastodonSensitiveMentionNotificationVoiceProfile",
+                    var c when c == typeof(VoiceProfile.MastodonReblogNotificationVoiceProfile) =>
+                        "MastodonReblogNotificationVoiceProfile",
+                    var c when c == typeof(VoiceProfile.MastodonSensitiveReblogNotificationVoiceProfile) =>
+                        "MastodonSensitiveReblogNotificationVoiceProfile",
+                    var c when c == typeof(VoiceProfile.MastodonFavoriteNotificationVoiceProfile) =>
+                        "MastodonFavoriteNotificationVoiceProfile",
+                    var c when c == typeof(VoiceProfile.MastodonSensitiveFavoriteNotificationVoiceProfile) =>
+                        "MastodonSensitiveFavoriteNotificationVoiceProfile",
                     _ => throw new ArgumentException()
                 };
 
@@ -63,6 +79,21 @@ namespace KoharuYomiageApp.Data.Repository
                     "MastodonBoostedStatus" => new VoiceProfile.MastodonBoostedStatusVoiceProfile(accountIdentifier),
                     "MastodonBoostedSensitiveStatus" => new VoiceProfile.MastodonBoostedSensitiveStatusVoiceProfile(
                         accountIdentifier),
+                    "MastodonFollowNotificationVoiceProfile" => new VoiceProfile.MastodonFollowNotificationVoiceProfile(
+                        accountIdentifier),
+                    "MastodonFollowRequestNotificationVoiceProfile" =>
+                        new VoiceProfile.MastodonFollowRequestNotificationVoiceProfile(accountIdentifier),
+                    "MastodonMentionNotificationVoiceProfile" =>
+                        new VoiceProfile.MastodonMentionNotificationVoiceProfile(accountIdentifier),
+                    "MastodonSensitiveMentionNotificationVoiceProfile" => new
+                        VoiceProfile.MastodonSensitiveMentionNotificationVoiceProfile(accountIdentifier),
+                    "MastodonReblogNotificationVoiceProfile" => new VoiceProfile.MastodonReblogNotificationVoiceProfile(
+                        accountIdentifier),
+                    "MastodonSensitiveReblogNotificationVoiceProfile" =>
+                        new VoiceProfile.MastodonSensitiveReblogNotificationVoiceProfile(accountIdentifier),
+                    "MastodonFavoriteNotificationVoiceProfile" =>
+                        new VoiceProfile.MastodonFavoriteNotificationVoiceProfile(accountIdentifier),
+                    "MastodonSensitiveFavoriteNotificationVoiceProfile" => new VoiceProfile.MastodonSensitiveFavoriteNotificationVoiceProfile(accountIdentifier),
                     _ => throw new ArgumentException()
                 };
                 _profiles.Add((accountIdentifier, type), profile);
@@ -103,12 +134,25 @@ namespace KoharuYomiageApp.Data.Repository
                             "MastodonStatus" => new VoiceProfile.MastodonStatusVoiceProfile(accountIdentifier),
                             "MastodonSensitiveStatus" =>
                                 new VoiceProfile.MastodonSensitiveStatusVoiceProfile(accountIdentifier),
-                            "MastodonBoostedStatus" =>
-                                new VoiceProfile.MastodonBoostedStatusVoiceProfile(accountIdentifier),
-                            "MastodonBoostedSensitiveStatus" => new
-                                VoiceProfile.MastodonBoostedSensitiveStatusVoiceProfile(
-                                    accountIdentifier),
-                            _ => throw new AggregateException()
+                            "MastodonBoostedStatus" => new VoiceProfile.MastodonBoostedStatusVoiceProfile(accountIdentifier),
+                            "MastodonBoostedSensitiveStatus" => new VoiceProfile.MastodonBoostedSensitiveStatusVoiceProfile(
+                                accountIdentifier),
+                            "MastodonFollowNotificationVoiceProfile" => new VoiceProfile.MastodonFollowNotificationVoiceProfile(
+                                accountIdentifier),
+                            "MastodonFollowRequestNotificationVoiceProfile" =>
+                                new VoiceProfile.MastodonFollowRequestNotificationVoiceProfile(accountIdentifier),
+                            "MastodonMentionNotificationVoiceProfile" =>
+                                new VoiceProfile.MastodonMentionNotificationVoiceProfile(accountIdentifier),
+                            "MastodonSensitiveMentionNotificationVoiceProfile" => new
+                                VoiceProfile.MastodonSensitiveMentionNotificationVoiceProfile(accountIdentifier),
+                            "MastodonReblogNotificationVoiceProfile" => new VoiceProfile.MastodonReblogNotificationVoiceProfile(
+                                accountIdentifier),
+                            "MastodonSensitiveReblogNotificationVoiceProfile" =>
+                                new VoiceProfile.MastodonSensitiveReblogNotificationVoiceProfile(accountIdentifier),
+                            "MastodonFavoriteNotificationVoiceProfile" =>
+                                new VoiceProfile.MastodonFavoriteNotificationVoiceProfile(accountIdentifier),
+                            "MastodonSensitiveFavoriteNotificationVoiceProfile" => new VoiceProfile.MastodonSensitiveFavoriteNotificationVoiceProfile(accountIdentifier),
+                            _ => throw new ArgumentException()
                         };
                         _profiles.Add((accountIdentifier, d.Type), profile);
 
@@ -137,6 +181,14 @@ namespace KoharuYomiageApp.Data.Repository
                     VoiceProfile.MastodonSensitiveStatusVoiceProfile => "MastodonSensitiveStatus",
                     VoiceProfile.MastodonBoostedStatusVoiceProfile => "MastodonBoostedStatus",
                     VoiceProfile.MastodonBoostedSensitiveStatusVoiceProfile => "MastodonBoostedSensitiveStatus",
+                    VoiceProfile.MastodonFollowNotificationVoiceProfile => "MastodonFollowNotificationVoiceProfile",
+                    VoiceProfile.MastodonFollowRequestNotificationVoiceProfile => "MastodonFollowRequestNotificationVoiceProfile",
+                    VoiceProfile.MastodonMentionNotificationVoiceProfile => "MastodonMentionNotificationVoiceProfile",
+                    VoiceProfile.MastodonSensitiveMentionNotificationVoiceProfile => "MastodonSensitiveMentionNotificationVoiceProfile",
+                    VoiceProfile.MastodonReblogNotificationVoiceProfile => "MastodonReblogNotificationVoiceProfile",
+                    VoiceProfile.MastodonSensitiveReblogNotificationVoiceProfile => "MastodonSensitiveReblogNotificationVoiceProfile",
+                    VoiceProfile.MastodonFavoriteNotificationVoiceProfile => "MastodonFavoriteNotificationVoiceProfile",
+                    VoiceProfile.MastodonSensitiveFavoriteNotificationVoiceProfile => "MastodonSensitiveFavoriteNotificationVoiceProfile",
                     _ => throw new ArgumentException()
                 };
 

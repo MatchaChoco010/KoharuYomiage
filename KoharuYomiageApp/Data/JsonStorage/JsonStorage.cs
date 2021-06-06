@@ -169,8 +169,10 @@ namespace KoharuYomiageApp.Data.JsonStorage
 
         async Task SaveSettings(JsonData storage, CancellationToken cancellationToken)
         {
-            using var json = File.Open(SettingsPath, FileMode.Create);
-            await JsonSerializer.SerializeAsync(json, storage, cancellationToken: cancellationToken);
+            using var fs = File.Open(SettingsPath, FileMode.Create);
+            await using var json = new Utf8JsonWriter(fs);
+            cancellationToken.ThrowIfCancellationRequested();
+            JsonSerializer.Serialize(json, storage);
         }
     }
 }

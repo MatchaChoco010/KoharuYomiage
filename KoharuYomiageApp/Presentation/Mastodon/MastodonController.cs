@@ -1,4 +1,6 @@
-﻿using KoharuYomiageApp.Presentation.Mastodon.DataObjects;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using KoharuYomiageApp.Presentation.Mastodon.DataObjects;
 using KoharuYomiageApp.UseCase.AddMastodonTimelineItem;
 using KoharuYomiageApp.UseCase.AddMastodonTimelineItem.DataObjects;
 
@@ -6,48 +8,93 @@ namespace KoharuYomiageApp.Presentation.Mastodon
 {
     public class MastodonController
     {
-        readonly IMastodonBoostedSensitiveStatusReceiver _boostedSensitiveStatusReceiver;
-        readonly IMastodonBoostedStatusReceiver _boostedStatusReceiver;
-        readonly IMastodonSensitiveStatusReceiver _sensitiveStatusReceiver;
-        readonly IMastodonStatusReceiver _statusReceiver;
+        readonly IMastodonTimelineItemReceiver _itemReceiver;
 
-        public MastodonController(IMastodonStatusReceiver statusReceiver,
-            IMastodonSensitiveStatusReceiver sensitiveStatusReceiver,
-            IMastodonBoostedStatusReceiver boostedStatusReceiver,
-            IMastodonBoostedSensitiveStatusReceiver boostedSensitiveStatusReceiver)
+        public MastodonController(IMastodonTimelineItemReceiver itemReceiver)
         {
-            _statusReceiver = statusReceiver;
-            _sensitiveStatusReceiver = sensitiveStatusReceiver;
-            _boostedStatusReceiver = boostedStatusReceiver;
-            _boostedSensitiveStatusReceiver = boostedSensitiveStatusReceiver;
+            _itemReceiver = itemReceiver;
         }
 
-        public void AddMastodonStatus(MastodonStatusInputData inputData)
+        public async Task AddMastodonStatus(MastodonStatusInputData inputData, CancellationToken cancellationToken)
         {
-            _statusReceiver.Receive(new MastodonStatusData(inputData.Username, inputData.Instance,
-                inputData.AuthorDisplayName, inputData.AuthorUsername, inputData.Content, inputData.MediaDescriptions));
+            await _itemReceiver.ReceiveStatus(new MastodonStatusData(inputData.Username, inputData.Instance,
+                inputData.AuthorDisplayName, inputData.AuthorUsername, inputData.Content, inputData.MediaDescriptions), cancellationToken);
         }
 
-        public void AddMastodonSensitiveStatus(MastodonSensitiveStatusInputData inputData)
+        public async Task AddMastodonSensitiveStatus(MastodonSensitiveStatusInputData inputData, CancellationToken cancellationToken)
         {
-            _sensitiveStatusReceiver.Receive(new MastodonSensitiveStatusData(inputData.Username, inputData.Instance,
+            await _itemReceiver.ReceiveSensitiveStatus(new MastodonSensitiveStatusData(inputData.Username, inputData.Instance,
                 inputData.AuthorDisplayName, inputData.AuthorUsername, inputData.SpoilerText, inputData.Content,
-                inputData.MediaDescriptions));
+                inputData.MediaDescriptions), cancellationToken);
         }
 
-        public void AddMastodonBoostedStatus(MastodonBoostedStatusInputData inputData)
+        public async Task AddMastodonBoostedStatus(MastodonBoostedStatusInputData inputData, CancellationToken cancellationToken)
         {
-            _boostedStatusReceiver.Receive(new MastodonBoostedStatusData(inputData.Username, inputData.Instance,
+            await _itemReceiver.ReceiveBoostedStatus(new MastodonBoostedStatusData(inputData.Username, inputData.Instance,
                 inputData.BoostedUserDisplayName, inputData.BoostedUserUserName, inputData.AuthorDisplayName,
-                inputData.AuthorUsername, inputData.Content, inputData.MediaDescriptions));
+                inputData.AuthorUsername, inputData.Content, inputData.MediaDescriptions), cancellationToken);
         }
 
-        public void AddMastodonBoostedSensitiveStatus(MastodonBoostedSensitiveStatusInputData inputData)
+        public async Task AddMastodonBoostedSensitiveStatus(MastodonBoostedSensitiveStatusInputData inputData, CancellationToken cancellationToken)
         {
-            _boostedSensitiveStatusReceiver.Receive(new MastodonBoostedSensitiveStatusData(inputData.Username,
-                inputData.Instance,
-                inputData.BoostedUserDisplayName, inputData.BoostedUserUserName, inputData.AuthorDisplayName,
-                inputData.AuthorUsername, inputData.SpoilerText, inputData.Content, inputData.MediaDescriptions));
+            await _itemReceiver.ReceiveBoostedSensitiveStatus(new MastodonBoostedSensitiveStatusData(inputData.Username,
+                inputData.Instance, inputData.BoostedUserDisplayName, inputData.BoostedUserUserName,
+                inputData.AuthorDisplayName, inputData.AuthorUsername, inputData.SpoilerText, inputData.Content,
+                inputData.MediaDescriptions), cancellationToken);
+        }
+
+        public async Task AddMastodonFollowNotification(MastodonFollowNotificationData inputData, CancellationToken cancellationToken)
+        {
+            await _itemReceiver.ReceiveFollowNotification(new MastodonFollowNotificationData(inputData.Username,
+                inputData.Instance, inputData.AuthorDisplayName, inputData.AuthorUsername), cancellationToken);
+        }
+
+        public async Task AddMastodonFollowRequestNotification(MastodonFollowRequestNotificationData inputData, CancellationToken cancellationToken)
+        {
+            await _itemReceiver.ReceiveFollowRequestNotification(new MastodonFollowRequestNotificationData(
+                inputData.Username, inputData.Instance, inputData.AuthorDisplayName, inputData.AuthorUsername), cancellationToken);
+        }
+
+        public async Task AddMastodonMentionNotification(MastodonMentionNotificationData inputData, CancellationToken cancellationToken)
+        {
+            await _itemReceiver.ReceiveMentionNotification(new MastodonMentionNotificationData(inputData.Username,
+                inputData.Instance, inputData.AuthorDisplayName, inputData.AuthorUsername, inputData.Content,
+                inputData.MediaDescriptions), cancellationToken);
+        }
+
+        public async Task AddMastodonSensitiveMentionNotification(MastodonSensitiveMentionNotificationData inputData, CancellationToken cancellationToken)
+        {
+            await _itemReceiver.ReceiveSensitiveMentionNotification(new MastodonSensitiveMentionNotificationData(
+                inputData.Username, inputData.Instance, inputData.AuthorDisplayName, inputData.AuthorUsername,
+                inputData.SpoilerText, inputData.Content, inputData.MediaDescriptions), cancellationToken);
+        }
+
+        public async Task AddMastodonReblogNotification(MastodonReblogNotificationData inputData, CancellationToken cancellationToken)
+        {
+            await _itemReceiver.ReceiveReblogNotification(new MastodonReblogNotificationData(inputData.Username,
+                inputData.Instance, inputData.ReblogUserDisplayName, inputData.ReblogUserUsername, inputData.Content,
+                inputData.MediaDescriptions), cancellationToken);
+        }
+
+        public async Task AddMastodonSensitiveReblogNotification(MastodonSensitiveReblogNotificationData inputData, CancellationToken cancellationToken)
+        {
+            await _itemReceiver.ReceiveSensitiveReblogNotification(new MastodonSensitiveReblogNotificationData(
+                inputData.Username, inputData.Instance, inputData.ReblogUserDisplayName, inputData.ReblogUserUsername,
+                inputData.SpoilerText, inputData.Content, inputData.MediaDescriptions), cancellationToken);
+        }
+
+        public async Task AddMastodonFavoriteNotification(MastodonFavoriteNotificationData inputData, CancellationToken cancellationToken)
+        {
+            await _itemReceiver.ReceiveFavoriteNotification(new MastodonFavoriteNotificationData(inputData.Username,
+                inputData.Instance, inputData.FavoriteUserDisplayName, inputData.FavoriteUsername, inputData.Content,
+                inputData.MediaDescriptions), cancellationToken);
+        }
+
+        public async Task AddMastodonSensitiveFavoriteNotification(MastodonSensitiveFavoriteNotificationData inputData, CancellationToken cancellationToken)
+        {
+            await _itemReceiver.ReceiveSensitiveFavoriteNotification(new MastodonSensitiveFavoriteNotificationData(
+                inputData.Username, inputData.Instance, inputData.FavoriteUserDisplayName, inputData.FavoriteUsername,
+                inputData.SpoilerText, inputData.Content, inputData.MediaDescriptions), cancellationToken);
         }
     }
 }

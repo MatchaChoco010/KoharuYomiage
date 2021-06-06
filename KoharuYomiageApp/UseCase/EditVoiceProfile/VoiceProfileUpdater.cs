@@ -39,6 +39,22 @@ namespace KoharuYomiageApp.UseCase.EditVoiceProfile
                     .GetVoiceProfile<VoiceProfile.MastodonBoostedStatusVoiceProfile>(id, cancellationToken),
                 VoiceProfileType.MastodonBoostedSensitiveStatus => await _repository
                     .GetVoiceProfile<VoiceProfile.MastodonBoostedSensitiveStatusVoiceProfile>(id, cancellationToken),
+                VoiceProfileType.MastodonFollowNotification => await _repository
+                    .GetVoiceProfile<VoiceProfile.MastodonFollowNotificationVoiceProfile>(id, cancellationToken),
+                VoiceProfileType.MastodonFollowRequestNotification => await _repository
+                    .GetVoiceProfile<VoiceProfile.MastodonFollowRequestNotificationVoiceProfile>(id, cancellationToken),
+                VoiceProfileType.MastodonMentionNotification => await _repository
+                    .GetVoiceProfile<VoiceProfile.MastodonMentionNotificationVoiceProfile>(id, cancellationToken),
+                VoiceProfileType.MastodonSensitiveMentionNotification => await _repository
+                    .GetVoiceProfile<VoiceProfile.MastodonSensitiveMentionNotificationVoiceProfile>(id, cancellationToken),
+                VoiceProfileType.MastodonReblogNotification => await _repository
+                    .GetVoiceProfile<VoiceProfile.MastodonReblogNotificationVoiceProfile>(id, cancellationToken),
+                VoiceProfileType.MastodonSensitiveReblogNotification => await _repository
+                    .GetVoiceProfile<VoiceProfile.MastodonSensitiveReblogNotificationVoiceProfile>(id, cancellationToken),
+                VoiceProfileType.MastodonFavoriteNotification => await _repository
+                    .GetVoiceProfile<VoiceProfile.MastodonFavoriteNotificationVoiceProfile>(id, cancellationToken),
+                VoiceProfileType.MastodonSensitiveFavoriteNotification => await _repository
+                    .GetVoiceProfile<VoiceProfile.MastodonSensitiveFavoriteNotificationVoiceProfile>(id, cancellationToken),
                 _ => throw new InvalidProgramException(),
             };
 
@@ -63,6 +79,22 @@ namespace KoharuYomiageApp.UseCase.EditVoiceProfile
                     .GetVoiceProfile<VoiceProfile.MastodonBoostedStatusVoiceProfile>(id, cancellationToken),
                 VoiceProfileType.MastodonBoostedSensitiveStatus => await _repository
                     .GetVoiceProfile<VoiceProfile.MastodonBoostedSensitiveStatusVoiceProfile>(id, cancellationToken),
+                VoiceProfileType.MastodonFollowNotification => await _repository
+                    .GetVoiceProfile<VoiceProfile.MastodonFollowNotificationVoiceProfile>(id, cancellationToken),
+                VoiceProfileType.MastodonFollowRequestNotification => await _repository
+                    .GetVoiceProfile<VoiceProfile.MastodonFollowRequestNotificationVoiceProfile>(id, cancellationToken),
+                VoiceProfileType.MastodonMentionNotification => await _repository
+                    .GetVoiceProfile<VoiceProfile.MastodonMentionNotificationVoiceProfile>(id, cancellationToken),
+                VoiceProfileType.MastodonSensitiveMentionNotification => await _repository
+                    .GetVoiceProfile<VoiceProfile.MastodonSensitiveMentionNotificationVoiceProfile>(id, cancellationToken),
+                VoiceProfileType.MastodonReblogNotification => await _repository
+                    .GetVoiceProfile<VoiceProfile.MastodonReblogNotificationVoiceProfile>(id, cancellationToken),
+                VoiceProfileType.MastodonSensitiveReblogNotification => await _repository
+                    .GetVoiceProfile<VoiceProfile.MastodonSensitiveReblogNotificationVoiceProfile>(id, cancellationToken),
+                VoiceProfileType.MastodonFavoriteNotification => await _repository
+                    .GetVoiceProfile<VoiceProfile.MastodonFavoriteNotificationVoiceProfile>(id, cancellationToken),
+                VoiceProfileType.MastodonSensitiveFavoriteNotification => await _repository
+                    .GetVoiceProfile<VoiceProfile.MastodonSensitiveFavoriteNotificationVoiceProfile>(id, cancellationToken),
                 _ => throw new InvalidProgramException(),
             };
 
@@ -85,6 +117,22 @@ namespace KoharuYomiageApp.UseCase.EditVoiceProfile
                     .GetVoiceProfile<VoiceProfile.MastodonBoostedStatusVoiceProfile>(accountIdentifier, cancellationToken),
                 VoiceProfileType.MastodonBoostedSensitiveStatus => await _voiceProfileRepository
                     .GetVoiceProfile<VoiceProfile.MastodonBoostedSensitiveStatusVoiceProfile>(accountIdentifier, cancellationToken),
+                VoiceProfileType.MastodonFollowNotification => await _repository
+                    .GetVoiceProfile<VoiceProfile.MastodonFollowNotificationVoiceProfile>(accountIdentifier, cancellationToken),
+                VoiceProfileType.MastodonFollowRequestNotification => await _repository
+                    .GetVoiceProfile<VoiceProfile.MastodonFollowRequestNotificationVoiceProfile>(accountIdentifier, cancellationToken),
+                VoiceProfileType.MastodonMentionNotification => await _repository
+                    .GetVoiceProfile<VoiceProfile.MastodonMentionNotificationVoiceProfile>(accountIdentifier, cancellationToken),
+                VoiceProfileType.MastodonSensitiveMentionNotification => await _repository
+                    .GetVoiceProfile<VoiceProfile.MastodonSensitiveMentionNotificationVoiceProfile>(accountIdentifier, cancellationToken),
+                VoiceProfileType.MastodonReblogNotification => await _repository
+                    .GetVoiceProfile<VoiceProfile.MastodonReblogNotificationVoiceProfile>(accountIdentifier, cancellationToken),
+                VoiceProfileType.MastodonSensitiveReblogNotification => await _repository
+                    .GetVoiceProfile<VoiceProfile.MastodonSensitiveReblogNotificationVoiceProfile>(accountIdentifier, cancellationToken),
+                VoiceProfileType.MastodonFavoriteNotification => await _repository
+                    .GetVoiceProfile<VoiceProfile.MastodonFavoriteNotificationVoiceProfile>(accountIdentifier, cancellationToken),
+                VoiceProfileType.MastodonSensitiveFavoriteNotification => await _repository
+                    .GetVoiceProfile<VoiceProfile.MastodonSensitiveFavoriteNotificationVoiceProfile>(accountIdentifier, cancellationToken),
                 _ => throw new InvalidProgramException(),
             };
             var voiceParameter = await _voiceParameterChangeNotifierRepository.GetInstance(cancellationToken);

@@ -81,6 +81,7 @@ namespace KoharuYomiageApp.UseCase.AddMastodonAccount
             }
 
             var username = new Username(accountInfo.Username);
+            var displayName = new DisplayName(accountInfo.DisplayName);
             var accessToken = new MastodonAccessToken(accessInfo.Token);
             var iconUrl = new MastodonAccountIconUrl(accountInfo.IconUrl);
 
@@ -89,7 +90,8 @@ namespace KoharuYomiageApp.UseCase.AddMastodonAccount
                     cancellationToken);
             if (account is null)
             {
-                account = _mastodonAccountRepository.CreateMastodonAccount(username, instance, accessToken, iconUrl);
+                account = _mastodonAccountRepository.CreateMastodonAccount(username, instance, displayName, accessToken,
+                    iconUrl);
             }
             else
             {

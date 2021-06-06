@@ -165,11 +165,7 @@ namespace KoharuYomiageApp
             containerRegistry.RegisterSingleton<IAuthorizeMastodonAccount, AuthorizeMastodonAccount>();
             containerRegistry.RegisterSingleton<ILoginMastodonAccount, LoginMastodonAccount>();
             //   AddMastodonTimelineItem
-            containerRegistry.RegisterSingleton<IMastodonStatusReceiver, MastodonStatusReceiver>();
-            containerRegistry.RegisterSingleton<IMastodonSensitiveStatusReceiver, MastodonSensitiveStatusReceiver>();
-            containerRegistry.RegisterSingleton<IMastodonBoostedStatusReceiver, MastodonBoostedStatusReceiver>();
-            containerRegistry
-                .RegisterSingleton<IMastodonBoostedSensitiveStatusReceiver, MastodonBoostedSensitiveStatusReceiver>();
+            containerRegistry.RegisterSingleton<IMastodonTimelineItemReceiver, MastodonTimelineItemReceiver>();
             //   GetGlobalVolume
             containerRegistry.RegisterSingleton<IGetGlobalVolume, GlobalVolumeProvider>();
             //   ReadingTextContainerSize

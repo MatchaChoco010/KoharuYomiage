@@ -69,6 +69,54 @@ namespace KoharuYomiageApp.UseCase.ReadText
                                 accountIdentifier, cancellationToken);
                         voiceParameter.SetCurrentProfile(profile);
                         break;
+                    case ReadingTextItem.MastodonFollowNotificationReadingTextItem:
+                        profile =
+                            await _voiceProfileRepository.GetVoiceProfile<VoiceProfile.MastodonFollowNotificationVoiceProfile>(
+                                accountIdentifier, cancellationToken);
+                        voiceParameter.SetCurrentProfile(profile);
+                        break;
+                    case ReadingTextItem.MastodonFollowRequestNotificationReadingTextItem:
+                        profile =
+                            await _voiceProfileRepository.GetVoiceProfile<VoiceProfile.MastodonFollowRequestNotificationVoiceProfile>(
+                                accountIdentifier, cancellationToken);
+                        voiceParameter.SetCurrentProfile(profile);
+                        break;
+                    case ReadingTextItem.MastodonMentionNotificationReadingTextItem:
+                        profile =
+                            await _voiceProfileRepository.GetVoiceProfile<VoiceProfile.MastodonMentionNotificationVoiceProfile>(
+                                accountIdentifier, cancellationToken);
+                        voiceParameter.SetCurrentProfile(profile);
+                        break;
+                    case ReadingTextItem.MastodonSensitiveMentionNotificationReadingTextItem:
+                        profile =
+                            await _voiceProfileRepository.GetVoiceProfile<VoiceProfile.MastodonSensitiveMentionNotificationVoiceProfile>(
+                                accountIdentifier, cancellationToken);
+                        voiceParameter.SetCurrentProfile(profile);
+                        break;
+                    case ReadingTextItem.MastodonReblogNotificationReadingTextItem:
+                        profile =
+                            await _voiceProfileRepository.GetVoiceProfile<VoiceProfile.MastodonReblogNotificationVoiceProfile>(
+                                accountIdentifier, cancellationToken);
+                        voiceParameter.SetCurrentProfile(profile);
+                        break;
+                    case ReadingTextItem.MastodonSensitiveReblogNotificationReadingTextItem:
+                        profile =
+                            await _voiceProfileRepository.GetVoiceProfile<VoiceProfile.MastodonSensitiveReblogNotificationVoiceProfile>(
+                                accountIdentifier, cancellationToken);
+                        voiceParameter.SetCurrentProfile(profile);
+                        break;
+                    case ReadingTextItem.MastodonFavoriteNotificationReadingTextItem:
+                        profile =
+                            await _voiceProfileRepository.GetVoiceProfile<VoiceProfile.MastodonFavoriteNotificationVoiceProfile>(
+                                accountIdentifier, cancellationToken);
+                        voiceParameter.SetCurrentProfile(profile);
+                        break;
+                    case ReadingTextItem.MastodonSensitiveFavoriteNotificationReadingTextItem:
+                        profile =
+                            await _voiceProfileRepository.GetVoiceProfile<VoiceProfile.MastodonSensitiveFavoriteNotificationVoiceProfile>(
+                                accountIdentifier, cancellationToken);
+                        voiceParameter.SetCurrentProfile(profile);
+                        break;
                 }
 
                 try
