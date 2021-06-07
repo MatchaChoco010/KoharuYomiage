@@ -1,0 +1,26 @@
+name: build-app
+on:
+  push:
+    tags:
+      - v*
+jobs:
+  build-app:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install .NET Core CLI
+        uses: actions/setup-dotnet@v1
+      - name: Run build
+        run: dotnet build --configuration Release KoharuYomiageApp/KoharuYomiageApp.csproj
+      - name: Get version
+        id: version
+        run: |
+          $ENV:VERSION=(echo ${{ github.ref }} | %{ $_ -replace "refs/tags/","" })
+          Write-Host "::set-output name=version::$ENV:VERSION"
+      - name: Zip artifact
+        run: Compress-Archive KoharuYomiageApp/bin/Release/net48/* koharuyomiage-${{ steps.version.outputs.version }}.zip
+      - name: Upload app to Release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: koharuyomiage-${{ steps.version.outputs.version }}.zip
+          token: ${{ secrets.GITHUB_TOKEN }}
