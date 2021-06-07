@@ -12,6 +12,12 @@ CeVIO AI 小春六花 トークボイスにSNSのTimelineを読み上げても�
 
 - Mastodon
 
+## Download
+
+[Releases · MatchaChoco010/KoharuYomiage](https://github.com/MatchaChoco010/KoharuYomiage/releases)
+
+Zipファイルをダウンロードして好きな場所に解凍すれば使えます。
+
 ## Feature
 
 - タイムラインの投稿・通知の読み上げ
