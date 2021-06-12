@@ -177,7 +177,6 @@ namespace CeVIOAI
             closeHostMethod.Invoke(null, new object[] {0});
             _tagger.Dispose();
             _semaphore.Dispose();
-            Directory.Delete(WavDirectoryPath, true);
         }
 
         async Task RawSpeak(string text, CancellationToken cancellationToken)
