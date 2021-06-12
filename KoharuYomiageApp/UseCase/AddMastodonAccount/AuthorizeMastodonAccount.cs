@@ -83,7 +83,7 @@ namespace KoharuYomiageApp.UseCase.AddMastodonAccount
             var username = new Username(accountInfo.Username);
             var displayName = new DisplayName(accountInfo.DisplayName);
             var accessToken = new MastodonAccessToken(accessInfo.Token);
-            var iconUrl = new MastodonAccountIconUrl(accountInfo.IconUrl);
+            var iconUrl = new AccountIconUrl(accountInfo.IconUrl);
 
             var account =
                 await _mastodonAccountRepository.FindMastodonAccount(new AccountIdentifier(username, instance),

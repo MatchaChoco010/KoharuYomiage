@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MastodonApi\MastodonApi.csproj" />
+    <ProjectReference Include="..\MisskeyApi\MisskeyApi.csproj" />
     <ProjectReference Include="..\CeVIOAI\CeVIOAI.csproj" />
   </ItemGroup>
 

@@ -26,7 +26,7 @@ namespace KoharuYomiageApp.Data.Repository
             {
                 return new MastodonAccount(new Username(data.Username), new Instance(data.Instance),
                     new DisplayName(data.DisplayName), new MastodonAccessToken(data.AccessToken),
-                    new MastodonAccountIconUrl(data.IconUrl),
+                    new AccountIconUrl(data.IconUrl),
                     new IsReadingPostsFromThisAccount(data.IsReadingPostsFromThisAccount));
             }
 
@@ -34,7 +34,7 @@ namespace KoharuYomiageApp.Data.Repository
         }
 
         public MastodonAccount CreateMastodonAccount(Username username, Instance instance, DisplayName displayName,
-            MastodonAccessToken accessToken, MastodonAccountIconUrl iconUrl)
+            MastodonAccessToken accessToken, AccountIconUrl iconUrl)
         {
             return new(username, instance, displayName, accessToken, iconUrl,
                 new IsReadingPostsFromThisAccount(true));
@@ -57,7 +57,7 @@ namespace KoharuYomiageApp.Data.Repository
             var data = await _storage.GetMastodonAccountData(cancellationToken);
             return data.Select(d => new MastodonAccount(new Username(d.Username), new Instance(d.Instance),
                 new DisplayName(d.DisplayName), new MastodonAccessToken(d.AccessToken),
-                new MastodonAccountIconUrl(d.IconUrl),
+                new AccountIconUrl(d.IconUrl),
                 new IsReadingPostsFromThisAccount(d.IsReadingPostsFromThisAccount)));
         }
     }

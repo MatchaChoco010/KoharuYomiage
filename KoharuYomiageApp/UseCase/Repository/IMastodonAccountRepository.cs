@@ -10,7 +10,7 @@ namespace KoharuYomiageApp.UseCase.Repository
     {
         Task<MastodonAccount?> FindMastodonAccount(AccountIdentifier identifier, CancellationToken cancellationToken);
         MastodonAccount CreateMastodonAccount(Username username, Instance instance, DisplayName displayName,
-            MastodonAccessToken accessToken, MastodonAccountIconUrl iconUrl);
+            MastodonAccessToken accessToken, AccountIconUrl iconUrl);
         Task SaveMastodonAccount(MastodonAccount accountData, CancellationToken cancellationToken);
         Task DeleteMastodonAccount(AccountIdentifier accountIdentifier, CancellationToken cancellationToken);
         Task<IEnumerable<MastodonAccount>> GetAllMastodonAccounts(CancellationToken cancellationToken);
