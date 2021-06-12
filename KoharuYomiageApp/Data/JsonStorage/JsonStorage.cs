@@ -9,8 +9,8 @@ using KoharuYomiageApp.Data.Repository.DataObjects;
 
 namespace KoharuYomiageApp.Data.JsonStorage
 {
-    public class JsonStorage : IMastodonAccountStorage, IMastodonClientStorage, IVoiceProfileStorage,
-        IGlobalVolumeStorage, IReadingTextContainerStorage
+    public class JsonStorage : IMastodonAccountStorage, IMastodonClientStorage, IMisskeyAccountStorage,
+        IVoiceProfileStorage, IGlobalVolumeStorage, IReadingTextContainerStorage
     {
         static string SettingsPath
         {
@@ -104,6 +104,49 @@ namespace KoharuYomiageApp.Data.JsonStorage
             }
 
             await SaveSettings(storage, cancellationToken);
+        }
+
+        public async Task<MisskeyAccountData?> FindMisskeyAccountData(string identifier, CancellationToken cancellationToken)
+        {
+            var storage = await GetOrCreateSettings(cancellationToken);
+            return storage.MisskeyAccountData.Find(data => data.Username + "@" + data.Instance == identifier);
+        }
+
+        public async Task SaveMisskeyAccountData(MisskeyAccountData accountSaveData, CancellationToken cancellationToken)
+        {
+            var storage = await GetOrCreateSettings(cancellationToken);
+
+            var index = storage.MisskeyAccountData.FindIndex(data =>
+                data.Username == accountSaveData.Username && data.Instance == accountSaveData.Instance);
+            if (index is not -1)
+            {
+                storage.MisskeyAccountData[index] = accountSaveData;
+            }
+            else
+            {
+                storage.MisskeyAccountData.Add(accountSaveData);
+            }
+
+            await SaveSettings(storage, cancellationToken);
+        }
+
+        public async Task DeleteMisskeyAccountData(string identifier, CancellationToken cancellationToken)
+        {
+            var storage = await GetOrCreateSettings(cancellationToken);
+
+            var index = storage.MisskeyAccountData.FindIndex(data => data.Username + "@" +  data.Instance == identifier);
+            if (index is not -1)
+            {
+                storage.MisskeyAccountData.RemoveAt(index);
+            }
+
+            await SaveSettings(storage, cancellationToken);
+        }
+
+        public async Task<IEnumerable<MisskeyAccountData>> GetMisskeyAccountData(CancellationToken cancellationToken)
+        {
+            var storage = await GetOrCreateSettings(cancellationToken);
+            return storage.MisskeyAccountData;
         }
 
         public async Task<int?> FindReadingTextContainerSize(CancellationToken cancellationToken)
