@@ -1,8 +1,8 @@
 ﻿namespace KoharuYomiageApp.Infrastructures.GUI.Views
 {
-    public partial class ViewA
+    public partial class MisskeyLogin
     {
-        public ViewA()
+        public MisskeyLogin()
         {
             InitializeComponent();
         }

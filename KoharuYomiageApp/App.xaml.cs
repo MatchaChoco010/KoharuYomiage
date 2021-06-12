@@ -8,11 +8,14 @@ using KoharuYomiageApp.Infrastructures.GUI.Views;
 using KoharuYomiageApp.Infrastructures.GUI.Views.AttachedBehavior;
 using KoharuYomiageApp.Infrastructures.GUI.Views.Dialogs;
 using KoharuYomiageApp.Infrastructures.Mastodon;
+using KoharuYomiageApp.Infrastructures.Misskey;
 using KoharuYomiageApp.Presentation.CeVIOAI;
 using KoharuYomiageApp.Presentation.GUI;
 using KoharuYomiageApp.Presentation.Mastodon;
+using KoharuYomiageApp.Presentation.Misskey;
 using KoharuYomiageApp.UseCase.AddMastodonAccount;
 using KoharuYomiageApp.UseCase.AddMastodonTimelineItem;
+using KoharuYomiageApp.UseCase.AddMisskeyAccount;
 using KoharuYomiageApp.UseCase.DeleteAccount;
 using KoharuYomiageApp.UseCase.EditVoiceProfile;
 using KoharuYomiageApp.UseCase.GetAllAccounts;
@@ -52,14 +55,14 @@ namespace KoharuYomiageApp
             containerRegistry.RegisterDialog<RegisterClientError>();
             containerRegistry.RegisterDialog<GetMastodonAccountInfoError>();
             containerRegistry.RegisterDialog<MastodonAuthenticationError>();
+            containerRegistry.RegisterDialog<MisskeyAuthenticationError>();
             containerRegistry.RegisterDialog<AccountDeletionConfirmation>();
             //     Views
-            containerRegistry.RegisterForNavigation<ViewA>();
-            containerRegistry.RegisterForNavigation<ViewB>();
             containerRegistry.RegisterForNavigation<Start>();
             containerRegistry.RegisterForNavigation<SelectSNS>();
             containerRegistry.RegisterForNavigation<MastodonLogin>();
             containerRegistry.RegisterForNavigation<MastodonAuthCode>();
+            containerRegistry.RegisterForNavigation<MisskeyLogin>();
             containerRegistry.RegisterForNavigation<MainControl>();
             containerRegistry.RegisterForNavigation<Setting>();
             containerRegistry.RegisterForNavigation<License>();
@@ -72,13 +75,19 @@ namespace KoharuYomiageApp
                 typeof(ICeVIOAISpeakText),
                 typeof(ICeVIOAIUpdateVoiceParameter),
                 typeof(CeVIOAIHost));
-            //   MastodonApi
+            //   MastodonClient
             containerRegistry.RegisterManySingleton<MastodonClient>(
                 typeof(Presentation.Mastodon.IMakeMastodonConnection),
                 typeof(IMastodonAuthorizeAccountWithCode),
                 typeof(IMastodonGetAccountInfo),
                 typeof(IMastodonRegisterClient),
                 typeof(MastodonClient));
+            //   MisskeyClient
+            containerRegistry.RegisterManySingleton<MisskeyClient>(
+                typeof(IMisskeyRegisterClient),
+                typeof(IMisskeyGetAuthorizeUrl),
+                typeof(IMisskeyGetAccessToken),
+                typeof(MisskeyClient));
 
             // Presentation
             //   GUI
@@ -93,8 +102,8 @@ namespace KoharuYomiageApp
                 typeof(IDisposable));
             containerRegistry.RegisterManySingleton<MastodonLoginPresenter>(
                 typeof(MastodonLoginPresenter),
-                typeof(IShowAuthUrl),
-                typeof(IShowRegisterClientError));
+                typeof(UseCase.AddMastodonAccount.IShowAuthUrl),
+                typeof(UseCase.AddMastodonAccount.IShowRegisterClientError));
             containerRegistry.RegisterManySingleton<MastodonLoginController>(
                 typeof(MastodonLoginController),
                 typeof(IDisposable));
@@ -106,6 +115,13 @@ namespace KoharuYomiageApp
             containerRegistry.RegisterManySingleton<MastodonAuthCodeController>(
                 typeof(MastodonAuthCodeController),
                 typeof(IDisposable));
+            containerRegistry.RegisterManySingleton<MisskeyLoginPresenter>(
+                typeof(MisskeyLoginPresenter),
+                typeof(IWaitAuthorize),
+                typeof(UseCase.AddMisskeyAccount.IShowAuthUrl),
+                typeof(UseCase.AddMisskeyAccount.IShowRegisterClientError),
+                typeof(IShowAuthorizeError));
+            containerRegistry.RegisterSingleton<MisskeyLoginController>();
             containerRegistry.RegisterManySingleton<MainControlPresenter>(
                 typeof(MainControlPresenter),
                 typeof(IChangeImage),
@@ -123,11 +139,16 @@ namespace KoharuYomiageApp
                 typeof(IUpdateVoiceParameter));
             //   Mastodon
             containerRegistry.RegisterManySingleton<MastodonPresenter>(
-                typeof(IRegisterClient),
+                typeof(UseCase.AddMastodonAccount.IRegisterClient),
                 typeof(IAuthorizeMastodonAccountWithCode),
                 typeof(IGetAccountInfo),
                 typeof(UseCase.Utils.IMakeMastodonConnection));
             containerRegistry.RegisterSingleton<MastodonController>();
+            //   Misskey
+            containerRegistry.RegisterManySingleton<MisskeyPresenter>(
+                typeof(UseCase.AddMisskeyAccount.IRegisterClient),
+                typeof(IGetAccessToken),
+                typeof(IGetAuthorizeUrl));
 
             // Data
             //   Repository
@@ -136,6 +157,7 @@ namespace KoharuYomiageApp
                 typeof(IGlobalVolumeRepository));
             containerRegistry.RegisterSingleton<IMastodonAccountRepository, MastodonAccountRepository>();
             containerRegistry.RegisterSingleton<IMastodonClientRepository, MastodonClientRepository>();
+            containerRegistry.RegisterSingleton<IMisskeyAccountRepository, MisskeyAccountRepository>();
             containerRegistry.RegisterManySingleton<ReadingTextContainerRepository>(
                 typeof(IDisposable),
                 typeof(IReadingTextContainerRepository));
@@ -152,6 +174,7 @@ namespace KoharuYomiageApp
             containerRegistry.RegisterManySingleton<JsonStorage>(
                 typeof(IMastodonAccountStorage),
                 typeof(IMastodonClientStorage),
+                typeof(IMisskeyAccountStorage),
                 typeof(IGlobalVolumeStorage),
                 typeof(IVoiceProfileStorage),
                 typeof(IReadingTextContainerStorage),
@@ -164,6 +187,8 @@ namespace KoharuYomiageApp
             //   AddMastodonAccount
             containerRegistry.RegisterSingleton<IAuthorizeMastodonAccount, AuthorizeMastodonAccount>();
             containerRegistry.RegisterSingleton<ILoginMastodonAccount, LoginMastodonAccount>();
+            //   AddMisskeyAccount
+            containerRegistry.RegisterSingleton<IAddMisskeyAccount, AddMisskeyAccount>();
             //   AddMastodonTimelineItem
             containerRegistry.RegisterSingleton<IMastodonTimelineItemReceiver, MastodonTimelineItemReceiver>();
             //   GetGlobalVolume

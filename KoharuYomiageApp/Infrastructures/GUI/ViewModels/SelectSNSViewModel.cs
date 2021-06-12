@@ -15,6 +15,7 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
 
         public ReactivePropertySlim<Visibility> BackButtonVisibility { get; } = new(Visibility.Hidden);
         public ReactiveCommand SelectMastodonCommand { get; } = new();
+        public ReactiveCommand SelectMisskeyCommand { get; } = new();
         public ReactiveCommand BackCommand { get; } = new();
 
         public void Dispose()
@@ -22,6 +23,7 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
             _disposable.Dispose();
             BackButtonVisibility.Dispose();
             SelectMastodonCommand.Dispose();
+            SelectMisskeyCommand.Dispose();
             BackCommand.Dispose();
         }
 
@@ -35,7 +37,11 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
 
             SelectMastodonCommand
                 .Subscribe(_ => navigationContext.NavigationService.RequestNavigate(nameof(MastodonLogin),
-                    new NavigationParameters {{"FirstLogin", isFirstLogin}}))
+                    new NavigationParameters { { "FirstLogin", isFirstLogin } }))
+                .AddTo(_disposable);
+            SelectMisskeyCommand
+                .Subscribe(_ => navigationContext.NavigationService.RequestNavigate(nameof(MisskeyLogin),
+                    new NavigationParameters { { "FirstLogin", isFirstLogin } }))
                 .AddTo(_disposable);
             BackCommand.Subscribe(_ => navigationContext.NavigationService.RequestNavigate(nameof(AccountList)))
                 .AddTo(_disposable);

@@ -34,10 +34,12 @@
                 <Button Style="{StaticResource ButtonRoundAccentRevealStyle}"
                         FontSize="16"
                         Padding="32,4"
+                        Margin="8"
                         VerticalAlignment="Center"
                         xf:Animations.Primary="{xf:Animate BasedOn={StaticResource FadeInAndSlideFromRight}, Duration=1000}"
                         Command="{Binding SelectMastodonCommand}">
-                    <StackPanel Orientation="Horizontal">
+                    <StackPanel Orientation="Horizontal"
+                                Width="220">
                         <svg1:SVGImage Source="/Resources/mastodon-logo.svg"
                                        Width="48"
                                        Height="48"
@@ -49,7 +51,27 @@
                         </TextBlock>
                     </StackPanel>
                 </Button>
-
+                <Button Style="{StaticResource ButtonRoundAccentRevealStyle}"
+                        FontSize="16"
+                        Padding="32,4"
+                        Margin="8"
+                        VerticalAlignment="Center"
+                        xf:Animations.Primary="{xf:Animate BasedOn={StaticResource FadeInAndSlideFromRight}, Duration=1000}"
+                        Command="{Binding SelectMisskeyCommand}">
+                    <StackPanel Orientation="Horizontal"
+                                Width="220">
+                        <svg1:SVGImage Source="/Resources/misskey-logo.svg"
+                                       Width="48"
+                                       Height="40"
+                                       Margin="0,8,0,0"
+                                       HorizontalAlignment="Left" />
+                        <TextBlock Margin="8"
+                                   VerticalAlignment="Center"
+                                   TextAlignment="Center">
+                            Misskeyでログイン
+                        </TextBlock>
+                    </StackPanel>
+                </Button>
             </StackPanel>
         </Grid>
     </Grid>
