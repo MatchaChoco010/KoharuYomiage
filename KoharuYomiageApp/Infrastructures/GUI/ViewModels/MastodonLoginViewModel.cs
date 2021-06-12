@@ -11,7 +11,7 @@ using Reactive.Bindings.Extensions;
 
 namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
 {
-    public class MastodonLoginViewModel : BindableBase, INavigationAware, IDisposable
+    public class MastodonLoginViewModel : BindableBase, INavigationAware, IRegionMemberLifetime, IDisposable
     {
         readonly IDialogService _dialogService;
         readonly CompositeDisposable _disposable = new();
@@ -84,5 +84,7 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
         {
             return Uri.CheckHostName(accountText) is not UriHostNameType.Unknown;
         }
+
+        public bool KeepAlive => false;
     }
 }

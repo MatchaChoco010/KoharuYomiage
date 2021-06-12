@@ -13,7 +13,7 @@ using Reactive.Bindings.Extensions;
 
 namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
 {
-    public class MisskeyLoginViewModel : BindableBase, INavigationAware, IDisposable
+    public class MisskeyLoginViewModel : BindableBase, INavigationAware, IRegionMemberLifetime, IDisposable
     {
         readonly IDialogService _dialogService;
         readonly CompositeDisposable _disposable = new();
@@ -122,5 +122,7 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
         {
             return Uri.CheckHostName(accountText) is not UriHostNameType.Unknown;
         }
+
+        public bool KeepAlive => false;
     }
 }
