@@ -6,18 +6,20 @@ using KoharuYomiageApp.UseCase.AddMisskeyAccount.DataObjects;
 
 namespace KoharuYomiageApp.Presentation.Misskey
 {
-    public class MisskeyPresenter : IRegisterClient, IGetAuthorizeUrl, IGetAccessToken
+    public class MisskeyPresenter : IRegisterClient, IGetAuthorizeUrl, IGetAccessToken, UseCase.Utils.IMakeMisskeyConnection
     {
         readonly IMisskeyRegisterClient _registerClient;
         readonly IMisskeyGetAuthorizeUrl _getAuthorizeUrl;
         readonly IMisskeyGetAccessToken _getAccessToken;
+        readonly IMakeMisskeyConnection _connection;
 
         public MisskeyPresenter(IMisskeyRegisterClient registerClient, IMisskeyGetAuthorizeUrl getAuthorizeUrl,
-            IMisskeyGetAccessToken getAccessToken)
+            IMisskeyGetAccessToken getAccessToken, IMakeMisskeyConnection connection)
         {
             _registerClient = registerClient;
             _getAuthorizeUrl = getAuthorizeUrl;
             _getAccessToken = getAccessToken;
+            _connection = connection;
         }
 
         public async Task<string> RegisterClient(string instance, CancellationToken cancellationToken)
@@ -37,6 +39,11 @@ namespace KoharuYomiageApp.Presentation.Misskey
             var (accessToken, (username, displayName, iconUrl)) =
                 await _getAccessToken.GetAccessToken(instance, secret, sessionToken, cancellationToken);
             return (accessToken, new UserData(username, displayName, iconUrl));
+        }
+
+        public IDisposable MakeConnection(string username, string instance, string accessToken)
+        {
+            return _connection.MakeConnection(username, instance, accessToken);
         }
     }
 }

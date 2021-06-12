@@ -71,25 +71,25 @@ namespace KoharuYomiageApp.Infrastructures.Mastodon
                             {
                                 case {type: "follow"}:
                                     await _mastodonController.AddMastodonFollowNotification(
-                                        new MastodonFollowNotificationData(username, instance,
+                                        new MastodonFollowNotificationInputData(username, instance,
                                             notification.account.display_name, notification.account.username), cancellationToken);
                                     break;
                                 case {type: "follow_request"}:
                                     await _mastodonController.AddMastodonFollowRequestNotification(
-                                        new MastodonFollowRequestNotificationData(username, instance,
+                                        new MastodonFollowRequestNotificationInputData(username, instance,
                                             notification.account.display_name, notification.account.username), cancellationToken);
                                     break;
                                 case {type: "mention", status: {sensitive: true}}:
                                 case {type: "mention", status: {spoiler_text: var spoilerText}} when !string.IsNullOrEmpty(spoilerText):
                                     await _mastodonController.AddMastodonSensitiveMentionNotification(
-                                        new MastodonSensitiveMentionNotificationData(username, instance,
+                                        new MastodonSensitiveMentionNotificationInputData(username, instance,
                                             notification.account.display_name, notification.account.username,
                                             notification.status.spoiler_text, notification.status.content,
                                             notification.status.media_attachments.Select(media => media.description ?? "")), cancellationToken);
                                     break;
                                 case {type: "mention", status: not null}:
                                     await _mastodonController.AddMastodonMentionNotification(
-                                        new MastodonMentionNotificationData(username, instance,
+                                        new MastodonMentionNotificationInputData(username, instance,
                                             notification.account.display_name, notification.account.username,
                                             notification.status.content,
                                             notification.status.media_attachments.Select(media => media.description ?? "")), cancellationToken);
@@ -97,14 +97,14 @@ namespace KoharuYomiageApp.Infrastructures.Mastodon
                                 case {type: "reblog", status: {sensitive: true}}:
                                 case {type: "reblog", status: {spoiler_text: var spoilerText}} when !string.IsNullOrEmpty(spoilerText):
                                     await _mastodonController.AddMastodonSensitiveReblogNotification(
-                                        new MastodonSensitiveReblogNotificationData(username, instance,
+                                        new MastodonSensitiveReblogNotificationInputData(username, instance,
                                             notification.account.display_name, notification.account.username,
                                             notification.status.spoiler_text, notification.status.content,
                                             notification.status.media_attachments.Select(media => media.description ?? "")), cancellationToken);
                                     break;
                                 case {type: "reblog", status: not null}:
                                     await _mastodonController.AddMastodonReblogNotification(
-                                        new MastodonReblogNotificationData(username, instance,
+                                        new MastodonReblogNotificationInputData(username, instance,
                                             notification.account.display_name, notification.account.username,
                                             notification.status.content,
                                             notification.status.media_attachments.Select(media => media.description ?? "")), cancellationToken);
@@ -112,14 +112,14 @@ namespace KoharuYomiageApp.Infrastructures.Mastodon
                                 case {type: "favourite", status: {sensitive: true}}:
                                 case {type: "favourite", status: {spoiler_text: var spoilerText}} when !string.IsNullOrEmpty(spoilerText):
                                     await _mastodonController.AddMastodonSensitiveFavoriteNotification(
-                                        new MastodonSensitiveFavoriteNotificationData(username, instance,
+                                        new MastodonSensitiveFavoriteNotificationInputData(username, instance,
                                             notification.account.display_name, notification.account.username,
                                             notification.status.spoiler_text, notification.status.content,
                                             notification.status.media_attachments.Select(media => media.description ?? "")), cancellationToken);
                                     break;
                                 case {type: "favourite", status: not null}:
                                     await _mastodonController.AddMastodonFavoriteNotification(
-                                        new MastodonFavoriteNotificationData(username, instance,
+                                        new MastodonFavoriteNotificationInputData(username, instance,
                                             notification.account.display_name, notification.account.username,
                                             notification.status.content,
                                             notification.status.media_attachments.Select(media => media.description ?? "")), cancellationToken);

@@ -1,6 +1,5 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using KoharuYomiageApp.Presentation.Mastodon.DataObjects;
 using KoharuYomiageApp.UseCase.AddMastodonTimelineItem.DataObjects;
 
 namespace KoharuYomiageApp.UseCase.AddMastodonTimelineItem

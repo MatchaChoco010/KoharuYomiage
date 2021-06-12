@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using KoharuYomiageApp.Domain.Account;
 using KoharuYomiageApp.Domain.TimelineItem.Mastodon;
-using KoharuYomiageApp.Presentation.Mastodon.DataObjects;
 using KoharuYomiageApp.UseCase.AddMastodonTimelineItem.DataObjects;
 using KoharuYomiageApp.UseCase.Repository;
 

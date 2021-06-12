@@ -16,6 +16,7 @@ using KoharuYomiageApp.Presentation.Misskey;
 using KoharuYomiageApp.UseCase.AddMastodonAccount;
 using KoharuYomiageApp.UseCase.AddMastodonTimelineItem;
 using KoharuYomiageApp.UseCase.AddMisskeyAccount;
+using KoharuYomiageApp.UseCase.AddMisskeyTimelineItem;
 using KoharuYomiageApp.UseCase.DeleteAccount;
 using KoharuYomiageApp.UseCase.EditVoiceProfile;
 using KoharuYomiageApp.UseCase.GetAllAccounts;
@@ -84,6 +85,7 @@ namespace KoharuYomiageApp
                 typeof(MastodonClient));
             //   MisskeyClient
             containerRegistry.RegisterManySingleton<MisskeyClient>(
+                typeof(Presentation.Misskey.IMakeMisskeyConnection),
                 typeof(IMisskeyRegisterClient),
                 typeof(IMisskeyGetAuthorizeUrl),
                 typeof(IMisskeyGetAccessToken),
@@ -148,7 +150,9 @@ namespace KoharuYomiageApp
             containerRegistry.RegisterManySingleton<MisskeyPresenter>(
                 typeof(UseCase.AddMisskeyAccount.IRegisterClient),
                 typeof(IGetAccessToken),
-                typeof(IGetAuthorizeUrl));
+                typeof(IGetAuthorizeUrl),
+                typeof(UseCase.Utils.IMakeMisskeyConnection));
+            containerRegistry.RegisterSingleton<MisskeyController>();
 
             // Data
             //   Repository
@@ -191,6 +195,8 @@ namespace KoharuYomiageApp
             containerRegistry.RegisterSingleton<IAddMisskeyAccount, AddMisskeyAccount>();
             //   AddMastodonTimelineItem
             containerRegistry.RegisterSingleton<IMastodonTimelineItemReceiver, MastodonTimelineItemReceiver>();
+            //   AddMisskeyTimelineItem
+            containerRegistry.RegisterSingleton<IMisskeyTimelineItemReceiver, MisskeyTimelineItemReceiver>();
             //   GetGlobalVolume
             containerRegistry.RegisterSingleton<IGetGlobalVolume, GlobalVolumeProvider>();
             //   ReadingTextContainerSize

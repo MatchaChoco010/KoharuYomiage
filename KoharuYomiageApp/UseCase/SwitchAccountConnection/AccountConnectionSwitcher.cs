@@ -12,39 +12,64 @@ namespace KoharuYomiageApp.UseCase.SwitchAccountConnection
         readonly IConnectionRepository _connectionRepository;
         readonly IMakeMastodonConnection _makeMastodonConnection;
         readonly IMastodonAccountRepository _mastodonAccountRepository;
+        readonly IMakeMisskeyConnection _makeMisskeyConnection;
+        readonly IMisskeyAccountRepository _misskeyAccountRepository;
 
         public AccountConnectionSwitcher(IMastodonAccountRepository mastodonAccountRepository,
-            IConnectionRepository connectionRepository, IMakeMastodonConnection makeMastodonConnection)
+            IMisskeyAccountRepository misskeyAccountRepository, IConnectionRepository connectionRepository,
+            IMakeMastodonConnection makeMastodonConnection, IMakeMisskeyConnection makeMisskeyConnection)
         {
             _mastodonAccountRepository = mastodonAccountRepository;
+            _misskeyAccountRepository = misskeyAccountRepository;
             _connectionRepository = connectionRepository;
             _makeMastodonConnection = makeMastodonConnection;
+            _makeMisskeyConnection = makeMisskeyConnection;
         }
 
         public async Task SwitchAccountConnection(string username, string instance, bool connect,
             CancellationToken cancellationToken)
         {
             var id = new AccountIdentifier(new Username(username), new Instance(instance));
-            var account = await _mastodonAccountRepository.FindMastodonAccount(id, cancellationToken);
 
-            if (account is null)
+            var mastodonAccount = await _mastodonAccountRepository.FindMastodonAccount(id, cancellationToken);
+            if (mastodonAccount is not null)
             {
+                if (connect)
+                {
+                    var connection = _makeMastodonConnection.MakeConnection(mastodonAccount.Username.Value, mastodonAccount.Instance.Value,
+                        mastodonAccount.AccessToken.Token);
+                    _connectionRepository.AddConnection(new Connection(id, connection));
+                }
+                else
+                {
+                    _connectionRepository.StopConnection(id);
+                }
+
+                mastodonAccount.IsReadingPostsFromThisAccount = new IsReadingPostsFromThisAccount(connect);
+                await _mastodonAccountRepository.SaveMastodonAccount(mastodonAccount, cancellationToken);
+
                 return;
             }
 
-            if (connect)
+            var misskeyAccount = await _misskeyAccountRepository.FindMisskeyAccount(id, cancellationToken);
+            if (misskeyAccount is not null)
             {
-                var connection = _makeMastodonConnection.MakeConnection(account.Username.Value, account.Instance.Value,
-                    account.AccessToken.Token);
-                _connectionRepository.AddConnection(new Connection(id, connection));
-            }
-            else
-            {
-                _connectionRepository.StopConnection(id);
-            }
+                if (connect)
+                {
+                    var connection = _makeMisskeyConnection.MakeConnection(misskeyAccount.Username.Value,
+                        misskeyAccount.Instance.Value, misskeyAccount.AccessToken.Token);
+                    _connectionRepository.AddConnection(new Connection(id, connection));
+                }
+                else
+                {
+                    _connectionRepository.StopConnection(id);
+                }
 
-            account.IsReadingPostsFromThisAccount = new IsReadingPostsFromThisAccount(connect);
-            await _mastodonAccountRepository.SaveMastodonAccount(account, cancellationToken);
+                misskeyAccount.IsReadingPostsFromThisAccount = new IsReadingPostsFromThisAccount(connect);
+                await _misskeyAccountRepository.SaveMisskeyAccount(misskeyAccount, cancellationToken);
+
+                return;
+            }
         }
     }
 }

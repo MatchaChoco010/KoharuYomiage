@@ -2,6 +2,8 @@
 using System.Threading.Tasks;
 using KoharuYomiageApp.Domain.Account;
 using KoharuYomiageApp.Domain.Account.Misskey;
+using KoharuYomiageApp.Domain.Connection;
+using KoharuYomiageApp.Presentation.Misskey;
 using KoharuYomiageApp.UseCase.Repository;
 
 namespace KoharuYomiageApp.UseCase.AddMisskeyAccount
@@ -9,25 +11,29 @@ namespace KoharuYomiageApp.UseCase.AddMisskeyAccount
     public class AddMisskeyAccount : IAddMisskeyAccount
     {
         readonly IMisskeyAccountRepository _accountRepository;
+        readonly IConnectionRepository _connectionRepository;
         readonly IRegisterClient _registerClient;
         readonly IGetAuthorizeUrl _getAuthorizeUrl;
         readonly IShowAuthUrl _showAuthUrl;
         readonly IWaitAuthorize _waitAuthorize;
         readonly IGetAccessToken _getAccessToken;
+        readonly IMakeMisskeyConnection _makeMisskeyConnection;
         readonly IShowRegisterClientError _showRegisterClientError;
         readonly IShowAuthorizeError _showAuthorizeError;
 
-        public AddMisskeyAccount(IMisskeyAccountRepository accountRepository,
-            IRegisterClient registerClient, IGetAuthorizeUrl getAuthorizeUrl,
-            IShowAuthUrl showAuthUrl, IWaitAuthorize waitAuthorize, IGetAccessToken getAccessToken,
+        public AddMisskeyAccount(IMisskeyAccountRepository accountRepository, IConnectionRepository connectionRepository,
+            IRegisterClient registerClient, IGetAuthorizeUrl getAuthorizeUrl, IShowAuthUrl showAuthUrl,
+            IWaitAuthorize waitAuthorize, IGetAccessToken getAccessToken, IMakeMisskeyConnection makeMisskeyConnection,
             IShowRegisterClientError showRegisterClientError, IShowAuthorizeError showAuthorizeError)
         {
             _accountRepository = accountRepository;
+            _connectionRepository = connectionRepository;
             _registerClient = registerClient;
             _getAuthorizeUrl = getAuthorizeUrl;
             _showAuthUrl = showAuthUrl;
             _waitAuthorize = waitAuthorize;
             _getAccessToken = getAccessToken;
+            _makeMisskeyConnection = makeMisskeyConnection;
             _showRegisterClientError = showRegisterClientError;
             _showAuthorizeError = showAuthorizeError;
         }
@@ -86,7 +92,9 @@ namespace KoharuYomiageApp.UseCase.AddMisskeyAccount
 
             await _accountRepository.SaveMisskeyAccount(account, cancellationToken);
 
-            // コネクションを張る
+            var connection = _makeMisskeyConnection.MakeConnection(account.Username.Value, account.Instance.Value,
+                account.AccessToken.Token);
+            _connectionRepository.AddConnection(new Connection(account.AccountIdentifier, connection));
         }
     }
 }
