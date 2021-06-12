@@ -187,7 +187,11 @@ namespace CeVIOAI
 
             try
             {
-                _talker.OutputWaveToFile(text, wavFilePath);
+                var result = _talker.OutputWaveToFile(text, wavFilePath);
+                if (!result)
+                {
+                    return;
+                }
 
                 using (var audioFile = new AudioFileReader(wavFilePath))
                 using (var outputDevice = new WaveOutEvent())
