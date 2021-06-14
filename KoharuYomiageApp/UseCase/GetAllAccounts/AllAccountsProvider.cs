@@ -25,10 +25,10 @@ namespace KoharuYomiageApp.UseCase.GetAllAccounts
             var misskeyData = await _misskeyAccountRepository.GetAllMisskeyAccounts(cancellationToken);
             return mastodonData.Select(d =>
                     new AccountData(d.AccountIdentifier.Value, d.Username.Value, d.Instance.Value, d.IconUrl.IconUrl,
-                        d.IsReadingPostsFromThisAccount.Value))
+                        d.IsReadingPostsFromThisAccount.Value, "Mastodon"))
                 .Concat(misskeyData.Select(d =>
                     new AccountData(d.AccountIdentifier.Value, d.Username.Value, d.Instance.Value, d.IconUrl.IconUrl,
-                        d.IsReadingPostsFromThisAccount.Value)))
+                        d.IsReadingPostsFromThisAccount.Value, "Misskey")))
                 .ToList();
         }
     }

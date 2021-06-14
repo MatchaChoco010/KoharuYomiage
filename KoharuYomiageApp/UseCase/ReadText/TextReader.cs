@@ -117,6 +117,109 @@ namespace KoharuYomiageApp.UseCase.ReadText
                                 accountIdentifier, cancellationToken);
                         voiceParameter.SetCurrentProfile(profile);
                         break;
+
+                    case ReadingTextItem.MisskeyNoteReadingTextItem:
+                        profile =
+                            await _voiceProfileRepository.GetVoiceProfile<VoiceProfile.MisskeyNoteVoiceProfile>(
+                                accountIdentifier, cancellationToken);
+                        voiceParameter.SetCurrentProfile(profile);
+                        break;
+                    case ReadingTextItem.MisskeySensitiveNoteReadingTextItem:
+                        profile =
+                            await _voiceProfileRepository.GetVoiceProfile<VoiceProfile.MisskeySensitiveNoteVoiceProfile>(
+                                accountIdentifier, cancellationToken);
+                        voiceParameter.SetCurrentProfile(profile);
+                        break;
+                    case ReadingTextItem.MisskeyRenoteReadingTextItem:
+                        profile =
+                            await _voiceProfileRepository.GetVoiceProfile<VoiceProfile.MisskeyRenoteVoiceProfile>(
+                                accountIdentifier, cancellationToken);
+                        voiceParameter.SetCurrentProfile(profile);
+                        break;
+                    case ReadingTextItem.MisskeySensitiveRenoteReadingTextItem:
+                        profile =
+                            await _voiceProfileRepository.GetVoiceProfile<VoiceProfile.MisskeySensitiveRenoteVoiceProfile>(
+                                accountIdentifier, cancellationToken);
+                        voiceParameter.SetCurrentProfile(profile);
+                        break;
+                    case ReadingTextItem.MisskeyReactionNotificationReadingTextItem:
+                        profile =
+                            await _voiceProfileRepository.GetVoiceProfile<VoiceProfile.MisskeyReactionNotificationVoiceProfile>(
+                                accountIdentifier, cancellationToken);
+                        voiceParameter.SetCurrentProfile(profile);
+                        break;
+                    case ReadingTextItem.MisskeySensitiveReactionNotificationReadingTextItem:
+                        profile =
+                            await _voiceProfileRepository.GetVoiceProfile<VoiceProfile.MisskeySensitiveReactionNotificationVoiceProfile>(
+                                accountIdentifier, cancellationToken);
+                        voiceParameter.SetCurrentProfile(profile);
+                        break;
+                    case ReadingTextItem.MisskeyReplyNotificationReadingTextItem:
+                        profile =
+                            await _voiceProfileRepository.GetVoiceProfile<VoiceProfile.MisskeyReplyNotificationVoiceProfile>(
+                                accountIdentifier, cancellationToken);
+                        voiceParameter.SetCurrentProfile(profile);
+                        break;
+                    case ReadingTextItem.MisskeySensitiveReplyNotificationReadingTextItem:
+                        profile =
+                            await _voiceProfileRepository.GetVoiceProfile<VoiceProfile.MisskeySensitiveReplyNotificationVoiceProfile>(
+                                accountIdentifier, cancellationToken);
+                        voiceParameter.SetCurrentProfile(profile);
+                        break;
+                    case ReadingTextItem.MisskeyRenoteNotificationReadingTextItem:
+                        profile =
+                            await _voiceProfileRepository.GetVoiceProfile<VoiceProfile.MisskeyRenoteNotificationVoiceProfile>(
+                                accountIdentifier, cancellationToken);
+                        voiceParameter.SetCurrentProfile(profile);
+                        break;
+                    case ReadingTextItem.MisskeySensitiveRenoteNotificationReadingTextItem:
+                        profile =
+                            await _voiceProfileRepository.GetVoiceProfile<VoiceProfile.MisskeySensitiveRenoteNotificationVoiceProfile>(
+                                accountIdentifier, cancellationToken);
+                        voiceParameter.SetCurrentProfile(profile);
+                        break;
+                    case ReadingTextItem.MisskeyQuoteNotificationReadingTextItem:
+                        profile =
+                            await _voiceProfileRepository.GetVoiceProfile<VoiceProfile.MisskeyQuoteNotificationVoiceProfile>(
+                                accountIdentifier, cancellationToken);
+                        voiceParameter.SetCurrentProfile(profile);
+                        break;
+                    case ReadingTextItem.MisskeySensitiveQuoteNotificationReadingTextItem:
+                        profile =
+                            await _voiceProfileRepository.GetVoiceProfile<VoiceProfile.MisskeySensitiveQuoteNotificationVoiceProfile>(
+                                accountIdentifier, cancellationToken);
+                        voiceParameter.SetCurrentProfile(profile);
+                        break;
+                    case ReadingTextItem.MisskeyMentionNotificationReadingTextItem:
+                        profile =
+                            await _voiceProfileRepository.GetVoiceProfile<VoiceProfile.MisskeyMentionNotificationVoiceProfile>(
+                                accountIdentifier, cancellationToken);
+                        voiceParameter.SetCurrentProfile(profile);
+                        break;
+                    case ReadingTextItem.MisskeySensitiveMentionNotificationReadingTextItem:
+                        profile =
+                            await _voiceProfileRepository.GetVoiceProfile<VoiceProfile.MisskeySensitiveMentionNotificationVoiceProfile>(
+                                accountIdentifier, cancellationToken);
+                        voiceParameter.SetCurrentProfile(profile);
+                        break;
+                    case ReadingTextItem.MisskeyFollowNotificationReadingTextItem:
+                        profile =
+                            await _voiceProfileRepository.GetVoiceProfile<VoiceProfile.MisskeyFollowNotificationVoiceProfile>(
+                                accountIdentifier, cancellationToken);
+                        voiceParameter.SetCurrentProfile(profile);
+                        break;
+                    case ReadingTextItem.MisskeyFollowRequestAcceptedNotificationReadingTextItem:
+                        profile =
+                            await _voiceProfileRepository.GetVoiceProfile<VoiceProfile.MisskeyFollowRequestAcceptedNotificationVoiceProfile>(
+                                accountIdentifier, cancellationToken);
+                        voiceParameter.SetCurrentProfile(profile);
+                        break;
+                    case ReadingTextItem.MisskeyReceiveFollowRequestNotificationReadingTextItem:
+                        profile =
+                            await _voiceProfileRepository.GetVoiceProfile<VoiceProfile.MisskeyReceiveFollowRequestNotificationVoiceProfile>(
+                                accountIdentifier, cancellationToken);
+                        voiceParameter.SetCurrentProfile(profile);
+                        break;
                 }
 
                 try

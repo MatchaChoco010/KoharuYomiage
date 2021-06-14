@@ -157,5 +157,124 @@ namespace KoharuYomiageApp.Domain.VoiceParameters
             {
             }
         }
+
+        public class MisskeyNoteVoiceProfile : VoiceProfile
+        {
+            public MisskeyNoteVoiceProfile(AccountIdentifier accountIdentifier) : base(accountIdentifier)
+            {
+            }
+        }
+
+        public class MisskeySensitiveNoteVoiceProfile : VoiceProfile
+        {
+            public MisskeySensitiveNoteVoiceProfile(AccountIdentifier accountIdentifier) : base(accountIdentifier)
+            {
+            }
+        }
+
+        public class MisskeyRenoteVoiceProfile : VoiceProfile
+        {
+            public MisskeyRenoteVoiceProfile(AccountIdentifier accountIdentifier) : base(accountIdentifier)
+            {
+            }
+        }
+
+        public class MisskeySensitiveRenoteVoiceProfile : VoiceProfile
+        {
+            public MisskeySensitiveRenoteVoiceProfile(AccountIdentifier accountIdentifier) : base(accountIdentifier)
+            {
+            }
+        }
+
+        public class MisskeyReactionNotificationVoiceProfile : VoiceProfile
+        {
+            public MisskeyReactionNotificationVoiceProfile(AccountIdentifier accountIdentifier) : base(accountIdentifier)
+            {
+            }
+        }
+
+        public class MisskeySensitiveReactionNotificationVoiceProfile : VoiceProfile
+        {
+            public MisskeySensitiveReactionNotificationVoiceProfile(AccountIdentifier accountIdentifier) : base(accountIdentifier)
+            {
+            }
+        }
+
+        public class MisskeyReplyNotificationVoiceProfile : VoiceProfile
+        {
+            public MisskeyReplyNotificationVoiceProfile(AccountIdentifier accountIdentifier) : base(accountIdentifier)
+            {
+            }
+        }
+
+        public class MisskeySensitiveReplyNotificationVoiceProfile : VoiceProfile
+        {
+            public MisskeySensitiveReplyNotificationVoiceProfile(AccountIdentifier accountIdentifier) : base(accountIdentifier)
+            {
+            }
+        }
+
+        public class MisskeyRenoteNotificationVoiceProfile : VoiceProfile
+        {
+            public MisskeyRenoteNotificationVoiceProfile(AccountIdentifier accountIdentifier) : base(accountIdentifier)
+            {
+            }
+        }
+
+        public class MisskeySensitiveRenoteNotificationVoiceProfile : VoiceProfile
+        {
+            public MisskeySensitiveRenoteNotificationVoiceProfile(AccountIdentifier accountIdentifier) : base(accountIdentifier)
+            {
+            }
+        }
+
+        public class MisskeyQuoteNotificationVoiceProfile : VoiceProfile
+        {
+            public MisskeyQuoteNotificationVoiceProfile(AccountIdentifier accountIdentifier) : base(accountIdentifier)
+            {
+            }
+        }
+
+        public class MisskeySensitiveQuoteNotificationVoiceProfile : VoiceProfile
+        {
+            public MisskeySensitiveQuoteNotificationVoiceProfile(AccountIdentifier accountIdentifier) : base(accountIdentifier)
+            {
+            }
+        }
+
+        public class MisskeyMentionNotificationVoiceProfile : VoiceProfile
+        {
+            public MisskeyMentionNotificationVoiceProfile(AccountIdentifier accountIdentifier) : base(accountIdentifier)
+            {
+            }
+        }
+
+        public class MisskeySensitiveMentionNotificationVoiceProfile : VoiceProfile
+        {
+            public MisskeySensitiveMentionNotificationVoiceProfile(AccountIdentifier accountIdentifier) : base(accountIdentifier)
+            {
+            }
+        }
+
+        public class MisskeyFollowNotificationVoiceProfile : VoiceProfile
+        {
+            public MisskeyFollowNotificationVoiceProfile(AccountIdentifier accountIdentifier) : base(accountIdentifier)
+            {
+            }
+        }
+
+        public class MisskeyFollowRequestAcceptedNotificationVoiceProfile : VoiceProfile
+        {
+            public MisskeyFollowRequestAcceptedNotificationVoiceProfile(AccountIdentifier accountIdentifier) : base(accountIdentifier)
+            {
+            }
+        }
+
+        public class MisskeyReceiveFollowRequestNotificationVoiceProfile : VoiceProfile
+        {
+            public MisskeyReceiveFollowRequestNotificationVoiceProfile(AccountIdentifier accountIdentifier) : base(accountIdentifier)
+            {
+            }
+        }
     }
 }

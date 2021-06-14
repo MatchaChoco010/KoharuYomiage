@@ -55,13 +55,47 @@ namespace KoharuYomiageApp.UseCase.EditVoiceProfile
                     .GetVoiceProfile<VoiceProfile.MastodonFavoriteNotificationVoiceProfile>(id, cancellationToken),
                 VoiceProfileType.MastodonSensitiveFavoriteNotification => await _repository
                     .GetVoiceProfile<VoiceProfile.MastodonSensitiveFavoriteNotificationVoiceProfile>(id, cancellationToken),
+
+                VoiceProfileType.MisskeyNote => await _repository
+                    .GetVoiceProfile<VoiceProfile.MisskeyNoteVoiceProfile>(id, cancellationToken),
+                VoiceProfileType.MisskeySensitiveNote => await _repository
+                    .GetVoiceProfile<VoiceProfile.MisskeySensitiveNoteVoiceProfile>(id, cancellationToken),
+                VoiceProfileType.MisskeyRenote => await _repository
+                    .GetVoiceProfile<VoiceProfile.MisskeyRenoteVoiceProfile>(id, cancellationToken),
+                VoiceProfileType.MisskeySensitiveRenote => await _repository
+                    .GetVoiceProfile<VoiceProfile.MisskeySensitiveRenoteVoiceProfile>(id, cancellationToken),
+                VoiceProfileType.MisskeyReactionNotification => await _repository
+                    .GetVoiceProfile<VoiceProfile.MisskeyReactionNotificationVoiceProfile>(id, cancellationToken),
+                VoiceProfileType.MisskeySensitiveReactionNotification => await _repository
+                    .GetVoiceProfile<VoiceProfile.MisskeySensitiveReactionNotificationVoiceProfile>(id, cancellationToken),
+                VoiceProfileType.MisskeyReplyNotification => await _repository
+                    .GetVoiceProfile<VoiceProfile.MisskeyReplyNotificationVoiceProfile>(id, cancellationToken),
+                VoiceProfileType.MisskeySensitiveReplyNotification => await _repository
+                    .GetVoiceProfile<VoiceProfile.MisskeySensitiveReplyNotificationVoiceProfile>(id, cancellationToken),
+                VoiceProfileType.MisskeyRenoteNotification => await _repository
+                    .GetVoiceProfile<VoiceProfile.MisskeyRenoteNotificationVoiceProfile>(id, cancellationToken),
+                VoiceProfileType.MisskeySensitiveRenoteNotification => await _repository
+                    .GetVoiceProfile<VoiceProfile.MisskeySensitiveRenoteNotificationVoiceProfile>(id, cancellationToken),
+                VoiceProfileType.MisskeyQuoteNotification => await _repository
+                    .GetVoiceProfile<VoiceProfile.MisskeyQuoteNotificationVoiceProfile>(id, cancellationToken),
+                VoiceProfileType.MisskeySensitiveQuoteNotification => await _repository
+                    .GetVoiceProfile<VoiceProfile.MisskeySensitiveQuoteNotificationVoiceProfile>(id, cancellationToken),
+                VoiceProfileType.MisskeyMentionNotification => await _repository
+                    .GetVoiceProfile<VoiceProfile.MisskeyMentionNotificationVoiceProfile>(id, cancellationToken),
+                VoiceProfileType.MisskeySensitiveMentionNotification => await _repository
+                    .GetVoiceProfile<VoiceProfile.MisskeySensitiveMentionNotificationVoiceProfile>(id, cancellationToken),
+                VoiceProfileType.MisskeyFollowNotification => await _repository
+                    .GetVoiceProfile<VoiceProfile.MisskeyFollowNotificationVoiceProfile>(id, cancellationToken),
+                VoiceProfileType.MisskeyFollowRequestAcceptedNotification => await _repository
+                    .GetVoiceProfile<VoiceProfile.MisskeyFollowRequestAcceptedNotificationVoiceProfile>(id, cancellationToken),
+                VoiceProfileType.MisskeyReceiveFollowRequestNotification => await _repository
+                    .GetVoiceProfile<VoiceProfile.MisskeyReceiveFollowRequestNotificationVoiceProfile>(id, cancellationToken),
+
                 _ => throw new InvalidProgramException(),
             };
 
             profile.Update(data.Volume, data.Speed, data.Tone, data.Alpha, data.ToneScale, data.ComponentNormal,
                 data.ComponentHappy, data.ComponentAnger, data.ComponentSorrow, data.ComponentCalmness);
-
-            System.Diagnostics.Debug.WriteLine(profile);
 
             await _repository.SaveVoiceProfile(profile, cancellationToken);
         }
@@ -95,6 +129,42 @@ namespace KoharuYomiageApp.UseCase.EditVoiceProfile
                     .GetVoiceProfile<VoiceProfile.MastodonFavoriteNotificationVoiceProfile>(id, cancellationToken),
                 VoiceProfileType.MastodonSensitiveFavoriteNotification => await _repository
                     .GetVoiceProfile<VoiceProfile.MastodonSensitiveFavoriteNotificationVoiceProfile>(id, cancellationToken),
+
+                VoiceProfileType.MisskeyNote => await _repository
+                    .GetVoiceProfile<VoiceProfile.MisskeyNoteVoiceProfile>(id, cancellationToken),
+                VoiceProfileType.MisskeySensitiveNote => await _repository
+                    .GetVoiceProfile<VoiceProfile.MisskeySensitiveNoteVoiceProfile>(id, cancellationToken),
+                VoiceProfileType.MisskeyRenote => await _repository
+                    .GetVoiceProfile<VoiceProfile.MisskeyRenoteVoiceProfile>(id, cancellationToken),
+                VoiceProfileType.MisskeySensitiveRenote => await _repository
+                    .GetVoiceProfile<VoiceProfile.MisskeySensitiveRenoteVoiceProfile>(id, cancellationToken),
+                VoiceProfileType.MisskeyReactionNotification => await _repository
+                    .GetVoiceProfile<VoiceProfile.MisskeyReactionNotificationVoiceProfile>(id, cancellationToken),
+                VoiceProfileType.MisskeySensitiveReactionNotification => await _repository
+                    .GetVoiceProfile<VoiceProfile.MisskeySensitiveReactionNotificationVoiceProfile>(id, cancellationToken),
+                VoiceProfileType.MisskeyReplyNotification => await _repository
+                    .GetVoiceProfile<VoiceProfile.MisskeyReplyNotificationVoiceProfile>(id, cancellationToken),
+                VoiceProfileType.MisskeySensitiveReplyNotification => await _repository
+                    .GetVoiceProfile<VoiceProfile.MisskeySensitiveReplyNotificationVoiceProfile>(id, cancellationToken),
+                VoiceProfileType.MisskeyRenoteNotification => await _repository
+                    .GetVoiceProfile<VoiceProfile.MisskeyRenoteNotificationVoiceProfile>(id, cancellationToken),
+                VoiceProfileType.MisskeySensitiveRenoteNotification => await _repository
+                    .GetVoiceProfile<VoiceProfile.MisskeySensitiveRenoteNotificationVoiceProfile>(id, cancellationToken),
+                VoiceProfileType.MisskeyQuoteNotification => await _repository
+                    .GetVoiceProfile<VoiceProfile.MisskeyQuoteNotificationVoiceProfile>(id, cancellationToken),
+                VoiceProfileType.MisskeySensitiveQuoteNotification => await _repository
+                    .GetVoiceProfile<VoiceProfile.MisskeySensitiveQuoteNotificationVoiceProfile>(id, cancellationToken),
+                VoiceProfileType.MisskeyMentionNotification => await _repository
+                    .GetVoiceProfile<VoiceProfile.MisskeyMentionNotificationVoiceProfile>(id, cancellationToken),
+                VoiceProfileType.MisskeySensitiveMentionNotification => await _repository
+                    .GetVoiceProfile<VoiceProfile.MisskeySensitiveMentionNotificationVoiceProfile>(id, cancellationToken),
+                VoiceProfileType.MisskeyFollowNotification => await _repository
+                    .GetVoiceProfile<VoiceProfile.MisskeyFollowNotificationVoiceProfile>(id, cancellationToken),
+                VoiceProfileType.MisskeyFollowRequestAcceptedNotification => await _repository
+                    .GetVoiceProfile<VoiceProfile.MisskeyFollowRequestAcceptedNotificationVoiceProfile>(id, cancellationToken),
+                VoiceProfileType.MisskeyReceiveFollowRequestNotification => await _repository
+                    .GetVoiceProfile<VoiceProfile.MisskeyReceiveFollowRequestNotificationVoiceProfile>(id, cancellationToken),
+
                 _ => throw new InvalidProgramException(),
             };
 
@@ -133,6 +203,42 @@ namespace KoharuYomiageApp.UseCase.EditVoiceProfile
                     .GetVoiceProfile<VoiceProfile.MastodonFavoriteNotificationVoiceProfile>(accountIdentifier, cancellationToken),
                 VoiceProfileType.MastodonSensitiveFavoriteNotification => await _repository
                     .GetVoiceProfile<VoiceProfile.MastodonSensitiveFavoriteNotificationVoiceProfile>(accountIdentifier, cancellationToken),
+
+                VoiceProfileType.MisskeyNote => await _repository
+                    .GetVoiceProfile<VoiceProfile.MisskeyNoteVoiceProfile>(accountIdentifier, cancellationToken),
+                VoiceProfileType.MisskeySensitiveNote => await _repository
+                    .GetVoiceProfile<VoiceProfile.MisskeySensitiveNoteVoiceProfile>(accountIdentifier, cancellationToken),
+                VoiceProfileType.MisskeyRenote => await _repository
+                    .GetVoiceProfile<VoiceProfile.MisskeyRenoteVoiceProfile>(accountIdentifier, cancellationToken),
+                VoiceProfileType.MisskeySensitiveRenote => await _repository
+                    .GetVoiceProfile<VoiceProfile.MisskeySensitiveRenoteVoiceProfile>(accountIdentifier, cancellationToken),
+                VoiceProfileType.MisskeyReactionNotification => await _repository
+                    .GetVoiceProfile<VoiceProfile.MisskeyReactionNotificationVoiceProfile>(accountIdentifier, cancellationToken),
+                VoiceProfileType.MisskeySensitiveReactionNotification => await _repository
+                    .GetVoiceProfile<VoiceProfile.MisskeySensitiveReactionNotificationVoiceProfile>(accountIdentifier, cancellationToken),
+                VoiceProfileType.MisskeyReplyNotification => await _repository
+                    .GetVoiceProfile<VoiceProfile.MisskeyReplyNotificationVoiceProfile>(accountIdentifier, cancellationToken),
+                VoiceProfileType.MisskeySensitiveReplyNotification => await _repository
+                    .GetVoiceProfile<VoiceProfile.MisskeySensitiveReplyNotificationVoiceProfile>(accountIdentifier, cancellationToken),
+                VoiceProfileType.MisskeyRenoteNotification => await _repository
+                    .GetVoiceProfile<VoiceProfile.MisskeyRenoteNotificationVoiceProfile>(accountIdentifier, cancellationToken),
+                VoiceProfileType.MisskeySensitiveRenoteNotification => await _repository
+                    .GetVoiceProfile<VoiceProfile.MisskeySensitiveRenoteNotificationVoiceProfile>(accountIdentifier, cancellationToken),
+                VoiceProfileType.MisskeyQuoteNotification => await _repository
+                    .GetVoiceProfile<VoiceProfile.MisskeyQuoteNotificationVoiceProfile>(accountIdentifier, cancellationToken),
+                VoiceProfileType.MisskeySensitiveQuoteNotification => await _repository
+                    .GetVoiceProfile<VoiceProfile.MisskeySensitiveQuoteNotificationVoiceProfile>(accountIdentifier, cancellationToken),
+                VoiceProfileType.MisskeyMentionNotification => await _repository
+                    .GetVoiceProfile<VoiceProfile.MisskeyMentionNotificationVoiceProfile>(accountIdentifier, cancellationToken),
+                VoiceProfileType.MisskeySensitiveMentionNotification => await _repository
+                    .GetVoiceProfile<VoiceProfile.MisskeySensitiveMentionNotificationVoiceProfile>(accountIdentifier, cancellationToken),
+                VoiceProfileType.MisskeyFollowNotification => await _repository
+                    .GetVoiceProfile<VoiceProfile.MisskeyFollowNotificationVoiceProfile>(accountIdentifier, cancellationToken),
+                VoiceProfileType.MisskeyFollowRequestAcceptedNotification => await _repository
+                    .GetVoiceProfile<VoiceProfile.MisskeyFollowRequestAcceptedNotificationVoiceProfile>(accountIdentifier, cancellationToken),
+                VoiceProfileType.MisskeyReceiveFollowRequestNotification => await _repository
+                    .GetVoiceProfile<VoiceProfile.MisskeyReceiveFollowRequestNotificationVoiceProfile>(accountIdentifier, cancellationToken),
+
                 _ => throw new InvalidProgramException(),
             };
             var voiceParameter = await _voiceParameterChangeNotifierRepository.GetInstance(cancellationToken);

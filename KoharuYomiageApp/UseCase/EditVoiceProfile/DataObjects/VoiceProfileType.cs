@@ -14,5 +14,23 @@
         MastodonSensitiveReblogNotification,
         MastodonFavoriteNotification,
         MastodonSensitiveFavoriteNotification,
+
+        MisskeyNote,
+        MisskeySensitiveNote,
+        MisskeyRenote,
+        MisskeySensitiveRenote,
+        MisskeyReactionNotification,
+        MisskeySensitiveReactionNotification,
+        MisskeyReplyNotification,
+        MisskeySensitiveReplyNotification,
+        MisskeyRenoteNotification,
+        MisskeySensitiveRenoteNotification,
+        MisskeyQuoteNotification,
+        MisskeySensitiveQuoteNotification,
+        MisskeyMentionNotification,
+        MisskeySensitiveMentionNotification,
+        MisskeyFollowNotification,
+        MisskeyFollowRequestAcceptedNotification,
+        MisskeyReceiveFollowRequestNotification,
     }
 }

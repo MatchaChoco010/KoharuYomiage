@@ -41,12 +41,13 @@ namespace KoharuYomiageApp.Data.Repository
 
                 var type = typeof(T) switch
                 {
-                    var c when c == typeof(VoiceProfile.MastodonStatusVoiceProfile) => "MastodonStatus",
+                    var c when c == typeof(VoiceProfile.MastodonStatusVoiceProfile) => "MastodonStatusVoiceProfile",
                     var c when c == typeof(VoiceProfile.MastodonSensitiveStatusVoiceProfile) =>
-                        "MastodonSensitiveStatus",
-                    var c when c == typeof(VoiceProfile.MastodonBoostedStatusVoiceProfile) => "MastodonBoostedStatus",
+                        "MastodonSensitiveStatusVoiceProfile",
+                    var c when c == typeof(VoiceProfile.MastodonBoostedStatusVoiceProfile) =>
+                        "MastodonBoostedStatusVoiceProfile",
                     var c when c == typeof(VoiceProfile.MastodonBoostedSensitiveStatusVoiceProfile) =>
-                        "MastodonBoostedSensitiveStatus",
+                        "MastodonBoostedSensitiveStatusVoiceProfile",
                     var c when c == typeof(VoiceProfile.MastodonFollowNotificationVoiceProfile) =>
                         "MastodonFollowNotificationVoiceProfile",
                     var c when c == typeof(VoiceProfile.MastodonFollowRequestNotificationVoiceProfile) =>
@@ -63,6 +64,40 @@ namespace KoharuYomiageApp.Data.Repository
                         "MastodonFavoriteNotificationVoiceProfile",
                     var c when c == typeof(VoiceProfile.MastodonSensitiveFavoriteNotificationVoiceProfile) =>
                         "MastodonSensitiveFavoriteNotificationVoiceProfile",
+
+                    var c when c == typeof(VoiceProfile.MisskeyNoteVoiceProfile) => "MisskeyNoteVoiceProfile",
+                    var c when c == typeof(VoiceProfile.MisskeySensitiveNoteVoiceProfile) =>
+                        "MisskeySensitiveNoteVoiceProfile",
+                    var c when c == typeof(VoiceProfile.MisskeyRenoteVoiceProfile) => "MisskeyRenoteVoiceProfile",
+                    var c when c == typeof(VoiceProfile.MisskeySensitiveRenoteVoiceProfile) =>
+                        "MisskeySensitiveRenoteVoiceProfile",
+                    var c when c == typeof(VoiceProfile.MisskeyReactionNotificationVoiceProfile) =>
+                        "MisskeyReactionNotificationVoiceProfile",
+                    var c when c == typeof(VoiceProfile.MisskeySensitiveReactionNotificationVoiceProfile) =>
+                        "MisskeySensitiveReactionNotificationVoiceProfile",
+                    var c when c == typeof(VoiceProfile.MisskeyReplyNotificationVoiceProfile) =>
+                        "MisskeyReplyNotificationVoiceProfile",
+                    var c when c == typeof(VoiceProfile.MisskeySensitiveReplyNotificationVoiceProfile) =>
+                        "MisskeySensitiveReplyNotificationVoiceProfile",
+                    var c when c == typeof(VoiceProfile.MisskeyRenoteNotificationVoiceProfile) =>
+                        "MisskeyRenoteNotificationVoiceProfile",
+                    var c when c == typeof(VoiceProfile.MisskeySensitiveRenoteNotificationVoiceProfile) =>
+                        "MisskeySensitiveRenoteNotificationVoiceProfile",
+                    var c when c == typeof(VoiceProfile.MisskeyQuoteNotificationVoiceProfile) =>
+                        "MisskeyQuoteNotificationVoiceProfile",
+                    var c when c == typeof(VoiceProfile.MisskeySensitiveQuoteNotificationVoiceProfile) =>
+                        "MisskeySensitiveQuoteNotificationVoiceProfile",
+                    var c when c == typeof(VoiceProfile.MisskeyMentionNotificationVoiceProfile) =>
+                        "MisskeyMentionNotificationVoiceProfile",
+                    var c when c == typeof(VoiceProfile.MisskeySensitiveMentionNotificationVoiceProfile) =>
+                        "MisskeySensitiveMentionNotificationVoiceProfile",
+                    var c when c == typeof(VoiceProfile.MisskeyFollowNotificationVoiceProfile) =>
+                        "MisskeyFollowNotificationVoiceProfile",
+                    var c when c == typeof(VoiceProfile.MisskeyFollowRequestAcceptedNotificationVoiceProfile) =>
+                        "MisskeyFollowRequestAcceptedNotificationVoiceProfile",
+                    var c when c == typeof(VoiceProfile.MisskeyReceiveFollowRequestNotificationVoiceProfile) =>
+                        "MisskeyReceiveFollowRequestNotificationVoiceProfile",
+
                     _ => throw new ArgumentException()
                 };
 
@@ -73,12 +108,14 @@ namespace KoharuYomiageApp.Data.Repository
 
                 VoiceProfile profile = type switch
                 {
-                    "MastodonStatus" => new VoiceProfile.MastodonStatusVoiceProfile(accountIdentifier),
-                    "MastodonSensitiveStatus" =>
+                    "MastodonStatusVoiceProfile" => new VoiceProfile.MastodonStatusVoiceProfile(accountIdentifier),
+                    "MastodonSensitiveStatusVoiceProfile" =>
                         new VoiceProfile.MastodonSensitiveStatusVoiceProfile(accountIdentifier),
-                    "MastodonBoostedStatus" => new VoiceProfile.MastodonBoostedStatusVoiceProfile(accountIdentifier),
-                    "MastodonBoostedSensitiveStatus" => new VoiceProfile.MastodonBoostedSensitiveStatusVoiceProfile(
+                    "MastodonBoostedStatusVoiceProfile" => new VoiceProfile.MastodonBoostedStatusVoiceProfile(
                         accountIdentifier),
+                    "MastodonBoostedSensitiveStatusVoiceProfile" => new
+                        VoiceProfile.MastodonBoostedSensitiveStatusVoiceProfile(
+                            accountIdentifier),
                     "MastodonFollowNotificationVoiceProfile" => new VoiceProfile.MastodonFollowNotificationVoiceProfile(
                         accountIdentifier),
                     "MastodonFollowRequestNotificationVoiceProfile" =>
@@ -93,7 +130,42 @@ namespace KoharuYomiageApp.Data.Repository
                         new VoiceProfile.MastodonSensitiveReblogNotificationVoiceProfile(accountIdentifier),
                     "MastodonFavoriteNotificationVoiceProfile" =>
                         new VoiceProfile.MastodonFavoriteNotificationVoiceProfile(accountIdentifier),
-                    "MastodonSensitiveFavoriteNotificationVoiceProfile" => new VoiceProfile.MastodonSensitiveFavoriteNotificationVoiceProfile(accountIdentifier),
+                    "MastodonSensitiveFavoriteNotificationVoiceProfile" => new
+                        VoiceProfile.MastodonSensitiveFavoriteNotificationVoiceProfile(accountIdentifier),
+
+                    "MisskeyNoteVoiceProfile" => new VoiceProfile.MisskeyNoteVoiceProfile(accountIdentifier),
+                    "MisskeySensitiveNoteVoiceProfile" => new VoiceProfile.MisskeySensitiveNoteVoiceProfile(
+                        accountIdentifier),
+                    "MisskeyRenoteVoiceProfile" => new VoiceProfile.MisskeyRenoteVoiceProfile(accountIdentifier),
+                    "MisskeySensitiveRenoteVoiceProfile" => new VoiceProfile.MisskeySensitiveRenoteVoiceProfile(
+                        accountIdentifier),
+                    "MisskeyReactionNotificationVoiceProfile" =>
+                        new VoiceProfile.MisskeyReactionNotificationVoiceProfile(accountIdentifier),
+                    "MisskeySensitiveReactionNotificationVoiceProfile" => new
+                        VoiceProfile.MisskeySensitiveReactionNotificationVoiceProfile(accountIdentifier),
+                    "MisskeyReplyNotificationVoiceProfile" => new VoiceProfile.MisskeyReplyNotificationVoiceProfile(
+                        accountIdentifier),
+                    "MisskeySensitiveReplyNotificationVoiceProfile" =>
+                        new VoiceProfile.MisskeySensitiveReplyNotificationVoiceProfile(accountIdentifier),
+                    "MisskeyRenoteNotificationVoiceProfile" => new VoiceProfile.MisskeyRenoteNotificationVoiceProfile(
+                        accountIdentifier),
+                    "MisskeySensitiveRenoteNotificationVoiceProfile" =>
+                        new VoiceProfile.MisskeySensitiveRenoteNotificationVoiceProfile(accountIdentifier),
+                    "MisskeyQuoteNotificationVoiceProfile" => new VoiceProfile.MisskeyQuoteNotificationVoiceProfile(
+                        accountIdentifier),
+                    "MisskeySensitiveQuoteNotificationVoiceProfile" =>
+                        new VoiceProfile.MisskeySensitiveQuoteNotificationVoiceProfile(accountIdentifier),
+                    "MisskeyMentionNotificationVoiceProfile" => new VoiceProfile.MisskeyMentionNotificationVoiceProfile(
+                        accountIdentifier),
+                    "MisskeySensitiveMentionNotificationVoiceProfile" =>
+                        new VoiceProfile.MisskeySensitiveMentionNotificationVoiceProfile(accountIdentifier),
+                    "MisskeyFollowNotificationVoiceProfile" => new VoiceProfile.MisskeyFollowNotificationVoiceProfile(
+                        accountIdentifier),
+                    "MisskeyFollowRequestAcceptedNotificationVoiceProfile" => new
+                        VoiceProfile.MisskeyFollowRequestAcceptedNotificationVoiceProfile(accountIdentifier),
+                    "MisskeyReceiveFollowRequestNotificationVoiceProfile" => new
+                        VoiceProfile.MisskeyReceiveFollowRequestNotificationVoiceProfile(accountIdentifier),
+
                     _ => throw new ArgumentException()
                 };
                 _profiles.Add((accountIdentifier, type), profile);
@@ -131,27 +203,68 @@ namespace KoharuYomiageApp.Data.Repository
 
                         VoiceProfile profile = d.Type switch
                         {
-                            "MastodonStatus" => new VoiceProfile.MastodonStatusVoiceProfile(accountIdentifier),
-                            "MastodonSensitiveStatus" =>
+                            "MastodonStatusVoiceProfile" => new VoiceProfile.MastodonStatusVoiceProfile(
+                                accountIdentifier),
+                            "MastodonSensitiveStatusVoiceProfile" =>
                                 new VoiceProfile.MastodonSensitiveStatusVoiceProfile(accountIdentifier),
-                            "MastodonBoostedStatus" => new VoiceProfile.MastodonBoostedStatusVoiceProfile(accountIdentifier),
-                            "MastodonBoostedSensitiveStatus" => new VoiceProfile.MastodonBoostedSensitiveStatusVoiceProfile(
+                            "MastodonBoostedStatusVoiceProfile" => new VoiceProfile.MastodonBoostedStatusVoiceProfile(
                                 accountIdentifier),
-                            "MastodonFollowNotificationVoiceProfile" => new VoiceProfile.MastodonFollowNotificationVoiceProfile(
-                                accountIdentifier),
+                            "MastodonBoostedSensitiveStatusVoiceProfile" => new
+                                VoiceProfile.MastodonBoostedSensitiveStatusVoiceProfile(
+                                    accountIdentifier),
+                            "MastodonFollowNotificationVoiceProfile" => new
+                                VoiceProfile.MastodonFollowNotificationVoiceProfile(
+                                    accountIdentifier),
                             "MastodonFollowRequestNotificationVoiceProfile" =>
                                 new VoiceProfile.MastodonFollowRequestNotificationVoiceProfile(accountIdentifier),
                             "MastodonMentionNotificationVoiceProfile" =>
                                 new VoiceProfile.MastodonMentionNotificationVoiceProfile(accountIdentifier),
                             "MastodonSensitiveMentionNotificationVoiceProfile" => new
                                 VoiceProfile.MastodonSensitiveMentionNotificationVoiceProfile(accountIdentifier),
-                            "MastodonReblogNotificationVoiceProfile" => new VoiceProfile.MastodonReblogNotificationVoiceProfile(
-                                accountIdentifier),
+                            "MastodonReblogNotificationVoiceProfile" => new
+                                VoiceProfile.MastodonReblogNotificationVoiceProfile(
+                                    accountIdentifier),
                             "MastodonSensitiveReblogNotificationVoiceProfile" =>
                                 new VoiceProfile.MastodonSensitiveReblogNotificationVoiceProfile(accountIdentifier),
                             "MastodonFavoriteNotificationVoiceProfile" =>
                                 new VoiceProfile.MastodonFavoriteNotificationVoiceProfile(accountIdentifier),
-                            "MastodonSensitiveFavoriteNotificationVoiceProfile" => new VoiceProfile.MastodonSensitiveFavoriteNotificationVoiceProfile(accountIdentifier),
+                            "MastodonSensitiveFavoriteNotificationVoiceProfile" => new
+                                VoiceProfile.MastodonSensitiveFavoriteNotificationVoiceProfile(accountIdentifier),
+
+                            "MisskeyNoteVoiceProfile" => new VoiceProfile.MisskeyNoteVoiceProfile(accountIdentifier),
+                            "MisskeySensitiveNoteVoiceProfile" => new VoiceProfile.MisskeySensitiveNoteVoiceProfile(
+                                accountIdentifier),
+                            "MisskeyRenoteVoiceProfile" =>
+                                new VoiceProfile.MisskeyRenoteVoiceProfile(accountIdentifier),
+                            "MisskeySensitiveRenoteVoiceProfile" => new VoiceProfile.MisskeySensitiveRenoteVoiceProfile(
+                                accountIdentifier),
+                            "MisskeyReactionNotificationVoiceProfile" =>
+                                new VoiceProfile.MisskeyReactionNotificationVoiceProfile(accountIdentifier),
+                            "MisskeySensitiveReactionNotificationVoiceProfile" => new
+                                VoiceProfile.MisskeySensitiveReactionNotificationVoiceProfile(accountIdentifier),
+                            "MisskeyReplyNotificationVoiceProfile" =>
+                                new VoiceProfile.MisskeyReplyNotificationVoiceProfile(accountIdentifier),
+                            "MisskeySensitiveReplyNotificationVoiceProfile" => new
+                                VoiceProfile.MisskeySensitiveReplyNotificationVoiceProfile(accountIdentifier),
+                            "MisskeyRenoteNotificationVoiceProfile" =>
+                                new VoiceProfile.MisskeyRenoteNotificationVoiceProfile(accountIdentifier),
+                            "MisskeySensitiveRenoteNotificationVoiceProfile" => new
+                                VoiceProfile.MisskeySensitiveRenoteNotificationVoiceProfile(accountIdentifier),
+                            "MisskeyQuoteNotificationVoiceProfile" =>
+                                new VoiceProfile.MisskeyQuoteNotificationVoiceProfile(accountIdentifier),
+                            "MisskeySensitiveQuoteNotificationVoiceProfile" => new
+                                VoiceProfile.MisskeySensitiveQuoteNotificationVoiceProfile(accountIdentifier),
+                            "MisskeyMentionNotificationVoiceProfile" =>
+                                new VoiceProfile.MisskeyMentionNotificationVoiceProfile(accountIdentifier),
+                            "MisskeySensitiveMentionNotificationVoiceProfile" => new
+                                VoiceProfile.MisskeySensitiveMentionNotificationVoiceProfile(accountIdentifier),
+                            "MisskeyFollowNotificationVoiceProfile" =>
+                                new VoiceProfile.MisskeyFollowNotificationVoiceProfile(accountIdentifier),
+                            "MisskeyFollowRequestAcceptedNotificationVoiceProfile" => new
+                                VoiceProfile.MisskeyFollowRequestAcceptedNotificationVoiceProfile(accountIdentifier),
+                            "MisskeyReceiveFollowRequestNotificationVoiceProfile" => new
+                                VoiceProfile.MisskeyReceiveFollowRequestNotificationVoiceProfile(accountIdentifier),
+
                             _ => throw new ArgumentException()
                         };
                         _profiles.Add((accountIdentifier, d.Type), profile);
@@ -177,18 +290,49 @@ namespace KoharuYomiageApp.Data.Repository
 
                 var type = profile switch
                 {
-                    VoiceProfile.MastodonStatusVoiceProfile => "MastodonStatus",
-                    VoiceProfile.MastodonSensitiveStatusVoiceProfile => "MastodonSensitiveStatus",
-                    VoiceProfile.MastodonBoostedStatusVoiceProfile => "MastodonBoostedStatus",
-                    VoiceProfile.MastodonBoostedSensitiveStatusVoiceProfile => "MastodonBoostedSensitiveStatus",
+                    VoiceProfile.MastodonStatusVoiceProfile => "MastodonStatusVoiceProfile",
+                    VoiceProfile.MastodonSensitiveStatusVoiceProfile => "MastodonSensitiveStatusVoiceProfile",
+                    VoiceProfile.MastodonBoostedStatusVoiceProfile => "MastodonBoostedStatusVoiceProfile",
+                    VoiceProfile.MastodonBoostedSensitiveStatusVoiceProfile =>
+                        "MastodonBoostedSensitiveStatusVoiceProfile",
                     VoiceProfile.MastodonFollowNotificationVoiceProfile => "MastodonFollowNotificationVoiceProfile",
-                    VoiceProfile.MastodonFollowRequestNotificationVoiceProfile => "MastodonFollowRequestNotificationVoiceProfile",
+                    VoiceProfile.MastodonFollowRequestNotificationVoiceProfile =>
+                        "MastodonFollowRequestNotificationVoiceProfile",
                     VoiceProfile.MastodonMentionNotificationVoiceProfile => "MastodonMentionNotificationVoiceProfile",
-                    VoiceProfile.MastodonSensitiveMentionNotificationVoiceProfile => "MastodonSensitiveMentionNotificationVoiceProfile",
+                    VoiceProfile.MastodonSensitiveMentionNotificationVoiceProfile =>
+                        "MastodonSensitiveMentionNotificationVoiceProfile",
                     VoiceProfile.MastodonReblogNotificationVoiceProfile => "MastodonReblogNotificationVoiceProfile",
-                    VoiceProfile.MastodonSensitiveReblogNotificationVoiceProfile => "MastodonSensitiveReblogNotificationVoiceProfile",
+                    VoiceProfile.MastodonSensitiveReblogNotificationVoiceProfile =>
+                        "MastodonSensitiveReblogNotificationVoiceProfile",
                     VoiceProfile.MastodonFavoriteNotificationVoiceProfile => "MastodonFavoriteNotificationVoiceProfile",
-                    VoiceProfile.MastodonSensitiveFavoriteNotificationVoiceProfile => "MastodonSensitiveFavoriteNotificationVoiceProfile",
+                    VoiceProfile.MastodonSensitiveFavoriteNotificationVoiceProfile =>
+                        "MastodonSensitiveFavoriteNotificationVoiceProfile",
+
+                    VoiceProfile.MisskeyNoteVoiceProfile => "MisskeyNoteVoiceProfile",
+                    VoiceProfile.MisskeySensitiveNoteVoiceProfile => "MisskeySensitiveNoteVoiceProfile",
+                    VoiceProfile.MisskeyRenoteVoiceProfile => "MisskeyRenoteVoiceProfile",
+                    VoiceProfile.MisskeySensitiveRenoteVoiceProfile => "MisskeySensitiveRenoteVoiceProfile",
+                    VoiceProfile.MisskeyReactionNotificationVoiceProfile => "MisskeyReactionNotificationVoiceProfile",
+                    VoiceProfile.MisskeySensitiveReactionNotificationVoiceProfile =>
+                        "MisskeySensitiveReactionNotificationVoiceProfile",
+                    VoiceProfile.MisskeyReplyNotificationVoiceProfile => "MisskeyReplyNotificationVoiceProfile",
+                    VoiceProfile.MisskeySensitiveReplyNotificationVoiceProfile =>
+                        "MisskeySensitiveReplyNotificationVoiceProfile",
+                    VoiceProfile.MisskeyRenoteNotificationVoiceProfile => "MisskeyRenoteNotificationVoiceProfile",
+                    VoiceProfile.MisskeySensitiveRenoteNotificationVoiceProfile =>
+                        "MisskeySensitiveRenoteNotificationVoiceProfile",
+                    VoiceProfile.MisskeyQuoteNotificationVoiceProfile => "MisskeyQuoteNotificationVoiceProfile",
+                    VoiceProfile.MisskeySensitiveQuoteNotificationVoiceProfile =>
+                        "MisskeySensitiveQuoteNotificationVoiceProfile",
+                    VoiceProfile.MisskeyMentionNotificationVoiceProfile => "MisskeyMentionNotificationVoiceProfile",
+                    VoiceProfile.MisskeySensitiveMentionNotificationVoiceProfile =>
+                        "MisskeySensitiveMentionNotificationVoiceProfile",
+                    VoiceProfile.MisskeyFollowNotificationVoiceProfile => "MisskeyFollowNotificationVoiceProfile",
+                    VoiceProfile.MisskeyFollowRequestAcceptedNotificationVoiceProfile =>
+                        "MisskeyFollowRequestAcceptedNotificationVoiceProfile",
+                    VoiceProfile.MisskeyReceiveFollowRequestNotificationVoiceProfile =>
+                        "MisskeyReceiveFollowRequestNotificationVoiceProfile",
+
                     _ => throw new ArgumentException()
                 };
 

@@ -102,9 +102,9 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
             var accounts = await _accountListController.GetAllAcounts(cancellationToken);
             AccountList.Value = accounts.Select(tuple =>
             {
-                var (id, username, instance, iconUrl, isReadingPostFromThisAccount) = tuple;
+                var (id, username, instance, iconUrl, isReadingPostFromThisAccount, type) = tuple;
                 return new AccountItem(_accountListController, navigationContext, _dialogService, id, username,
-                    instance, iconUrl, isReadingPostFromThisAccount, _refreshAccountListSubject);
+                    instance, iconUrl, isReadingPostFromThisAccount, type, _refreshAccountListSubject);
             }).ToList();
         }
 
@@ -114,7 +114,7 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
 
             public AccountItem(AccountListController controller, NavigationContext navigationContext,
                 IDialogService dialogService, string accountIdentifier, string username, string instance, Uri iconUrl,
-                bool isReadingPostsFromThisAccount, Subject<Unit> refreshAllAccountListSubject)
+                bool isReadingPostsFromThisAccount, string type, Subject<Unit> refreshAllAccountListSubject)
             {
                 var isReadingFlag = isReadingPostsFromThisAccount;
 
@@ -140,8 +140,16 @@ namespace KoharuYomiageApp.Infrastructures.GUI.ViewModels
                 })).Switch().Subscribe().AddTo(_disposable);
                 AccountSettingCommand.Subscribe(_ =>
                 {
-                    navigationContext.NavigationService.RequestNavigate(nameof(MastodonAccountSetting),
-                        new NavigationParameters { { "Username", Username }, { "Instance", Instance } });
+                    if (type == "Mastodon")
+                    {
+                        navigationContext.NavigationService.RequestNavigate(nameof(MastodonAccountSetting),
+                            new NavigationParameters { { "Username", Username }, { "Instance", Instance } });
+                    }
+                    else
+                    {
+                        navigationContext.NavigationService.RequestNavigate(nameof(MisskeyAccountSetting),
+                            new NavigationParameters { { "Username", Username }, { "Instance", Instance } });
+                    }
                 }).AddTo(_disposable);
                 DeleteAccountCommand.Select(_ => Observable.StartAsync(async cancellationToken =>
                 {
