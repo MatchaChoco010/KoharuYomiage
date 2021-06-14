@@ -8,15 +8,20 @@
 
 CeVIO AI 小春六花 トークボイスにSNSのTimelineを読み上げてもらうためのソフトウェアです。
 
-現在対応しているSNSは次のとおりです。
+v2.0.0 現在で対応しているSNSは次のとおりです。
 
 - Mastodon
+- Misskey
 
 ## Download
 
 [Releases · MatchaChoco010/KoharuYomiage](https://github.com/MatchaChoco010/KoharuYomiage/releases)
 
 Zipファイルをダウンロードして好きな場所に解凍すれば使えます。
+
+## Update
+
+解凍したディレクトリの中の`settings.json`をコピーすれば声質の設定を引き継げます。
 
 ## Features
 
