@@ -40,7 +40,7 @@ Zipファイルをダウンロードして好きな場所に解凍すれば使�
 
 作者への連絡は次のアカウントから行えます。
 
-[@MatchaChoco010@social.orito-itsuki.net](https://social.orito-itsuki.net/@MatchaChoco010)
+[@MatchaChoco010Mk2@misskey.io](https://misskey.io/@MatchaChoco010Mk2)
 
 ## License
 
