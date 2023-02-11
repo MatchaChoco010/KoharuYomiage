@@ -6,7 +6,6 @@ namespace KoharuYomiageApp.UseCase.AddMisskeyAccount
 {
     public interface IGetAccessToken
     {
-        Task<(string, UserData)> GetAccessToken(string instance, string secret, string sessionToken,
-            CancellationToken cancellationToken);
+        Task<(string, UserData)> GetAccessToken(string instance, string sessionToken, CancellationToken cancellationToken);
     }
 }

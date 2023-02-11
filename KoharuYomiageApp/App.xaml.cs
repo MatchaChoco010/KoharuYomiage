@@ -87,7 +87,6 @@ namespace KoharuYomiageApp
             //   MisskeyClient
             containerRegistry.RegisterManySingleton<MisskeyClient>(
                 typeof(Presentation.Misskey.IMakeMisskeyConnection),
-                typeof(IMisskeyRegisterClient),
                 typeof(IMisskeyGetAuthorizeUrl),
                 typeof(IMisskeyGetAccessToken),
                 typeof(MisskeyClient));
@@ -149,7 +148,6 @@ namespace KoharuYomiageApp
             containerRegistry.RegisterSingleton<MastodonController>();
             //   Misskey
             containerRegistry.RegisterManySingleton<MisskeyPresenter>(
-                typeof(UseCase.AddMisskeyAccount.IRegisterClient),
                 typeof(IGetAccessToken),
                 typeof(IGetAuthorizeUrl),
                 typeof(UseCase.Utils.IMakeMisskeyConnection));

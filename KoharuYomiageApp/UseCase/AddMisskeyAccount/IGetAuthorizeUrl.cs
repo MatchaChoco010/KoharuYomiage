@@ -6,6 +6,6 @@ namespace KoharuYomiageApp.UseCase.AddMisskeyAccount
 {
     public interface IGetAuthorizeUrl
     {
-        Task<(string, Uri)> GetAuthorizeUri(string hostName, string secret, CancellationToken cancellationToken);
+        Task<(string, Uri)> GetAuthorizeUri(string hostName, CancellationToken cancellationToken);
     }
 }

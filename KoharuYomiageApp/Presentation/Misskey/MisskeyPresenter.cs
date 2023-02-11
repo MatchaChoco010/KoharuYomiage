@@ -6,38 +6,29 @@ using KoharuYomiageApp.UseCase.AddMisskeyAccount.DataObjects;
 
 namespace KoharuYomiageApp.Presentation.Misskey
 {
-    public class MisskeyPresenter : IRegisterClient, IGetAuthorizeUrl, IGetAccessToken, UseCase.Utils.IMakeMisskeyConnection
+    public class MisskeyPresenter : IGetAuthorizeUrl, IGetAccessToken, UseCase.Utils.IMakeMisskeyConnection
     {
-        readonly IMisskeyRegisterClient _registerClient;
         readonly IMisskeyGetAuthorizeUrl _getAuthorizeUrl;
         readonly IMisskeyGetAccessToken _getAccessToken;
         readonly IMakeMisskeyConnection _connection;
 
-        public MisskeyPresenter(IMisskeyRegisterClient registerClient, IMisskeyGetAuthorizeUrl getAuthorizeUrl,
-            IMisskeyGetAccessToken getAccessToken, IMakeMisskeyConnection connection)
+        public MisskeyPresenter(IMisskeyGetAuthorizeUrl getAuthorizeUrl, IMisskeyGetAccessToken getAccessToken, IMakeMisskeyConnection connection)
         {
-            _registerClient = registerClient;
             _getAuthorizeUrl = getAuthorizeUrl;
             _getAccessToken = getAccessToken;
             _connection = connection;
         }
 
-        public async Task<string> RegisterClient(string instance, CancellationToken cancellationToken)
+        public async Task<(string, Uri)> GetAuthorizeUri(string hostName, CancellationToken cancellationToken)
         {
-            return await _registerClient.RegisterClient(instance, cancellationToken);
+            return await _getAuthorizeUrl.GetAuthorizeUri(hostName, cancellationToken);
         }
 
-        public async Task<(string, Uri)> GetAuthorizeUri(string hostName, string secret,
-            CancellationToken cancellationToken)
-        {
-            return await _getAuthorizeUrl.GetAuthorizeUri(hostName, secret, cancellationToken);
-        }
-
-        public async Task<(string, UserData)> GetAccessToken(string instance, string secret, string sessionToken,
+        public async Task<(string, UserData)> GetAccessToken(string instance, string sessionToken,
             CancellationToken cancellationToken)
         {
             var (accessToken, (username, displayName, iconUrl)) =
-                await _getAccessToken.GetAccessToken(instance, secret, sessionToken, cancellationToken);
+                await _getAccessToken.GetAccessToken(instance, sessionToken, cancellationToken);
             return (accessToken, new UserData(username, displayName, iconUrl));
         }
 

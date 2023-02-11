@@ -9,8 +9,7 @@ using MisskeyApi.Payloads.Entities;
 
 namespace KoharuYomiageApp.Infrastructures.Misskey
 {
-    public class MisskeyClient : IMakeMisskeyConnection, IMisskeyRegisterClient, IMisskeyGetAuthorizeUrl,
-        IMisskeyGetAccessToken
+    public class MisskeyClient : IMakeMisskeyConnection, IMisskeyGetAuthorizeUrl, IMisskeyGetAccessToken
     {
         readonly MisskeyController _misskeyController;
 
@@ -19,26 +18,16 @@ namespace KoharuYomiageApp.Infrastructures.Misskey
             _misskeyController = misskeyController;
         }
 
-        public async Task<string> RegisterClient(string instance, CancellationToken cancellationToken = new())
+        public async Task<(string, Uri)> GetAuthorizeUri(string hostName, CancellationToken cancellationToken = new())
         {
-            var secrtet = await Api.RegisterApp(instance, cancellationToken);
-            return secrtet.Value;
+            var (sessionId, authorizeUrl) = await Api.GetAuthorizeUri(hostName, cancellationToken);
+            return (sessionId.Value, authorizeUrl);
         }
 
-        public async Task<(string, Uri)> GetAuthorizeUri(string hostName, string secret,
+        public async Task<(string, (string, string, Uri))> GetAccessToken(string instance, string sessionId,
             CancellationToken cancellationToken = new())
         {
-            var (sessionToken, authrizeUrl) =
-                await Api.GetAuthorizeUri(hostName, new Secret(secret), cancellationToken);
-            return (sessionToken.Value, authrizeUrl);
-        }
-
-        public async Task<(string, (string, string, Uri))> GetAccessToken(string instance, string secret,
-            string sessionToken,
-            CancellationToken cancellationToken = new())
-        {
-            var (accessToken, user) = await Api.GetAccessToken(instance, new Secret(secret),
-                new SessionToken(sessionToken), cancellationToken);
+            var (accessToken, user) = await Api.GetAccessToken(instance, new SessionId(sessionId), cancellationToken);
             return (accessToken.Value, (user.username, user.name, user.avatarUrl));
         }
 

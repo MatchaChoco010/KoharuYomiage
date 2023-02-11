@@ -1,9 +1,11 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using KoharuYomiageApp.Domain.Account;
 using KoharuYomiageApp.Domain.Account.Misskey;
 using KoharuYomiageApp.Domain.Connection;
 using KoharuYomiageApp.Presentation.Misskey;
+using KoharuYomiageApp.UseCase.AddMisskeyAccount.DataObjects;
 using KoharuYomiageApp.UseCase.Repository;
 
 namespace KoharuYomiageApp.UseCase.AddMisskeyAccount
@@ -12,7 +14,6 @@ namespace KoharuYomiageApp.UseCase.AddMisskeyAccount
     {
         readonly IMisskeyAccountRepository _accountRepository;
         readonly IConnectionRepository _connectionRepository;
-        readonly IRegisterClient _registerClient;
         readonly IGetAuthorizeUrl _getAuthorizeUrl;
         readonly IShowAuthUrl _showAuthUrl;
         readonly IWaitAuthorize _waitAuthorize;
@@ -21,14 +22,14 @@ namespace KoharuYomiageApp.UseCase.AddMisskeyAccount
         readonly IShowRegisterClientError _showRegisterClientError;
         readonly IShowAuthorizeError _showAuthorizeError;
 
-        public AddMisskeyAccount(IMisskeyAccountRepository accountRepository, IConnectionRepository connectionRepository,
-            IRegisterClient registerClient, IGetAuthorizeUrl getAuthorizeUrl, IShowAuthUrl showAuthUrl,
-            IWaitAuthorize waitAuthorize, IGetAccessToken getAccessToken, IMakeMisskeyConnection makeMisskeyConnection,
+        public AddMisskeyAccount(IMisskeyAccountRepository accountRepository,
+            IConnectionRepository connectionRepository,
+            IGetAuthorizeUrl getAuthorizeUrl, IShowAuthUrl showAuthUrl, IWaitAuthorize waitAuthorize,
+            IGetAccessToken getAccessToken, IMakeMisskeyConnection makeMisskeyConnection,
             IShowRegisterClientError showRegisterClientError, IShowAuthorizeError showAuthorizeError)
         {
             _accountRepository = accountRepository;
             _connectionRepository = connectionRepository;
-            _registerClient = registerClient;
             _getAuthorizeUrl = getAuthorizeUrl;
             _showAuthUrl = showAuthUrl;
             _waitAuthorize = waitAuthorize;
@@ -40,19 +41,17 @@ namespace KoharuYomiageApp.UseCase.AddMisskeyAccount
 
         public async Task Login(string host, CancellationToken cancellationToken)
         {
-            string secret;
+            string sessionToken;
+            Uri authorizeUrl;
             try
             {
-                secret = await _registerClient.RegisterClient(host, cancellationToken);
+                (sessionToken, authorizeUrl) = await _getAuthorizeUrl.GetAuthorizeUri(host, cancellationToken);
             }
             catch
             {
                 _showRegisterClientError.ShowRegisterClientError();
                 throw;
             }
-
-            var (sessionToken, authorizeUrl) =
-                await _getAuthorizeUrl.GetAuthorizeUri(host, secret, cancellationToken);
 
             _showAuthUrl.ShowAuthUrl(authorizeUrl);
 
@@ -69,9 +68,19 @@ namespace KoharuYomiageApp.UseCase.AddMisskeyAccount
                 }
             }
 
-            var (accessTokenData, user) =
-                await _getAccessToken.GetAccessToken(host, secret, sessionToken, cancellationToken);
-
+            string accessTokenData;
+            UserData user;
+            try
+            {
+                (accessTokenData, user) =
+                    await _getAccessToken.GetAccessToken(host, sessionToken, cancellationToken);
+            }
+            catch
+            {
+                _showAuthorizeError.ShowAuthorizeError();
+                throw;
+            }
+            
             var username = new Username(user.Username);
             var instance = new Instance(host);
             var displayName = new DisplayName(user.DisplayName);
