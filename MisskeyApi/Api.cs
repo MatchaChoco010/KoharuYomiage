@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
-using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using System.Threading;
@@ -18,41 +17,65 @@ namespace MisskeyApi
     {
         static readonly HttpClientHandler s_httpClientHandler = new();
 
-        public static async Task<Secret> RegisterApp(string hostName, CancellationToken cancellationToken = new())
+        static async Task<bool> CheckInstance(string hostName, CancellationToken cancellationToken = new())
+        {
+            if (Uri.CheckHostName(hostName) == UriHostNameType.Unknown)
+            {
+                throw new ArgumentException("hostName must be host string");
+            }
+            
+            var uriBuilder = new UriBuilder
+            {
+                Scheme = "https",
+                Host = hostName,
+                Path = "api/meta",
+            };
+            
+            using var client = new HttpClient(s_httpClientHandler, false);
+            var content = new StringContent("{\"detail\": false}", Encoding.UTF8, "application/json");
+            var response = await client.PostAsync(uriBuilder.Uri, content, cancellationToken);
+
+            if (response.StatusCode != HttpStatusCode.OK)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public static async Task<(SessionId, Uri)> GetAuthorizeUri(string hostName,
+            CancellationToken cancellationToken = new())
         {
             if (Uri.CheckHostName(hostName) == UriHostNameType.Unknown)
             {
                 throw new ArgumentException("hostName must be host string");
             }
 
+            if (!await CheckInstance(hostName, cancellationToken))
+            {
+                throw new ArgumentException("hostName is not misskey instance");
+            }
+
+            var sessionId = new SessionId(Guid.NewGuid().ToString());
+
+            var parameters = new List<KeyValuePair<string, string>>
+            {
+                new("name", "小春六花さんにTLを読み上げていただくアプリ"),
+                new("icon", "https://raw.githubusercontent.com/MatchaChoco010/KoharuYomiage/main/appicon.gif"),
+                new("permission", "read:account,read:notifications"),
+            };
             var uriBuilder = new UriBuilder
             {
                 Scheme = "https",
                 Host = hostName,
-                Path = "api/app/create"
+                Path = $"miauth/{sessionId.Value}",
+                Query = await new FormUrlEncodedContent(parameters).ReadAsStringAsync(),
             };
-            var requestJson = JsonSerializer.Serialize(new
-            {
-                name = "小春六花さんにTLを読み上げていただくアプリ",
-                description = "小春六花さんにTLを読み上げていただくアプリケーション",
-                permission = new List<string>{ "read:account", "read:notifications" },
-            });
 
-            using var client = new HttpClient(s_httpClientHandler, false);
-            var response = await client.PostAsync(uriBuilder.Uri, new StringContent(requestJson), cancellationToken);
-
-            if (response.StatusCode != HttpStatusCode.OK)
-            {
-                throw new HttpResponseException(response.StatusCode, $"Unable to connect {uriBuilder.Uri}");
-            }
-
-            var json = (await JsonSerializer.DeserializeAsync<RegisterAppResponceJson>(
-                await response.Content.ReadAsStreamAsync(), cancellationToken: cancellationToken))!;
-
-            return new Secret(json.secret);
+            return (sessionId, uriBuilder.Uri);
         }
 
-        public static async Task<(SessionToken, Uri)> GetAuthorizeUri(string hostName, Secret secret,
+        public static async Task<(AccessToken, User)> GetAccessToken(string hostName, SessionId sessionId,
             CancellationToken cancellationToken = new())
         {
             if (Uri.CheckHostName(hostName) == UriHostNameType.Unknown)
@@ -62,51 +85,11 @@ namespace MisskeyApi
 
             var uriBuilder = new UriBuilder
             {
-                Scheme = "https",
-                Host = hostName,
-                Path = "api/auth/session/generate"
+                Scheme = "https", Host = hostName, Path = $"api/miauth/{sessionId.Value}/check"
             };
-            var requestJson = JsonSerializer.Serialize(new
-            {
-                appSecret = secret.Value,
-            });
 
             using var client = new HttpClient(s_httpClientHandler, false);
-            var response = await client.PostAsync(uriBuilder.Uri, new StringContent(requestJson), cancellationToken);
-
-            if (response.StatusCode != HttpStatusCode.OK)
-            {
-                throw new HttpResponseException(response.StatusCode, $"Unable to connect {uriBuilder.Uri}");
-            }
-
-            var json = (await JsonSerializer.DeserializeAsync<GetAuthorizeUriResponseJson>(
-                await response.Content.ReadAsStreamAsync(), cancellationToken: cancellationToken))!;
-
-            return (new SessionToken(json.token), new Uri(json.url));
-        }
-
-        public static async Task<(AccessToken, User)> GetAccessToken(string hostName, Secret secret, SessionToken token,
-            CancellationToken cancellationToken = new())
-        {
-            if (Uri.CheckHostName(hostName) == UriHostNameType.Unknown)
-            {
-                throw new ArgumentException("hostName must be host string");
-            }
-
-            var uriBuilder = new UriBuilder
-            {
-                Scheme = "https",
-                Host = hostName,
-                Path = "api/auth/session/userkey"
-            };
-            var requestJson = JsonSerializer.Serialize(new
-            {
-                appSecret = secret.Value,
-                token = token.Value,
-            });
-
-            using var client = new HttpClient(s_httpClientHandler, false);
-            var response = await client.PostAsync(uriBuilder.Uri, new StringContent(requestJson), cancellationToken);
+            var response = await client.PostAsync(uriBuilder.Uri, null, cancellationToken);
 
             if (response.StatusCode != HttpStatusCode.OK)
             {
@@ -116,16 +99,7 @@ namespace MisskeyApi
             var json = (await JsonSerializer.DeserializeAsync<GetAccessTokenResponseJson>(
                 await response.Content.ReadAsStreamAsync(), cancellationToken: cancellationToken))!;
 
-            using var sha256 = SHA256.Create();
-            var data = sha256.ComputeHash(Encoding.UTF8.GetBytes(json.accessToken + secret.Value));
-            var stringBuilder = new StringBuilder();
-            foreach (var b in data)
-            {
-                stringBuilder.Append(b.ToString("x2"));
-            }
-            var accessToken = stringBuilder.ToString();
-
-            return (new AccessToken(accessToken), json.user);
+            return (new AccessToken(json.token), json.user);
         }
 
         public static IObservable<UserStreamPayload> GetUserStreamingObservable(string hostName,
@@ -134,11 +108,6 @@ namespace MisskeyApi
             return new UserStreamObservable(hostName, accessToken);
         }
 
-        record RegisterAppResponceJson(string id, string name, string description, string? callbackUrl,
-            List<string> permission, string secret);
-
-        record GetAuthorizeUriResponseJson(string token, string url);
-
-        record GetAccessTokenResponseJson(string accessToken, User user);
+        record GetAccessTokenResponseJson(string token, User user);
     }
 }
